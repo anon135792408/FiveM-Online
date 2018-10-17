@@ -18,7 +18,6 @@ namespace GTAOnlineClient
         bool playerJustDead = false;
         public Spawning()
         {
-            SetManualShutdownLoadingScreenNui(true);
             StartAudioScene("MP_LEADERBOARD_SCENE");
             Tick += OnTick;
             EventHandlers.Add("playerSpawned", new Action<Vector3>(OnPlayerSpawned));
@@ -38,11 +37,10 @@ namespace GTAOnlineClient
         private async void OnPlayerSpawned([FromSource]Vector3 pos)
         {
             playerJustDead = false;
-            Screen.Effects.Stop();
             playerPed = Game.PlayerPed;
             StartPlayerSwitch(playerPed.Handle, playerPed.Handle, 1, 1);
             await Delay(3150);
-            ShutdownLoadingScreenNui();
+            Screen.Effects.Stop();
             Screen.Fading.FadeIn(500);
             StopAudioScene("MP_LEADERBOARD_SCENE");
         }
