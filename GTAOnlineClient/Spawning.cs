@@ -28,8 +28,26 @@ namespace GTAOnlineClient
             {
                 RequestScriptAudioBank("MP_WASTED", false);
                 playerJustDead = true;
-                Screen.Effects.Start(ScreenEffect.DeathFailMpIn, 0, false);
+
+                var scaleform = RequestScaleformMovie("MP_BIG_MESSAGE_FREEMODE");
+                while (!HasScaleformMovieLoaded(scaleform))
+                {
+                    await Delay(0);
+                }
+                PushScaleformMovieFunction(scaleform, "SHOW_SHARD_WASTED_MP_MESSAGE");
+                BeginTextComponent("STRING");
+                AddTextComponentString("~r~wasted");
+                EndTextComponent();
+                PopScaleformMovieFunctionVoid();
+
+                Screen.Effects.Start(ScreenEffect.DeathFailOut, 0, false);
+                ShakeGameplayCam("DEATH_FAIL_IN_EFFECT_SHAKE", 1.0f);
                 PlaySoundFrontend(-1, "MP_Flash", "WastedSounds", true);
+                while (playerPed.IsDead)
+                {
+                    DrawScaleformMovieFullscreen(scaleform, 255, 255, 255, 255, 255);
+                    await Delay(0);
+                }
             }
         }
 
