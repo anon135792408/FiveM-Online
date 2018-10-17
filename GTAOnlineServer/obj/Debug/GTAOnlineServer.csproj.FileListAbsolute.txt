@@ -1,0 +1,7 @@
+D:\Dev Projects\GTAOnline-Fivem\GTAOnlineServer\obj\Debug\GTAOnlineServer.csproj.CoreCompileInputs.cache
+D:\Dev Projects\GTAOnline-Fivem\GTAOnlineServer\obj\Debug\GTAOnlineServer.csproj.CopyComplete
+D:\Dev Projects\GTAOnline-Fivem\GTAOnlineServer\obj\Debug\GTAOnlineServer.net.dll
+D:\Dev Projects\GTAOnline-Fivem\GTAOnlineServer\obj\Debug\GTAOnlineServer.net.pdb
+D:\Dev Projects\GTAOnline-Fivem\GTAOnlineServer.net.dll
+D:\Dev Projects\GTAOnline-Fivem\GTAOnlineServer.net.pdb
+D:\Dev Projects\GTAOnline-Fivem\GTAOnlineServer\obj\Debug\GTAOnlineServer.csprojAssemblyReference.cache
