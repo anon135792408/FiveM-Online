@@ -4,7 +4,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using CitizenFX.Core;
-using CitizenFX.Core.Native;
 using CitizenFX.Core.UI;
 using static CitizenFX.Core.Native.API;
 
@@ -36,11 +35,14 @@ namespace GTAOnlineClient
 
         private async void OnPlayerSpawned([FromSource]Vector3 pos)
         {
+            Screen.Effects.Stop();
             playerJustDead = false;
             playerPed = Game.PlayerPed;
             StartPlayerSwitch(playerPed.Handle, playerPed.Handle, 1, 1);
-            await Delay(3150);
-            Screen.Effects.Stop();
+            while (GetPlayerSwitchState() != 3)
+            {
+                await Delay(0);
+            }
             Screen.Fading.FadeIn(500);
             StopAudioScene("MP_LEADERBOARD_SCENE");
         }

@@ -4,10 +4,10 @@ D:\Dev Projects\GTAOnline-Fivem\GTAOnlineClient\obj\Debug\GTAOnlineClient.net.dl
 D:\Dev Projects\GTAOnline-Fivem\GTAOnlineClient\obj\Debug\GTAOnlineClient.net.pdb
 D:\Dev Projects\GTAOnline-Fivem\GTAOnlineClient.net.dll
 D:\Dev Projects\GTAOnline-Fivem\GTAOnlineClient.net.pdb
-D:\Dev Projects\GTAOnline-Fivem\GTAOnline-FiveM\GTAOnlineClient\obj\Debug\GTAOnlineClient.csprojAssemblyReference.cache
 D:\Dev Projects\GTAOnline-Fivem\GTAOnline-FiveM\GTAOnlineClient\obj\Debug\GTAOnlineClient.csproj.CoreCompileInputs.cache
 D:\Dev Projects\GTAOnline-Fivem\GTAOnline-FiveM\GTAOnlineClient\obj\Debug\GTAOnlineClient.csproj.CopyComplete
 D:\Dev Projects\GTAOnline-Fivem\GTAOnline-FiveM\GTAOnlineClient\obj\Debug\GTAOnlineClient.net.dll
 D:\Dev Projects\GTAOnline-Fivem\GTAOnline-FiveM\GTAOnlineClient\obj\Debug\GTAOnlineClient.net.pdb
 D:\Dev Projects\GTAOnline-Fivem\GTAOnline-FiveM\GTAOnlineClient.net.dll
 D:\Dev Projects\GTAOnline-Fivem\GTAOnline-FiveM\GTAOnlineClient.net.pdb
+D:\Dev Projects\GTAOnline-Fivem\GTAOnline-FiveM\GTAOnlineClient\obj\Debug\GTAOnlineClient.csprojAssemblyReference.cache
