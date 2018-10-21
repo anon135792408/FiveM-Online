@@ -104,23 +104,20 @@ namespace GTAOnlineClient
                         animDict = "anim@mp_helmets@on_bike@sports";
                     }
 
-                    int helmetIndex = 0;
                     for (int i = 0; i < helmetVisors.Count; i++)
                     {
-                        var helmetIndexTemp = helmetVisors.ElementAt(i);
-                        if (helmetIndexTemp.Key == playerHelmet.Index)
+                        var helmetIndex = helmetVisors.ElementAt(i);
+                        if (helmetIndex.Key == playerHelmet.Index)
                         {
-                            playerPed.Task.PlayAnimation(animDict, "visor_up");
-                            helmetIndex = helmetIndexTemp.Key;
+                            await Delay(500);
+                            playerHelmet.SetVariation(helmetIndex.Key, playerHelmet.TextureIndex);
                         }
                         else
                         {
-                            playerPed.Task.PlayAnimation(animDict, "visor_down");
-                            helmetIndex = helmetIndexTemp.Value;
+                            await Delay(500);
+                            playerHelmet.SetVariation(helmetIndex.Value, playerHelmet.TextureIndex);
                         }
                     }
-                    await Delay(500);
-                    playerHelmet.SetVariation(helmetIndex, playerHelmet.TextureIndex);
                 }
             }
         }
