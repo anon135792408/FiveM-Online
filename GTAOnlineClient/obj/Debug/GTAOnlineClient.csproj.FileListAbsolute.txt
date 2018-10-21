@@ -10,4 +10,3 @@ D:\Dev Projects\GTAOnline-Fivem\GTAOnline-FiveM\GTAOnlineClient\obj\Debug\GTAOnl
 D:\Dev Projects\GTAOnline-Fivem\GTAOnline-FiveM\GTAOnlineClient\obj\Debug\GTAOnlineClient.net.pdb
 D:\Dev Projects\GTAOnline-Fivem\GTAOnline-FiveM\GTAOnlineClient.net.dll
 D:\Dev Projects\GTAOnline-Fivem\GTAOnline-FiveM\GTAOnlineClient.net.pdb
-D:\Dev Projects\GTAOnline-Fivem\GTAOnline-FiveM\GTAOnlineClient\obj\Debug\GTAOnlineClient.csprojAssemblyReference.cache
