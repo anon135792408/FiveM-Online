@@ -14,7 +14,7 @@ namespace GTAOnlineClient
         Ped playerPed;
         PedProp playerHelmet;
 
-        Dictionary<int, int> helmetVisors = new Dictionary<int, int>() //Helmet Visors {down, up}
+        Dictionary<int, int> helmetVisorsMale = new Dictionary<int, int>() //Helmet Visors {down, up}
         {
             {92, 93},
             {81, 82},
@@ -32,6 +32,24 @@ namespace GTAOnlineClient
             {117, 118}
         };
 
+        Dictionary<int, int> helmetVisorsFemale = new Dictionary<int, int>() //Helmet Visors {down, up}
+        {
+            {50, 68},
+            {51, 69},
+            {19, 67},
+            {63, 72},
+            {73, 74},
+            {78, 79},
+            {80, 81},
+            {91, 92},
+            {116, 117},
+            {118, 119},
+            {123, 124},
+            {125, 126}
+        };
+
+        Dictionary<int, int> helmetVisors;
+
         public HelmetVisor()
         {
             Tick += OnTick;
@@ -46,6 +64,19 @@ namespace GTAOnlineClient
             }
             if (playerPed != null && playerPed.Model == PedHash.FreemodeMale01 || playerPed.Model == PedHash.FreemodeFemale01)
             {
+                if (playerPed.Model == PedHash.FreemodeMale01)
+                {
+                    helmetVisors = helmetVisorsMale;
+                }
+                else if (playerPed.Model == PedHash.FreemodeFemale01)
+                {
+                    helmetVisors = helmetVisorsFemale;
+                }
+                else
+                {
+                    helmetVisors = null;
+                }
+
                 PedProp[] playerProps = playerPed.Style.GetAllProps();
                 foreach (PedProp p in playerProps)
                 {
