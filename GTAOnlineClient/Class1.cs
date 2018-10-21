@@ -9,5 +9,6 @@ namespace GTAOnlineClient
 {
     public class Class1 : BaseScript
     {
+        
     }
 }

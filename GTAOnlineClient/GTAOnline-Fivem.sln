@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GTAOnlineClient", "GTAOnlin
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GTAOnlineServer", "..\GTAOnlineServer\GTAOnlineServer.csproj", "{F6BF8CC9-DE29-4F78-B24A-81F4B3D6DD37}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GTAOnlineShared", "..\GTAOnlineShared\GTAOnlineShared.csproj", "{F29AB270-D387-4758-B8CD-941AC970766D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{F6BF8CC9-DE29-4F78-B24A-81F4B3D6DD37}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F6BF8CC9-DE29-4F78-B24A-81F4B3D6DD37}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F6BF8CC9-DE29-4F78-B24A-81F4B3D6DD37}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F29AB270-D387-4758-B8CD-941AC970766D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F29AB270-D387-4758-B8CD-941AC970766D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F29AB270-D387-4758-B8CD-941AC970766D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F29AB270-D387-4758-B8CD-941AC970766D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

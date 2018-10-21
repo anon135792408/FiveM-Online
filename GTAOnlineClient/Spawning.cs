@@ -35,6 +35,7 @@ namespace GTAOnlineClient
                     await Delay(0);
                 }
                 PushScaleformMovieFunction(scaleform, "SHOW_SHARD_WASTED_MP_MESSAGE");
+                
                 BeginTextComponent("STRING");
                 AddTextComponentString("~r~wasted");
                 EndTextComponent();

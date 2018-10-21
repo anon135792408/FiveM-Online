@@ -8,7 +8,18 @@ using static CitizenFX.Core.Native.API;
 
 namespace GTAOnlineShared
 {
-    public static class Class1
+    public class Class1
     {
+        private static bool testingSharedStuff = true;
+
+        public static string getBool()
+        {
+            return testingSharedStuff.ToString();
+        }
+
+        public static void setBool(bool testingSharedStuffNew)
+        {
+            testingSharedStuff = testingSharedStuffNew;
+        }
     }
 }

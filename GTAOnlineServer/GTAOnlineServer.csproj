@@ -49,5 +49,11 @@
     <Compile Include="Mugger.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\GTAOnlineShared\GTAOnlineShared.csproj">
+      <Project>{f29ab270-d387-4758-b8cd-941ac970766d}</Project>
+      <Name>GTAOnlineShared</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
