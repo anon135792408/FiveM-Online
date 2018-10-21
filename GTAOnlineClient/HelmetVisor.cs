@@ -109,13 +109,17 @@ namespace GTAOnlineClient
                         var helmetIndex = helmetVisors.ElementAt(i);
                         if (helmetIndex.Key == playerHelmet.Index)
                         {
+                            playerPed.Task.PlayAnimation(animDict, "visor_up");
                             await Delay(500);
                             playerHelmet.SetVariation(helmetIndex.Key, playerHelmet.TextureIndex);
+                            break;
                         }
                         else
                         {
+                            playerPed.Task.PlayAnimation(animDict, "visor_down");
                             await Delay(500);
                             playerHelmet.SetVariation(helmetIndex.Value, playerHelmet.TextureIndex);
+                            break;
                         }
                     }
                 }
