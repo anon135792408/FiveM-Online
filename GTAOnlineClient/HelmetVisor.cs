@@ -111,14 +111,14 @@ namespace GTAOnlineClient
                         {
                             playerPed.Task.PlayAnimation(animDict, "visor_up");
                             await Delay(500);
-                            playerHelmet.SetVariation(helmetIndex.Key, playerHelmet.TextureIndex);
+                            playerHelmet.SetVariation(helmetIndex.Value, playerHelmet.TextureIndex);
                             break;
                         }
-                        else
+                        else if (helmetIndex.Value == playerHelmet.Index)
                         {
                             playerPed.Task.PlayAnimation(animDict, "visor_down");
                             await Delay(500);
-                            playerHelmet.SetVariation(helmetIndex.Value, playerHelmet.TextureIndex);
+                            playerHelmet.SetVariation(helmetIndex.Key, playerHelmet.TextureIndex);
                             break;
                         }
                     }
