@@ -13,7 +13,15 @@ namespace GTAOnlineShared
     {
         public ScreenEvents()
         {
-            EventHandlers.Add("ScreenFade", new Action<int, int>(ScreenFade));
+            EventHandlers.Add("ScreenFadeForPlayers", new Action<Player[], int, int>(ScreenFadeForPlayers));
+        }
+
+        private void ScreenFadeForPlayers(Player[] players, int time, int fadeType)
+        {
+            foreach (Player p in players)
+            {
+                TriggerClientEvent(p, "ScreenFade", time, fadeType);
+            }
         }
 
     }
