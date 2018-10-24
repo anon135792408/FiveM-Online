@@ -53,6 +53,7 @@
     <Compile Include="Interiors.cs" />
     <Compile Include="Mugger.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ScreenEvents.cs" />
     <Compile Include="Spawning.cs" />
   </ItemGroup>
   <ItemGroup>
