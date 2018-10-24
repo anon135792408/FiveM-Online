@@ -12,13 +12,6 @@ namespace GTAOnlineServer
     {
         public Class1()
         {
-            Tick += OnTick;
-        }
-
-        public async Task OnTick()
-        {
-            await Delay(1000);
-            string bValue = GTAOnlineShared.Class1.getBool();
         }
     }
 }

@@ -14,6 +14,7 @@ namespace GTAOnlineShared
 
         public static string getBool()
         {
+            Debug.WriteLine(testingSharedStuff.ToString());
             return testingSharedStuff.ToString();
         }
 
