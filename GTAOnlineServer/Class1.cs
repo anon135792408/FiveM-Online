@@ -19,7 +19,6 @@ namespace GTAOnlineServer
         {
             await Delay(1000);
             string bValue = GTAOnlineShared.Class1.getBool();
-            Debug
         }
     }
 }
