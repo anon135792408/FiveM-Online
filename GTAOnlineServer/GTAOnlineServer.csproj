@@ -48,6 +48,7 @@
     <Compile Include="Debug.cs" />
     <Compile Include="Mugger.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ScreenEvents.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\GTAOnlineShared\GTAOnlineShared.csproj">

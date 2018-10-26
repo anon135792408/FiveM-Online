@@ -13,8 +13,8 @@ namespace GTAOnlineClient
     {
         Ped playerPed = Game.PlayerPed;
         Player player = Game.Player;
+        Ped deathPed;
 
-        bool playerJustDead = false;
         public Spawning()
         {
             StartAudioScene("MP_LEADERBOARD_SCENE");
@@ -24,10 +24,12 @@ namespace GTAOnlineClient
 
         public async Task OnTick()
         {
-            if (player.IsDead && !playerJustDead)
+            if (player.IsDead)
             {
+                deathPed = await World.CreatePed(PedHash.MovPrem01SFY, new Vector3(0, -10, 0));
+                deathPed.IsPositionFrozen = true;
+
                 RequestScriptAudioBank("MP_WASTED", false);
-                playerJustDead = true;
 
                 var scaleform = RequestScaleformMovie("MP_BIG_MESSAGE_FREEMODE");
                 while (!HasScaleformMovieLoaded(scaleform))
@@ -37,7 +39,22 @@ namespace GTAOnlineClient
                 PushScaleformMovieFunction(scaleform, "SHOW_SHARD_WASTED_MP_MESSAGE");
                 
                 BeginTextComponent("STRING");
-                AddTextComponentString("~r~wasted");
+                if (player.Character.GetKiller() != null)
+                {
+                    Ped killer = new Ped(GetPedKiller(player.Character.Handle));
+                    if (killer != null)
+                    {
+                        int pedType = GetPedType(killer.Handle);
+                        if (pedType == 6 || pedType == 27)
+                        {
+                            AddTextComponentString("~b~busted");
+                        }
+                        else
+                        {
+                            AddTextComponentString("~r~wasted");
+                        }
+                    }
+                }
                 EndTextComponent();
                 PopScaleformMovieFunctionVoid();
 
@@ -49,16 +66,18 @@ namespace GTAOnlineClient
                     DrawScaleformMovieFullscreen(scaleform, 255, 255, 255, 255, 255);
                     await Delay(0);
                 }
+                Tick -= OnTick;
             }
         }
 
         private async void OnPlayerSpawned([FromSource]Vector3 pos)
         {
+            Tick += OnTick;
             Screen.Effects.Stop();
-            playerJustDead = false;
             playerPed = Game.PlayerPed;
-            StartPlayerSwitch(playerPed.Handle, playerPed.Handle, 1, 1);
-            while (GetPlayerSwitchState() != 3)
+            StartPlayerSwitch(deathPed.Handle, playerPed.Handle, 1, 1);
+            deathPed.Delete();
+            while (GetPlayerSwitchState() != 3) //Don't fade the player in until the switch is in progress
             {
                 await Delay(0);
             }

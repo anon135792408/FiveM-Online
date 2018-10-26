@@ -5,7 +5,6 @@ using System.Text;
 using System.Threading.Tasks;
 using CitizenFX.Core;
 using CitizenFX.Core.Native;
-using CitizenFX.Core.UI;
 
 namespace GTAOnlineShared
 {
