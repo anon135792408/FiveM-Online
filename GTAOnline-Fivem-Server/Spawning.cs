@@ -15,7 +15,7 @@ namespace GTAOnline_Fivem_Server
         {
             Tick += OnTick;
             EventHandlers.Add("playerConnecting", new Action<Player>(OnPlayerSpawned));
-            EventHandler.Add("playerDropped", new Action<Player>(OnPlayerDropped));
+            EventHandlers.Add("playerDropped", new Action<Player>(OnPlayerDropped));
         }
 
         private async Task OnTick()
