@@ -9,32 +9,33 @@ namespace GTAOnline_Fivem_Server
 {
     public class Spawning : BaseScript
     {
-        public static string motd = "Welcome to Adam's FiveM server!";
+        public static String motd = "Welcome to Adam's FiveM server!";
 
         public Spawning()
         {
-            Tick += OnTick;
             EventHandlers.Add("playerConnecting", new Action<Player>(OnPlayerSpawned));
             EventHandlers.Add("playerDropped", new Action<Player>(OnPlayerDropped));
-        }
-
-        private async Task OnTick()
-        {
-            await Delay(0);
+            EventHandlers.Add("baseevents:onPlayerDied", new Action<Player, string, Vector3>(OnPlayerDied));
         }
 
         private void OnPlayerSpawned([FromSource] Player source)
         {
-            Debug.WriteLine(source.Name + " has connected to the server from " + source.EndPoint);
+            Debug.WriteLine("[GTAO]" + source.Name + " has connected to the server from " + source.EndPoint);
             TriggerClientEvent(source, "chatMessage", new[] { 255, 0, 0 }, motd);
-            TriggerClientEvent("GTAO:AlertPlayerJoined", source.Name);
+            TriggerClientEvent("GTAO:showNotification", "~h~" + source.Name + " ~s~joined.");
         }
 
         private void OnPlayerDropped([FromSource] Player source)
         {
-            Debug.WriteLine(source.Name + " has left the server");
-            TriggerClientEvent(source, "chatMessage", new[] { 255, 0, 0 }, motd);
-            TriggerClientEvent("GTAO:AlertPlayerLeft", source.Name);
+            Debug.WriteLine("[GTAO]" + source.Name + " has left the server");
+            TriggerClientEvent("GTAO:showNotification", "~h~" + source.Name + " ~s~left.");
+        }
+
+        private void OnPlayerDied([FromSource] Player source, string reason, Vector3 pos)
+        {
+            Debug.WriteLine("[GTAO]" + source.Name + " has died");
+            TriggerClientEvent("GTAO:showNotification", "~h~" + source.Name + " ~s~died.");
+            Debug.WriteLine("AlertPlayerDied");
         }
     }
 }

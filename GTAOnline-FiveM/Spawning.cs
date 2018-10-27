@@ -13,18 +13,13 @@ namespace GTAOnline_FiveM
     {
         public Spawning()
         {
-            EventHandlers.Add("GTAO:AlertPlayerJoined", new Action<String>(AlertPlayerJoined));
-            EventHandlers.Add("GTAO:AlertPlayerLeft", new Action<String>(AlertPlayerLeft));
+            EventHandlers.Add("GTAO:showNotification", new Action<String>(showNotification));
         }
 
-        private void AlertPlayerJoined(String playerName)
+        private void showNotification(String text)
         {
-            Screen.ShowNotification("~h~" + playerName + " ~s~joined.");
+            Screen.ShowNotification(text);
         }
 
-        private void AlertPlayerLeft(String playerName)
-        {
-            Screen.ShowNotification("~h~" + playerName + " ~s~left.");
-        }
     }
 }
