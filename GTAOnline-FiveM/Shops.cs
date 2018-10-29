@@ -54,8 +54,6 @@ namespace GTAOnline_FiveM
                         await Delay(0);
                     }
                     shopPeds.Add(p.Clone());
-                    p.Delete();
-                    shopPeds.RemoveAt(shopPeds.IndexOf(p));
 
                     foreach (Player player in Players)
                     {
@@ -64,6 +62,9 @@ namespace GTAOnline_FiveM
                             TriggerServerEvent("GTAO:serverSetPlayerWanted", player, 2);
                         }
                     }
+
+                    p.Delete();
+                    shopPeds.RemoveAt(shopPeds.IndexOf(p));
                 }
             }
             TriggerServerEvent("GTAO:serverSyncShopPedList", shopPeds);
