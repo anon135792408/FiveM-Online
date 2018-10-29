@@ -11,6 +11,7 @@ namespace GTAOnline_FiveM
 {
     class Shops : BaseScript
     {
+        Ped npc;
         public Shops()
         {
             Tick += OnTick;
@@ -26,7 +27,17 @@ namespace GTAOnline_FiveM
         {
             if (NetworkIsHost())
             {
-                Ped npc = await World.CreatePed(PedHash.ShopLowSFY, new Vector3(73.88f, -1392.80f, 29.39f), 263.72f);
+                npc = await World.CreatePed(PedHash.ShopLowSFY, new Vector3(73.88f, -1392.80f, 29.39f), 263.72f);
+                Tick += CheckPedStatus;
+            }
+        }
+
+        private async Task CheckPedStatus()
+        {
+            if (npc.IsDead)
+            {
+                npc.IsPersistent = false;
+                npc = null;
             }
         }
     }
