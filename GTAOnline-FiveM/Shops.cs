@@ -16,6 +16,7 @@ namespace GTAOnline_FiveM
 
         public Shops()
         {
+            EventHandlers.Add("GTAO:clientSyncShopPedList", new Action<List<Ped>>(SyncShopPedList));
             Tick += OnTick;
             CreatePeds();
         }
@@ -23,6 +24,11 @@ namespace GTAOnline_FiveM
         private async Task OnTick()
         {
             CreatePeds();
+        }
+
+        private async void SyncShopPedList(List<Ped> pedList)
+        {
+            shopPeds = pedList;
         }
 
         private async void CreatePeds()
@@ -52,6 +58,7 @@ namespace GTAOnline_FiveM
                     shopPeds.RemoveAt(shopPeds.IndexOf(p));
                 }
             }
+            TriggerServerEvent("GTAO:serverSyncShopPedList", shopPeds);
         }
     }
 }
