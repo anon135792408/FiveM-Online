@@ -5,3 +5,9 @@ D:\Dev Projects\GTAOnline-Fivem\GTAOnline-FiveM\GTAOnline-FiveM\obj\Debug\GTAOnl
 D:\Dev Projects\GTAOnline-Fivem\GTAOnline-FiveM\GTAOnline-FiveM.net.dll
 D:\Dev Projects\GTAOnline-Fivem\GTAOnline-FiveM\GTAOnline-FiveM.net.pdb
 D:\Dev Projects\GTAOnline-Fivem\GTAOnline-FiveM\GTAOnline-FiveM\obj\Debug\GTAOnline-FiveM-Client.csprojAssemblyReference.cache
+C:\GitHub\GTAOnline-FiveM\GTAOnline-FiveM\obj\Debug\GTAOnline-FiveM-Client.csproj.CoreCompileInputs.cache
+C:\GitHub\GTAOnline-FiveM\GTAOnline-FiveM\obj\Debug\GTAOnline-FiveM-Client.csproj.CopyComplete
+C:\GitHub\GTAOnline-FiveM\GTAOnline-FiveM\obj\Debug\GTAOnline-FiveM.net.dll
+C:\GitHub\GTAOnline-FiveM\GTAOnline-FiveM\obj\Debug\GTAOnline-FiveM.net.pdb
+C:\GitHub\GTAOnline-FiveM\GTAOnline-FiveM.net.dll
+C:\GitHub\GTAOnline-FiveM\GTAOnline-FiveM.net.pdb
