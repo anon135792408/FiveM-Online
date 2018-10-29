@@ -44,6 +44,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="MirrorParkParty.cs" />
     <Compile Include="PlayerProperties.cs" />
     <Compile Include="Shops.cs" />
     <Compile Include="Spawning.cs" />
