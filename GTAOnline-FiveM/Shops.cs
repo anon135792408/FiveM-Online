@@ -56,6 +56,14 @@ namespace GTAOnline_FiveM
                     shopPeds.Add(p.Clone());
                     p.Delete();
                     shopPeds.RemoveAt(shopPeds.IndexOf(p));
+
+                    foreach (Player player in Players)
+                    {
+                        if (p.GetKiller() == player.Character)
+                        {
+                            TriggerServerEvent("GTAO:serverSetPlayerWanted", player, 2);
+                        }
+                    }
                 }
             }
             TriggerServerEvent("GTAO:serverSyncShopPedList", shopPeds);
