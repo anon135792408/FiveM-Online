@@ -24,7 +24,7 @@ namespace GTAOnline_FiveM
             {
                 if (HasForceCleanupOccurred(18))
                 {
-                    func_1();
+                    RemoveIpl();
                 }
                 await Delay(0);
                 if (!IsWorldPointWithinBrainActivationRange())
@@ -41,7 +41,7 @@ namespace GTAOnline_FiveM
                         }
                         else
                         {
-                            func_1();
+                            RemoveIpl();
                         }
                         break;
                     case 1:
@@ -55,18 +55,18 @@ namespace GTAOnline_FiveM
                     case 3:
                         if (!IsNewLoadSceneActive() && !IsPlayerSwitchInProgress())
                         {
-                            func_1();
+                            RemoveIpl();
                         }
                         break;
                 }
             }
         }
 
-        private void func_1()
+        private void RemoveIpl()
         {
             if (IsIplActive("ID2_21_G_Night"))
             {
-                RemoveIpl("ID2_21_G_Night");
+                CitizenFX.Core.Native.API.RemoveIpl("ID2_21_G_Night");
             }
         }
     }
