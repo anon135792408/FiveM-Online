@@ -47,7 +47,7 @@ namespace GTAOnline_FiveM
             {
                 if (p.IsDead)
                 {
-                    p.IsPersistent = false;
+                    p.IsPersistent = true;
                     Settimera(0);
                     while (Timera() < 45000)
                     {
