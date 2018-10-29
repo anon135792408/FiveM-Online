@@ -11,12 +11,13 @@ namespace GTAOnline_Fivem_Server
     {
         public Shops()
         {
-            EventHandlers.Add("GTAO:serverSyncShopPedList", new Action<List<object>>(SyncShopPedList));
+            EventHandlers.Add("GTAO:serverSyncShopPedList", new Action<IList<dynamic>>(SyncShopPedList));
         }
 
-        private void SyncShopPedList(List<object> pedList)
+        private void SyncShopPedList(IList<dynamic> shopPeds)
         {
-            TriggerClientEvent("GTAO:clientSyncShopPedList", pedList);
+            TriggerClientEvent("GTAO:clientSyncShopPedList", shopPeds);
+            Debug.WriteLine("Server PedList count: " + shopPeds.Count());
         }
     }
 }
