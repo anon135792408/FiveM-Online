@@ -11,7 +11,9 @@ namespace GTAOnline_FiveM
 {
     class Shops : BaseScript
     {
-        Ped npc;
+        List<Ped> shopPeds = new List<Ped>();
+        bool firstTick = false;
+
         public Shops()
         {
             Tick += OnTick;
@@ -20,24 +22,27 @@ namespace GTAOnline_FiveM
 
         private async Task OnTick()
         {
-            
+            CreatePeds();
         }
 
         private async void CreatePeds()
         {
-            if (NetworkIsHost())
+            if (NetworkIsHost() && !firstTick)
             {
-                npc = await World.CreatePed(PedHash.ShopLowSFY, new Vector3(73.88f, -1392.80f, 29.39f), 263.72f);
+                shopPeds.Add(await World.CreatePed(PedHash.ShopLowSFY, new Vector3(73.88f, -1392.80f, 29.39f), 263.72f));
                 Tick += CheckPedStatus;
             }
         }
 
         private async Task CheckPedStatus()
         {
-            if (npc.IsDead)
+            foreach (Ped p in shopPeds)
             {
-                npc.IsPersistent = false;
-                npc = null;
+                if (p.IsDead)
+                {
+                    p.IsPersistent = false;
+                    shopPeds.RemoveAt(shopPeds.IndexOf(p));
+                }
             }
         }
     }
