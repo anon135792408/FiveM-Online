@@ -28,7 +28,7 @@ namespace GTAOnline_FiveM
 
         private async void SyncShopPedList(List<dynamic> shopPeds)
         {
-            this.shopPeds = shopPeds;
+            this.shopPeds = new List<dynamic>(shopPeds);
             Debug.WriteLine("Received PedList count: " + shopPeds.Count());
         }
 
