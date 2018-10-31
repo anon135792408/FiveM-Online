@@ -29,7 +29,7 @@ namespace GTAOnline_FiveM
             {
                 await Delay(0);
             }
-            SwitchOutPlayer(GetPlayerPed(PlayerId()), 1, 1);
+            SwitchOutPlayer(PlayerPedId(), 1, 1);
             DoScreenFadeOut(500);
         }
 
@@ -40,7 +40,7 @@ namespace GTAOnline_FiveM
             {
                 await Delay(0);
             }
-            SwitchInPlayer(GetPlayerPed(PlayerId()));
+            SwitchInPlayer(PlayerPedId());
         }
     }
 }
