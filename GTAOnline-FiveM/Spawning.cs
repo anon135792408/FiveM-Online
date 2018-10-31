@@ -35,6 +35,7 @@ namespace GTAOnline_FiveM
 
         private async void SwitchInLocalPlayer()
         {
+            DoScreenFadeIn(500);
             while (IsPlayerSwitchInProgress())
             {
                 await Delay(0);
