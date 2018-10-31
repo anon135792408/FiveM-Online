@@ -21,5 +21,23 @@ namespace GTAOnline_FiveM
             Screen.ShowNotification(text);
         }
 
+        private async void SwitchOutLocalPlayer()
+        {
+            while (!Game.PlayerPed.Exists())
+            {
+                await Delay(0);
+            }
+            SwitchOutPlayer(GetPlayerPed(PlayerId()), 1, 1);
+            DoScreenFadeOut(500);
+        }
+
+        private async void SwitchInLocalPlayer()
+        {
+            while (IsPlayerSwitchInProgress())
+            {
+                await Delay(0);
+            }
+            SwitchInPlayer(GetPlayerPed(PlayerId()));
+        }
     }
 }

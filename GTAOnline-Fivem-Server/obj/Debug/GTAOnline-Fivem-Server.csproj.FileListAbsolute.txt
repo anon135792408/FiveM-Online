@@ -11,3 +11,9 @@ D:\Dev Projects\GTAOnline-Fivem\GTAOnline-FiveM\GTAOnline-Fivem-Server\obj\Debug
 D:\Dev Projects\GTAOnline-Fivem\GTAOnline-FiveM\GTAOnline-Fivem-Server.net.dll
 D:\Dev Projects\GTAOnline-Fivem\GTAOnline-FiveM\GTAOnline-Fivem-Server.net.pdb
 C:\GitHub\GTAOnline-FiveM\GTAOnline-Fivem-Server\obj\Debug\GTAOnline-Fivem-Server.csprojAssemblyReference.cache
+C:\Users\40229201\Documents\GitHub\GTAOnline-FiveM\GTAOnline-Fivem-Server\obj\Debug\GTAOnline-Fivem-Server.csproj.CoreCompileInputs.cache
+C:\Users\40229201\Documents\GitHub\GTAOnline-FiveM\GTAOnline-Fivem-Server\obj\Debug\GTAOnline-Fivem-Server.csproj.CopyComplete
+C:\Users\40229201\Documents\GitHub\GTAOnline-FiveM\GTAOnline-Fivem-Server\obj\Debug\GTAOnline-Fivem-Server.net.dll
+C:\Users\40229201\Documents\GitHub\GTAOnline-FiveM\GTAOnline-Fivem-Server\obj\Debug\GTAOnline-Fivem-Server.net.pdb
+C:\Users\40229201\Documents\GitHub\GTAOnline-FiveM\GTAOnline-Fivem-Server.net.dll
+C:\Users\40229201\Documents\GitHub\GTAOnline-FiveM\GTAOnline-Fivem-Server.net.pdb
