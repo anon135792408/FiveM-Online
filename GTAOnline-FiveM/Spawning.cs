@@ -14,6 +14,8 @@ namespace GTAOnline_FiveM
         public Spawning()
         {
             EventHandlers.Add("GTAO:showNotification", new Action<String>(showNotification));
+            EventHandlers.Add("GTAO:switchInLocalPlayer", new Action(SwitchInLocalPlayer));
+            EventHandlers.Add("GTAO:switchOutLocalPlayer", new Action(SwitchOutLocalPlayer));
         }
 
         private void showNotification(String text)
