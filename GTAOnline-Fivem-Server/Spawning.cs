@@ -13,7 +13,7 @@ namespace GTAOnline_Fivem_Server
 
         public Spawning()
         {
-            EventHandlers.Add("playerConnecting", new Action<Player>(OnPlayerSpawned));
+            EventHandlers.Add("playerSpawned", new Action<Player>(OnPlayerSpawned));
             EventHandlers.Add("playerDropped", new Action<Player>(OnPlayerDropped));
             EventHandlers.Add("baseevents:onPlayerDied", new Action<Player, string, Vector3>(OnPlayerDied)); // Currently not working
         }
