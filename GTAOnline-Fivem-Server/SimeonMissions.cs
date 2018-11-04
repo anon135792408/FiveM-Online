@@ -12,6 +12,7 @@ namespace GTAOnline_Fivem_Server
         public SimeonMissions()
         {
             EventHandlers.Add("GTAO:serverDisplaySimeonMarker", new Action(DisplaySimeonMarker));
+            EventHandlers.Add("GTAO:serverClearSimeonMarker", new Action(DisplaySimeonMarker));
             EventHandlers.Add("GTAO:serverDisplaySimeonMissionMessage", new Action(DisplaySimeonMissionMessage));
         }
 
@@ -23,6 +24,11 @@ namespace GTAOnline_Fivem_Server
         private void DisplaySimeonMissionMessage()
         {
             TriggerClientEvent("GTAO:clientDisplaySimeonMissionMessage");
+        }
+
+        private void ClearSimeonMarker()
+        {
+            TriggerClientEvent("GTAO:clientClearSimeonMissionMessage");
         }
     }
 }

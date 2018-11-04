@@ -15,10 +15,12 @@ namespace GTAOnline_FiveM
         private Vector3 SIMEON_MARKER_LOC = new Vector3(1204.73f, -3115.97f, 5.36f);
         bool isMissionActive = false;
         Vehicle missionVehicle;
+        Blip simBlip;
 
         public SimeonMissions()
         {
             EventHandlers.Add("GTAO:clientDisplaySimeonMarker", new Action(DisplaySimeonMarker));
+            EventHandlers.Add("GTAO:clientClearSimeonMarker", new Action(ClearSimeonMarker));
             EventHandlers.Add("GTAO:clientDisplaySimeonMissionMessage", new Action(DisplaySimeonMissionMessage));
             Tick += OnTick;
         }
@@ -31,18 +33,28 @@ namespace GTAOnline_FiveM
                 TriggerServerEvent("GTAO:serverDisplaySimeonMissionMessage");
                 isMissionActive = true;
                 missionVehicle = await World.CreateVehicle(VehicleHash.Blista, new Vector3(-65.79f, -1315.56f, 28.99f), 89.56f);
-                missionVehicle.IsPersistent = true;
+                SetEntityAsMissionEntity(missionVehicle.Handle, false, false);
+            }
+            else if (NetworkIsHost() && isMissionActive)
+            {
+                isMissionActive = false;
+                TriggerServerEvent("GTAO:serverClearSimeonMarker");
             }
             await Delay(MISSION_REFRESH_TIME);
         }
 
         private void DisplaySimeonMarker()
         {
-            Blip simBlip = World.CreateBlip(SIMEON_MARKER_LOC);
+            simBlip = World.CreateBlip(SIMEON_MARKER_LOC);
             simBlip.IsShortRange = false;
             simBlip.Sprite = BlipSprite.Solomon;
             simBlip.Name = "Simeon";
             simBlip.Color = BlipColor.Yellow;
+        }
+
+        private void ClearSimeonMarker()
+        {
+            simBlip.Delete();
         }
 
         private void DisplaySimeonMissionMessage()
