@@ -19,15 +19,16 @@ namespace GTAOnline_FiveM
         public SimeonMissions()
         {
             EventHandlers.Add("GTAO:clientDisplaySimeonMarker", new Action(DisplaySimeonMarker));
+            EventHandlers.Add("GTAO:clientDisplaySimeonMissionMessage", new Action(DisplaySimeonMissionMessage));
             Tick += OnTick;
         }
 
         private async Task OnTick()
         {
-            if (NetworkIsHost() && isMissionActive)
+            if (NetworkIsHost() && !isMissionActive)
             {
                 TriggerServerEvent("GTAO:serverDisplaySimeonMarker");
-
+                TriggerServerEvent("GTAO:serverDisplaySimeonMissionMessage");
                 isMissionActive = true;
                 missionVehicle = await World.CreateVehicle(VehicleHash.Blista, new Vector3(-65.79f, -1315.56f, 28.99f), 89.56f);
                 missionVehicle.IsPersistent = true;
@@ -39,8 +40,17 @@ namespace GTAOnline_FiveM
         {
             Blip simBlip = World.CreateBlip(SIMEON_MARKER_LOC);
             simBlip.IsShortRange = false;
-            simBlip.Sprite = BlipSprite.Simeon;
+            simBlip.Sprite = BlipSprite.Solomon;
+            simBlip.Name = "Simeon";
             simBlip.Color = BlipColor.Yellow;
+        }
+
+        private void DisplaySimeonMissionMessage()
+        {
+            SetNotificationTextEntry("STRING");
+            AddTextComponentString("I'm in need of a " + missionVehicle.DisplayName + " for one of my loyal customers");
+            SetNotificationMessageClanTag_2("CHAR_SIMEON", "CHAR_SIMEON", true, 7, "Simeon", "~c~Vehicle Asset", 15, "", 8, 0);
+            DrawNotification(true, false);
         }
     }
 }

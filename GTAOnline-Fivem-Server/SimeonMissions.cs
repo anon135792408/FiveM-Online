@@ -12,11 +12,17 @@ namespace GTAOnline_Fivem_Server
         public SimeonMissions()
         {
             EventHandlers.Add("GTAO:serverDisplaySimeonMarker", new Action(DisplaySimeonMarker));
+            EventHandlers.Add("GTAO:serverDisplaySimeonMissionMessage", new Action(DisplaySimeonMissionMessage));
         }
 
         private void DisplaySimeonMarker()
         {
             TriggerClientEvent("GTAO:clientDisplaySimeonMarker");
+        }
+
+        private void DisplaySimeonMissionMessage()
+        {
+            TriggerClientEvent("GTAO:clientDisplaySimeonMissionMessage");
         }
     }
 }
