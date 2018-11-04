@@ -53,7 +53,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="PlayerProperties.cs" />
-    <Compile Include="Shops.cs" />
+    <Compile Include="SimeonMissions.cs" />
     <Compile Include="Spawning.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
