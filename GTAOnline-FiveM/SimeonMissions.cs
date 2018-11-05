@@ -16,6 +16,7 @@ namespace GTAOnline_FiveM
         bool isMissionActive = false;
         Vehicle missionVehicle;
         Blip simBlip;
+        static Random rnd = new Random();
 
         List<VehicleHash> wantedVehicles = new List<VehicleHash> {
             VehicleHash.Blista,
@@ -46,7 +47,7 @@ namespace GTAOnline_FiveM
                 TriggerServerEvent("GTAO:serverDisplaySimeonMarker");
                 TriggerServerEvent("GTAO:serverDisplaySimeonMissionMessage");
                 isMissionActive = true;
-                missionVehicle = await World.CreateVehicle(VehicleHash.Blista, new Vector3(-65.79f, -1315.56f, 28.99f), 89.56f);
+                missionVehicle = await World.CreateVehicle(wantedVehicles[rnd.Next(wantedVehicles.Count())], new Vector3(-65.79f, -1315.56f, 28.99f), 89.56f);
                 SetEntityAsMissionEntity(missionVehicle.Handle, false, false);
             }
             else if (NetworkIsHost() && isMissionActive)
