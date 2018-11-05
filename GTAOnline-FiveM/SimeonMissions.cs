@@ -17,6 +17,20 @@ namespace GTAOnline_FiveM
         Vehicle missionVehicle;
         Blip simBlip;
 
+        List<VehicleHash> wantedVehicles = new List<VehicleHash> {
+            VehicleHash.Blista,
+            VehicleHash.Asterope,
+            VehicleHash.Asea,
+            VehicleHash.Baller,
+            VehicleHash.Tailgater,
+            VehicleHash.Oracle,
+            VehicleHash.Oracle2,
+            VehicleHash.Patriot,
+            VehicleHash.Premier,
+            VehicleHash.Penumbra,
+            VehicleHash.Prairie
+        };
+
         public SimeonMissions()
         {
             EventHandlers.Add("GTAO:clientDisplaySimeonMarker", new Action(DisplaySimeonMarker));
