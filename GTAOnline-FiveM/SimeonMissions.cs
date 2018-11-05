@@ -18,7 +18,8 @@ namespace GTAOnline_FiveM
         Blip simBlip;
         static Random rnd = new Random();
 
-        List<VehicleHash> wantedVehicles = new List<VehicleHash> {
+        List<VehicleHash> wantedVehicles = new List<VehicleHash>
+        {
             VehicleHash.Blista,
             VehicleHash.Asterope,
             VehicleHash.Asea,
@@ -30,6 +31,11 @@ namespace GTAOnline_FiveM
             VehicleHash.Premier,
             VehicleHash.Penumbra,
             VehicleHash.Prairie
+        };
+
+        Dictionary<Vector3, float> vehicleLocations = new Dictionary<Vector3, float>
+        {
+            {new Vector3(-65.79f, -1315.56f, 28.99f), 89.56f }
         };
 
         public SimeonMissions()
@@ -47,7 +53,10 @@ namespace GTAOnline_FiveM
                 TriggerServerEvent("GTAO:serverDisplaySimeonMarker");
                 TriggerServerEvent("GTAO:serverDisplaySimeonMissionMessage");
                 isMissionActive = true;
-                missionVehicle = await World.CreateVehicle(wantedVehicles[rnd.Next(wantedVehicles.Count())], new Vector3(-65.79f, -1315.56f, 28.99f), 89.56f);
+
+                int index = rnd.Next(vehicleLocations.Count());
+
+                missionVehicle = await World.CreateVehicle(wantedVehicles[rnd.Next(wantedVehicles.Count())], vehicleLocations.ElementAt(index).Key, vehicleLocations.ElementAt(index).Value);
                 SetEntityAsMissionEntity(missionVehicle.Handle, false, false);
             }
             else if (NetworkIsHost() && isMissionActive)
