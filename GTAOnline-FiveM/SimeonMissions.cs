@@ -13,6 +13,7 @@ namespace GTAOnline_FiveM
     {
         private const int MISSION_REFRESH_TIME = 960000;
         private Vector3 SIMEON_MARKER_LOC = new Vector3(1204.73f, -3115.97f, 5.36f);
+        private Vector3 SIMEON_MISSION_DROPOFF = new Vector3(0.0f, 0.0f, 0.0f);
         bool isMissionActive = false;
         Vehicle missionVehicle;
         Blip simBlip;
@@ -45,6 +46,27 @@ namespace GTAOnline_FiveM
             EventHandlers.Add("GTAO:clientDisplaySimeonMissionMessage", new Action(DisplaySimeonMissionMessage));
             EventHandlers.Add("GTAO:clientSyncMissionVehicle", new Action<dynamic>(SyncMissionVehicle));
             Tick += OnTick;
+            Tick += MissionTick;
+        }
+
+        private async Task MissionTick()
+        {
+            if (isMissionActive)
+            {
+                if (Game.PlayerPed.CurrentVehicle == missionVehicle && Game.PlayerPed.IsInRangeOf(SIMEON_MISSION_DROPOFF, 2.0f))
+                {
+                    missionVehicle.IsHandbrakeForcedOn = true;
+                    Screen.Fading.FadeOut(500);
+                    while (Screen.Fading.IsFadingOut)
+                    {
+                        await Delay(0);
+                    }
+                    missionVehicle.Delete();
+                    isMissionActive = false;
+                    TriggerServerEvent("GTAO:serverClearSimeonMarker");
+                    Screen.Fading.FadeIn(500);
+                }
+            }
         }
 
         private async Task OnTick()
@@ -61,11 +83,6 @@ namespace GTAOnline_FiveM
 
                 TriggerServerEvent("GTAO:serverDisplaySimeonMarker");
                 TriggerServerEvent("GTAO:serverDisplaySimeonMissionMessage");
-            }
-            else if (NetworkIsHost() && isMissionActive)
-            {
-                isMissionActive = false;
-                TriggerServerEvent("GTAO:serverClearSimeonMarker");
             }
             await Delay(MISSION_REFRESH_TIME);
         }
