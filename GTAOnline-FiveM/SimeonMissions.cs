@@ -43,6 +43,7 @@ namespace GTAOnline_FiveM
             EventHandlers.Add("GTAO:clientDisplaySimeonMarker", new Action(DisplaySimeonMarker));
             EventHandlers.Add("GTAO:clientClearSimeonMarker", new Action(ClearSimeonMarker));
             EventHandlers.Add("GTAO:clientDisplaySimeonMissionMessage", new Action(DisplaySimeonMissionMessage));
+            EventHandlers.Add("GTAO:clientSyncMissionVehicle", new Action<dynamic>(SyncMissionVehicle));
             Tick += OnTick;
         }
 
@@ -50,14 +51,16 @@ namespace GTAOnline_FiveM
         {
             if (NetworkIsHost() && !isMissionActive)
             {
-                TriggerServerEvent("GTAO:serverDisplaySimeonMarker");
-                TriggerServerEvent("GTAO:serverDisplaySimeonMissionMessage");
                 isMissionActive = true;
 
                 int index = rnd.Next(vehicleLocations.Count());
 
                 missionVehicle = await World.CreateVehicle(wantedVehicles[rnd.Next(wantedVehicles.Count())], vehicleLocations.ElementAt(index).Key, vehicleLocations.ElementAt(index).Value);
                 SetEntityAsMissionEntity(missionVehicle.Handle, false, false);
+                TriggerServerEvent("GTAO:serverSyncMissionVehicle", missionVehicle);
+
+                TriggerServerEvent("GTAO:serverDisplaySimeonMarker");
+                TriggerServerEvent("GTAO:serverDisplaySimeonMissionMessage");
             }
             else if (NetworkIsHost() && isMissionActive)
             {
@@ -87,6 +90,12 @@ namespace GTAOnline_FiveM
             AddTextComponentString("I'm in need of a " + missionVehicle.DisplayName + " for one of my loyal customers");
             SetNotificationMessageClanTag_2("CHAR_SIMEON", "CHAR_SIMEON", true, 7, "Simeon", "~c~Vehicle Asset", 15, "", 8, 0);
             DrawNotification(true, false);
+        }
+
+        private void SyncMissionVehicle(dynamic missionVehicle)
+        {
+            this.missionVehicle = missionVehicle;
+            SetEntityAsMissionEntity(missionVehicle.Handle, false, false);
         }
     }
 }

@@ -14,11 +14,17 @@ namespace GTAOnline_Fivem_Server
             EventHandlers.Add("GTAO:serverDisplaySimeonMarker", new Action(DisplaySimeonMarker));
             EventHandlers.Add("GTAO:serverClearSimeonMarker", new Action(DisplaySimeonMarker));
             EventHandlers.Add("GTAO:serverDisplaySimeonMissionMessage", new Action(DisplaySimeonMissionMessage));
+            EventHandlers.Add("GTAO:serverSyncMissionVehicle", new Action<dynamic>(SyncMissionVehicle));
         }
 
         private void DisplaySimeonMarker()
         {
             TriggerClientEvent("GTAO:clientDisplaySimeonMarker");
+        }
+
+        private void SyncMissionVehicle(dynamic missionVehicle)
+        {
+            TriggerClientEvent("GTAO:clientSyncMissionVehicle", missionVehicle);
         }
 
         private void DisplaySimeonMissionMessage()
