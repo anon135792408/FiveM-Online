@@ -43,7 +43,7 @@ namespace GTAOnline_FiveM
         {
             EventHandlers.Add("GTAO:clientDisplaySimeonMarker", new Action(DisplaySimeonMarker));
             EventHandlers.Add("GTAO:clientClearSimeonMarker", new Action(ClearSimeonMarker));
-            EventHandlers.Add("GTAO:clientDisplaySimeonMissionMessage", new Action(DisplaySimeonMissionMessage));
+            EventHandlers.Add("GTAO:clientDisplaySimeonMissionMessage", new Action<string>(DisplaySimeonMissionMessage));
             EventHandlers.Add("GTAO:clientSyncMissionVehicle", new Action<dynamic>(SyncMissionVehicle));
             Tick += OnTick;
         }
@@ -70,6 +70,16 @@ namespace GTAOnline_FiveM
                     await Delay(2000);
                     Screen.Fading.FadeIn(500);
                 }
+
+                if (missionVehicle.IsDead && NetworkIsHost())
+                {
+                    string simMessage = "Unfortunately the opportunity has passed as the vehicle I wanted was destroyed.";
+                    TriggerServerEvent("GTAO:serverDisplaySimeonMissionMessage", simMessage);
+                    isMissionActive = false;
+                    missionVehicle.AttachedBlip.Delete();
+                    missionVehicle.IsPersistent = false;
+                    TriggerServerEvent("GTAO:serverClearSimeonMarker");
+                }
             }
         }
 
@@ -86,7 +96,9 @@ namespace GTAOnline_FiveM
                 TriggerServerEvent("GTAO:serverSyncMissionVehicle", missionVehicle.Handle);
 
                 TriggerServerEvent("GTAO:serverDisplaySimeonMarker");
-                TriggerServerEvent("GTAO:serverDisplaySimeonMissionMessage");
+
+                string simMessage = "I'm in need of a " + missionVehicle.LocalizedName + " for one of my customers.";
+                TriggerServerEvent("GTAO:serverDisplaySimeonMissionMessage", simMessage);
                 Tick += MissionTick;
             }
             await Delay(MISSION_REFRESH_TIME);
@@ -106,10 +118,10 @@ namespace GTAOnline_FiveM
             simBlip.Delete();
         }
 
-        private void DisplaySimeonMissionMessage()
+        private void DisplaySimeonMissionMessage(string msg)
         {
             SetNotificationTextEntry("STRING");
-            AddTextComponentString("I'm in need of a " + missionVehicle.DisplayName + " for one of my loyal customers");
+            AddTextComponentString(msg);
             SetNotificationMessageClanTag_2("CHAR_SIMEON", "CHAR_SIMEON", true, 7, "Simeon", "~c~Vehicle Asset", 15, "", 8, 0);
             DrawNotification(true, false);
         }
@@ -118,6 +130,10 @@ namespace GTAOnline_FiveM
         {
             this.missionVehicle = new Vehicle(missionVehicle);
             this.missionVehicle.IsPersistent = true;
+
+            Blip vehBlip = this.missionVehicle.AttachBlip();
+            vehBlip.Sprite = BlipSprite.PersonalVehicleCar;
+            vehBlip.Color = BlipColor.Yellow;
         }
     }
 }
