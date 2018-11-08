@@ -13,9 +13,17 @@ namespace GTAOnline_FiveM
     {
         public Spawning()
         {
+            EventHandlers.Add("playerSpawned", new Action<Vector3>(OnPlayerSpawned));
             EventHandlers.Add("GTAO:showNotification", new Action<String>(showNotification));
             EventHandlers.Add("GTAO:switchInLocalPlayer", new Action(SwitchInLocalPlayer));
             EventHandlers.Add("GTAO:switchOutLocalPlayer", new Action(SwitchOutLocalPlayer));
+        }
+
+        private async void OnPlayerSpawned([FromSource]Vector3 pos)
+        {
+            //SwitchOutLocalPlayer();
+            await Delay(2000);
+            //SwitchInLocalPlayer();
         }
 
         private void showNotification(String text)
