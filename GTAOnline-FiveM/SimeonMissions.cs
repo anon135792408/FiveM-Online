@@ -11,7 +11,7 @@ namespace GTAOnline_FiveM
 {
     class SimeonMissions : BaseScript
     {
-        private const int MISSION_REFRESH_TIME = 15000;
+        private const int MISSION_REFRESH_TIME = 1200000;
         private Vector3 SIMEON_MARKER_LOC = new Vector3(1204.73f, -3115.97f, 5.36f);
         private Vector3 SIMEON_MISSION_DROPOFF = new Vector3(1204.75f, -3115.10f, 5.34f);
         bool isMissionActive = false;
@@ -64,15 +64,17 @@ namespace GTAOnline_FiveM
                     {
                         await Delay(0);
                     }
+
+                    TriggerServerEvent("GTAO:serverClearSimeonMarker");
+                    string simMessage = "The vehicle has been delivered to my associates. Thank you.";
+                    TriggerServerEvent("GTAO:serverDisplaySimeonMissionMessage", simMessage);
+
                     Tick -= MissionTick;
                     missionVehicle.Delete();
                     isMissionActive = false;
-                    TriggerServerEvent("GTAO:serverClearSimeonMarker");
                     await Delay(2000);
                     Screen.Fading.FadeIn(500);
-
-                    string simMessage = "The vehicle has been delivered to my associates. Thank you.";
-                    TriggerServerEvent("GTAO:serverDisplaySimeonMissionMessage", simMessage);
+                    return;
                 }
 
                 if (missionVehicle.IsDead && NetworkIsHost())
@@ -97,11 +99,11 @@ namespace GTAOnline_FiveM
 
                 missionVehicle = await World.CreateVehicle(wantedVehicles[rnd.Next(wantedVehicles.Count())], vehicleLocations.ElementAt(index).Key, vehicleLocations.ElementAt(index).Value);
                 missionVehicle.IsPersistent = true;
-                TriggerServerEvent("GTAO:serverSyncMissionVehicle", missionVehicle.Handle);
 
+                TriggerServerEvent("GTAO:serverSyncMissionVehicle", missionVehicle.Handle);
                 TriggerServerEvent("GTAO:serverDisplaySimeonMarker");
 
-                bool isFirstCharVowel = "aeiou".IndexOf(missionVehicle.LocalizedName, StringComparison.InvariantCultureIgnoreCase) == 0;
+                bool isFirstCharVowel = "aeiouAEIOU".IndexOf(missionVehicle.LocalizedName.ToCharArray()[0]) >= 0;
                 string simMessage = "I am in need of a vehicle for one of my loyal customers.";
                 if (isFirstCharVowel)
                 {
@@ -111,6 +113,7 @@ namespace GTAOnline_FiveM
                 {
                     simMessage = "I'm in need of a " + missionVehicle.LocalizedName + " for one of my customers.";
                 }
+
                 TriggerServerEvent("GTAO:serverDisplaySimeonMissionMessage", simMessage);
                 Tick += MissionTick;
             }
