@@ -33,7 +33,12 @@ namespace GTAOnline_FiveM
             VehicleHash.Penumbra,
             VehicleHash.Prairie,
             VehicleHash.Buccaneer,
-            VehicleHash.Buccaneer2
+            VehicleHash.Buccaneer2,
+            VehicleHash.Buffalo,
+            VehicleHash.Buffalo2,
+            VehicleHash.Cavalcade,
+            VehicleHash.Cavalcade2,
+            VehicleHash.Dubsta
         };
 
         Dictionary<Vector3, float> vehicleLocations = new Dictionary<Vector3, float>
