@@ -106,6 +106,10 @@ namespace GTAOnline_FiveM
         {
             if (NetworkIsHost() && !isMissionActive)
             {
+                while (!Game.PlayerPed.Exists())
+                {
+                    await Delay(0);
+                }
                 isMissionActive = true;
 
                 int index = rnd.Next(vehicleLocations.Count());
