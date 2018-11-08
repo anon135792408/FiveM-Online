@@ -54,18 +54,38 @@ namespace GTAOnline_FiveM
 
         public SimeonMissions()
         {
+            EventHandlers.Add("playerSpawned", new Action(InitTick));
             EventHandlers.Add("GTAO:clientDisplaySimeonMarker", new Action(DisplaySimeonMarker));
             EventHandlers.Add("GTAO:clientClearSimeonMarker", new Action(ClearSimeonMarker));
             EventHandlers.Add("GTAO:clientDisplaySimeonMissionMessage", new Action<string>(DisplaySimeonMissionMessage));
-            EventHandlers.Add("GTAO:clientSyncMissionVehicle", new Action<dynamic>(SyncMissionVehicle));
+            EventHandlers.Add("GTAO:clientSyncMissionVehicle", new Action<int>(SyncMissionVehicle));
+            EventHandlers.Add("GTAO:hostSyncSimMission", new Action<Player>(SyncSimeonMissionForPlayer));
+            EventHandlers.Add("GTAO:clientReceiveMissionData", new Action<dynamic, dynamic>(ReceiveMissionData));
+            InitTick();
+        }
+
+        private void InitTick()
+        {
             Tick += OnTick;
+        }
+
+        private void SyncSimeonMissionForPlayer(Player player)
+        {
+            TriggerServerEvent("GTAO:serverSendMissionData", player, isMissionActive, missionVehicle.Handle);
+        }
+
+        private void ReceiveMissionData(dynamic isMissionActive, dynamic vHandle)
+        {
+            this.isMissionActive = isMissionActive;
+            //missionVehicle = new Vehicle(vHandle);
+            DisplaySimeonMarker();
         }
 
         private async Task MissionTick()
         {
             if (isMissionActive)
             {
-                if (Game.PlayerPed.CurrentVehicle == missionVehicle && Game.PlayerPed.IsInRangeOf(SIMEON_MISSION_DROPOFF, 2.0f))
+                if (Game.PlayerPed.CurrentVehicle == missionVehicle && Game.PlayerPed.IsInRangeOf(SIMEON_MISSION_DROPOFF, 5.0f))
                 {
                     missionVehicle.IsHandbrakeForcedOn = true;
                     while (missionVehicle.Speed > 0.0f)
@@ -106,19 +126,12 @@ namespace GTAOnline_FiveM
         {
             if (NetworkIsHost() && !isMissionActive)
             {
-                while (!Game.PlayerPed.Exists())
-                {
-                    await Delay(0);
-                }
                 isMissionActive = true;
 
                 int index = rnd.Next(vehicleLocations.Count());
 
                 missionVehicle = await World.CreateVehicle(wantedVehicles[rnd.Next(wantedVehicles.Count())], vehicleLocations.ElementAt(index).Key, vehicleLocations.ElementAt(index).Value);
                 missionVehicle.IsPersistent = true;
-
-                TriggerServerEvent("GTAO:serverSyncMissionVehicle", missionVehicle.Handle);
-                TriggerServerEvent("GTAO:serverDisplaySimeonMarker");
 
                 bool isFirstCharVowel = "aeiouAEIOU".IndexOf(missionVehicle.LocalizedName.ToCharArray()[0]) >= 0;
                 string simMessage = "I am in need of a vehicle for one of my loyal customers.";
@@ -132,6 +145,9 @@ namespace GTAOnline_FiveM
                 }
 
                 TriggerServerEvent("GTAO:serverDisplaySimeonMissionMessage", simMessage);
+                TriggerServerEvent("GTAO:serverSyncMissionVehicle", missionVehicle.Handle);
+                TriggerServerEvent("GTAO:serverDisplaySimeonMarker");
+
                 Tick += MissionTick;
             }
             await Delay(MISSION_REFRESH_TIME);
@@ -159,7 +175,7 @@ namespace GTAOnline_FiveM
             DrawNotification(true, false);
         }
 
-        private void SyncMissionVehicle(dynamic missionVehicle)
+        private void SyncMissionVehicle(int missionVehicle)
         {
             this.missionVehicle = new Vehicle(missionVehicle);
             this.missionVehicle.IsPersistent = true;
