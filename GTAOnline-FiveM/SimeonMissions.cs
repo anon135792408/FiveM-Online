@@ -11,7 +11,7 @@ namespace GTAOnline_FiveM
 {
     class SimeonMissions : BaseScript
     {
-        private const int MISSION_REFRESH_TIME = 960000;
+        private const int MISSION_REFRESH_TIME = 15000;
         private Vector3 SIMEON_MARKER_LOC = new Vector3(1204.73f, -3115.97f, 5.36f);
         private Vector3 SIMEON_MISSION_DROPOFF = new Vector3(1204.75f, -3115.10f, 5.34f);
         bool isMissionActive = false;
@@ -101,7 +101,16 @@ namespace GTAOnline_FiveM
 
                 TriggerServerEvent("GTAO:serverDisplaySimeonMarker");
 
-                string simMessage = "I'm in need of a " + missionVehicle.LocalizedName + " for one of my customers.";
+                bool isFirstCharVowel = "aeiou".IndexOf(missionVehicle.LocalizedName, StringComparison.InvariantCultureIgnoreCase) == 0;
+                string simMessage = "I am in need of a vehicle for one of my loyal customers.";
+                if (isFirstCharVowel)
+                {
+                    simMessage = "I'm in need of an " + missionVehicle.LocalizedName + " for one of my customers.";
+                }
+                else
+                {
+                    simMessage = "I'm in need of a " + missionVehicle.LocalizedName + " for one of my customers.";
+                }
                 TriggerServerEvent("GTAO:serverDisplaySimeonMissionMessage", simMessage);
                 Tick += MissionTick;
             }
