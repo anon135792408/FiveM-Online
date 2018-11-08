@@ -64,11 +64,15 @@ namespace GTAOnline_FiveM
                     {
                         await Delay(0);
                     }
+                    Tick -= MissionTick;
                     missionVehicle.Delete();
                     isMissionActive = false;
                     TriggerServerEvent("GTAO:serverClearSimeonMarker");
                     await Delay(2000);
                     Screen.Fading.FadeIn(500);
+
+                    string simMessage = "The vehicle has been delivered to my associates. Thank you.";
+                    TriggerServerEvent("GTAO:serverDisplaySimeonMissionMessage", simMessage);
                 }
 
                 if (missionVehicle.IsDead && NetworkIsHost())

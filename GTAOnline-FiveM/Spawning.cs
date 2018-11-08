@@ -25,12 +25,12 @@ namespace GTAOnline_FiveM
 
         private async void SwitchOutLocalPlayer()
         {
+            DoScreenFadeOut(500);
             while (!Game.PlayerPed.Exists())
             {
                 await Delay(0);
             }
             SwitchOutPlayer(PlayerPedId(), 1, 1);
-            DoScreenFadeOut(500);
         }
 
         private async void SwitchInLocalPlayer()
