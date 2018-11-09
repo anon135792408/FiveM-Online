@@ -58,7 +58,6 @@ namespace GTAOnline_FiveM
             EventHandlers.Add("GTAO:clientDisplaySimeonMarker", new Action(DisplaySimeonMarker));
             EventHandlers.Add("GTAO:clientClearSimeonMarker", new Action(ClearSimeonMarker));
             EventHandlers.Add("GTAO:clientDisplaySimeonMissionMessage", new Action<string>(DisplaySimeonMissionMessage));
-            EventHandlers.Add("GTAO:clientSyncMissionVehicle", new Action<int>(SyncMissionVehicle));
             EventHandlers.Add("GTAO:hostSyncSimMission", new Action<Player>(SyncSimeonMissionForPlayer));
             EventHandlers.Add("GTAO:clientReceiveMissionData", new Action<dynamic, dynamic>(ReceiveMissionData));
             InitTick();
@@ -74,10 +73,19 @@ namespace GTAOnline_FiveM
             TriggerServerEvent("GTAO:serverSendMissionData", player, isMissionActive, missionVehicle.Handle);
         }
 
+        private void SyncSimeonMissionForAll()
+        {
+            TriggerServerEvent("GTAO:serverSendMissionData", -1, isMissionActive, missionVehicle.Handle);
+        }
+
         private void ReceiveMissionData(dynamic isMissionActive, dynamic vHandle)
         {
-            this.isMissionActive = isMissionActive;
-            //missionVehicle = new Vehicle(vHandle);
+            missionVehicle = new Vehicle(vHandle);
+            missionVehicle.IsPersistent = true;
+
+            Blip vehBlip = missionVehicle.AttachBlip();
+            vehBlip.Sprite = BlipSprite.PersonalVehicleCar;
+            vehBlip.Color = BlipColor.Yellow;
             DisplaySimeonMarker();
         }
 
@@ -145,8 +153,8 @@ namespace GTAOnline_FiveM
                 }
 
                 TriggerServerEvent("GTAO:serverDisplaySimeonMissionMessage", simMessage);
-                TriggerServerEvent("GTAO:serverSyncMissionVehicle", missionVehicle.Handle);
                 TriggerServerEvent("GTAO:serverDisplaySimeonMarker");
+                SyncSimeonMissionForAll();
 
                 Tick += MissionTick;
             }
@@ -173,16 +181,6 @@ namespace GTAOnline_FiveM
             AddTextComponentString(msg);
             SetNotificationMessageClanTag_2("CHAR_SIMEON", "CHAR_SIMEON", true, 7, "Simeon", "~c~Vehicle Asset", 15, "", 8, 0);
             DrawNotification(true, false);
-        }
-
-        private void SyncMissionVehicle(int missionVehicle)
-        {
-            this.missionVehicle = new Vehicle(missionVehicle);
-            this.missionVehicle.IsPersistent = true;
-
-            Blip vehBlip = this.missionVehicle.AttachBlip();
-            vehBlip.Sprite = BlipSprite.PersonalVehicleCar;
-            vehBlip.Color = BlipColor.Yellow;
         }
     }
 }
