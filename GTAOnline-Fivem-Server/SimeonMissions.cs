@@ -30,7 +30,7 @@ namespace GTAOnline_Fivem_Server
 
         private void SendMissionData(dynamic pid, dynamic isMissionActive, dynamic vHandle)
         {
-            if (pid == -1)
+            if (pid == -1) // Send a pid value of -1 if you want to trigger this event for every player.
             {
                 TriggerClientEvent("GTAO:clientReceiveMissionData", isMissionActive, vHandle);
             }
