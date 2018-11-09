@@ -68,15 +68,9 @@ namespace GTAOnline_FiveM
             Tick += OnTick;
         }
 
-        private void SyncSimeonMissionForPlayer(Player player)
-        {
-            TriggerServerEvent("GTAO:serverSendMissionData", player, isMissionActive, missionVehicle.Handle);
-        }
+        private void SyncSimeonMissionForPlayer(Player player) => TriggerServerEvent("GTAO:serverSendMissionData", player, isMissionActive, missionVehicle.Handle);
 
-        private void SyncSimeonMissionForAll()
-        {
-            TriggerServerEvent("GTAO:serverSendMissionData", -1, isMissionActive, missionVehicle.Handle);
-        }
+        private void SyncSimeonMissionForAll() => TriggerServerEvent("GTAO:serverSendMissionData", -1, isMissionActive, missionVehicle.Handle);
 
         private void ReceiveMissionData(dynamic isMissionActive, dynamic vHandle)
         {
