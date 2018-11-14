@@ -133,6 +133,7 @@ namespace GTAOnline_FiveM
                 int index = rnd.Next(vehicleLocations.Count());
 
                 missionVehicle = await World.CreateVehicle(wantedVehicles[rnd.Next(wantedVehicles.Count())], vehicleLocations.ElementAt(index).Key, vehicleLocations.ElementAt(index).Value);
+                NetworkRegisterEntityAsNetworked(missionVehicle.Handle);
                 missionVehicle.IsPersistent = true;
 
                 bool isFirstCharVowel = "aeiouAEIOU".IndexOf(missionVehicle.LocalizedName.ToCharArray()[0]) >= 0;
