@@ -62,7 +62,7 @@ namespace GTAOnline_FiveM
             EventHandlers.Add("GTAO:clientReceiveMissionData", new Action<dynamic, dynamic>(ReceiveMissionData));
         }
 
-        private async void OnPlayerSpawned()
+        private void OnPlayerSpawned()
         {
             Tick += OnTick;
         }
