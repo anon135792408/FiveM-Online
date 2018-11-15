@@ -54,16 +54,15 @@ namespace GTAOnline_FiveM
 
         public SimeonMissions()
         {
-            EventHandlers.Add("playerSpawned", new Action(InitTick));
+            EventHandlers.Add("playerSpawned", new Action(OnPlayerSpawned));
             EventHandlers.Add("GTAO:clientDisplaySimeonMarker", new Action(DisplaySimeonMarker));
             EventHandlers.Add("GTAO:clientClearSimeonMarker", new Action(ClearSimeonMarker));
             EventHandlers.Add("GTAO:clientDisplaySimeonMissionMessage", new Action<string>(DisplaySimeonMissionMessage));
             EventHandlers.Add("GTAO:hostSyncSimMission", new Action<Player>(SyncSimeonMissionForPlayer));
             EventHandlers.Add("GTAO:clientReceiveMissionData", new Action<dynamic, dynamic>(ReceiveMissionData));
-            InitTick();
         }
 
-        private void InitTick()
+        private async void OnPlayerSpawned()
         {
             Tick += OnTick;
         }
