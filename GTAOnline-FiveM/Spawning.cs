@@ -32,10 +32,11 @@ namespace GTAOnline_FiveM
             Tick -= OnTick;
             StartPlayerSwitch(PlayerPedId(), PlayerPedId(), 1024, 2);
 
-            while (GetPlayerSwitchState() != 8)
+            while (GetPlayerSwitchState() != 3)
             {
                 await Delay(0);
             }
+            Screen.Fading.FadeOut(0);
         }
 
         private async void DisplayNotification(string msg)
