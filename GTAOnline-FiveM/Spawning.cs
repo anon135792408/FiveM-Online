@@ -60,7 +60,7 @@ namespace GTAOnline_FiveM
 
             spawnLock = true;
 
-            DoScreenFadeOut(500);
+            Screen.Fading.FadeOut(500);
 
             while (IsScreenFadedOut())
             {
@@ -86,7 +86,7 @@ namespace GTAOnline_FiveM
 
             ShutdownLoadingScreen();
 
-            DoScreenFadeIn(500);
+            Screen.Fading.FadeIn(500);
 
             while (IsScreenFadingIn())
             {
