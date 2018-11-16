@@ -14,6 +14,28 @@ namespace GTAOnline_FiveM
         public Spawning()
         {
             EventHandlers.Add("GTAO:displayNotification", new Action<string>(DisplayNotification));
+            EventHandlers.Add("playerSpawned", new Action(OnPlayerSpawned));
+            Tick += OnTick;
+        }
+
+        private async Task OnTick()
+        {
+            while (!Game.PlayerPed.Exists())
+            {
+                Screen.Fading.FadeOut(0);
+                await Delay(0);
+            }
+        }
+
+        private async void OnPlayerSpawned()
+        {
+            Tick -= OnTick;
+            StartPlayerSwitch(PlayerPedId(), PlayerPedId(), 1024, 2);
+
+            while (GetPlayerSwitchState() != 8)
+            {
+                await Delay(0);
+            }
         }
 
         private async void DisplayNotification(string msg)
