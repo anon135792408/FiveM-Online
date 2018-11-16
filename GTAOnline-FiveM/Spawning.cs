@@ -36,7 +36,7 @@ namespace GTAOnline_FiveM
             {
                 await Delay(0);
             }
-            Screen.Fading.FadeOut(0);
+            Screen.Fading.FadeIn(1000);
         }
 
         private async void DisplayNotification(string msg)
