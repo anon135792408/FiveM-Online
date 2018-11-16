@@ -120,6 +120,11 @@ namespace GTAOnline_FiveM
                     missionVehicle.IsPersistent = false;
                     TriggerServerEvent("GTAO:serverClearSimeonMarker");
                 }
+
+                if (Game.PlayerPed.CurrentVehicle == missionVehicle)
+                {
+                    Game.Player.WantedLevel = 2;
+                }
             }
         }
 
