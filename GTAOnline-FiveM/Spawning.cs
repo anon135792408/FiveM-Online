@@ -17,6 +17,7 @@ namespace GTAOnline_FiveM
         public Spawning()
         {
             doPlayerSpawn();
+            Tick += OnTick;
         }
 
         private async void doPlayerSpawn()
@@ -63,6 +64,19 @@ namespace GTAOnline_FiveM
             }
         }
 
+        private async Task OnTick()
+        {
+            if (IsPedFatallyInjured(PlayerPedId()))
+            {
+                while (!IsControlJustPressed(0, 51))
+                {
+                    await Delay(0);
+                    DisplayHelpTextThisFrame("Press E to respawn.", true);
+                }
+                await SpawnPlayer("MP_M_FREEMODE_01", 0.916756f, 528.485f, 174.628f, 0f);
+            }
+        }
+
         public static async Task SpawnPlayer(string skin, float x, float y, float z, float heading)
         {
             if (_spawnLock)
@@ -70,11 +84,19 @@ namespace GTAOnline_FiveM
 
             _spawnLock = true;
 
-            DoScreenFadeOut(500);
+            Screen.Fading.FadeOut(500);
+            //DoScreenFadeOut(500);
 
-            while (IsScreenFadingOut())
+            //while (IsScreenFadingOut())
+            Debug.WriteLine("Before While fading out");
+            while (Screen.Fading.IsFadingOut)
             {
                 await Delay(1);
+            }
+
+            if (!IsPlayerSwitchInProgress())
+            {
+                SwitchOutPlayer(PlayerPedId(), 0, 1);
             }
 
             FreezePlayer(PlayerId(), true);
@@ -86,19 +108,32 @@ namespace GTAOnline_FiveM
 
             SetEntityCoordsNoOffset(ped, x, y, z, false, false, false);
             NetworkResurrectLocalPlayer(x, y, z, heading, true, true);
+            NewLoadSceneStart(x, y, z, 0.0f, 0.0f, 0.0f, 20.0f, 0);
+            RequestCollisionAtCoord(x, y, z);
+            NetworkUpdateLoadScene();
             ClearPedTasksImmediately(ped);
             RemoveAllPedWeapons(ped, false);
             ClearPlayerWantedLevel(PlayerId());
-
+            /*Debug.WriteLine("Before While coll");
             while (HasCollisionLoadedAroundEntity(ped))
             {
                 await Delay(1);
+            }*/
+
+            if (GetPlayerSwitchState() != 8)
+            {
+                await Delay(0);
             }
 
-            ShutdownLoadingScreen();
-            DoScreenFadeIn(500);
+            SwitchInPlayer(PlayerPedId());
 
-            while (IsScreenFadingIn())
+            ShutdownLoadingScreen();
+            //DoScreenFadeIn(500);
+            Screen.Fading.FadeIn(500);
+
+            //while (IsScreenFadingIn())
+            Debug.WriteLine("Before While fading in");
+            while (Screen.Fading.IsFadingIn)
             {
                 await Delay(1);
             }
@@ -106,7 +141,7 @@ namespace GTAOnline_FiveM
             FreezePlayer(PlayerId(), false);
 
             //TriggerEvent("playerSpawned", PlayerId());
-
+            SetEntityCoordsNoOffset(ped, x, y, z, false, false, false);
             _spawnLock = false;
         }
     }
