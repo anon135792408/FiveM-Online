@@ -26,7 +26,7 @@ namespace GTAOnline_FiveM
         {
             DateTime dt = DateTime.Now;
 
-            if (dt.Day > 15 && dt.Day < 26 && dt.Month == 11)
+            if (dt.Day >= 16 && dt.Day <= 26 && dt.Month == 12)
             {
                 SetWeatherTypeNowPersist("XMAS");
                 await Delay(0);

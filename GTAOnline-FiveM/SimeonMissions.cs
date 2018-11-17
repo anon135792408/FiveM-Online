@@ -62,8 +62,12 @@ namespace GTAOnline_FiveM
             EventHandlers.Add("GTAO:clientReceiveMissionData", new Action<dynamic, dynamic>(ReceiveMissionData));
         }
 
-        private void OnPlayerSpawned()
+        private async void OnPlayerSpawned()
         {
+            while (!NetworkIsPlayerActive(PlayerId()))
+            {
+                await Delay(0);
+            }
             Tick += OnTick;
         }
 
@@ -106,7 +110,6 @@ namespace GTAOnline_FiveM
                     Tick -= MissionTick;
                     missionVehicle.Delete();
                     isMissionActive = false;
-                    await Delay(2000);
                     Screen.Fading.FadeIn(500);
                     return;
                 }
