@@ -11,6 +11,69 @@ namespace GTAOnline_FiveM
 {
     class Impound : BaseScript
     {
+        List<ImpoundSpace> ImpoundSpaces = new List<ImpoundSpace>();
+        
+        public Impound()
+        {
+            ImpoundSpaces.Add(new ImpoundSpace(new Vector3(420.79f, -1638.99f, 28.79f), 88.19f, false, -1, -1));
+            Tick += OnTick;
+        }
 
+        private async Task OnTick()
+        {
+            await Delay(0);
+            if (IsPedFatallyInjured(PlayerPedId()) && Game.Player.WantedLevel > 0 && Game.PlayerPed.LastVehicle != null)
+            {
+                while (IsPedFatallyInjured(PlayerPedId()))
+                {
+                    await Delay(500);
+                    Debug.WriteLine("Awaiting player resurrection");
+                }
+
+                int playerVeh = GetPlayersLastVehicle();
+                if (IsVehicleImpoundable(playerVeh))
+                {
+                    if (SetEntityCoordsToFirstFreeImpoundSpace(playerVeh))
+                    {
+                        while (IsPlayerSwitchInProgress())
+                        {
+                            await Delay(0);
+                        }
+                        DisplayHelpTextThisFrame("Your vehicle has been impounded.", false);
+                    }
+                }
+            }
+        }
+
+        private bool SetEntityCoordsToFirstFreeImpoundSpace(int entity)
+        {
+            foreach(ImpoundSpace imp in ImpoundSpaces)
+            {
+                if (!imp.IsTaken)
+                {
+                    NetworkFadeOutEntity(entity, true, false);
+                    SetEntityCoords(entity, imp.Coords.X, imp.Coords.Y, imp.Coords.Z, true, true, true, false);
+                    SetEntityHeading(entity, imp.Heading);
+
+                    imp.IsTaken = true;
+                    imp.VehicleHandle = entity;
+                    imp.PlayerHandle = PlayerId();
+
+                    NetworkFadeInEntity(entity, false);
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        private bool IsVehicleImpoundable(int vHandle)
+        {
+            Vehicle v = new Vehicle(vHandle);
+            if (v.Occupants.Count() == 0 && !v.IsDead)
+            {
+                return true;
+            }
+            return false;
+        }
     }
 }
