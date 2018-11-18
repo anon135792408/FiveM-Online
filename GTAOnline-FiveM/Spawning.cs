@@ -131,6 +131,11 @@ namespace GTAOnline_FiveM
                 await Delay(1);
             }
 
+            while (IsPlayerSwitchInProgress())
+            {
+                await Delay(0);
+            }
+
             FreezePlayer(PlayerId(), false);
 
             TriggerEvent("playerSpawned", PlayerId());
