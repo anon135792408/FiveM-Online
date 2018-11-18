@@ -39,7 +39,7 @@ namespace GTAOnline_FiveM
                         {
                             await Delay(0);
                         }
-                        DisplayHelpTextThisFrame("Your vehicle has been impounded.", false);
+                        Screen.DisplayHelpTextThisFrame("Your vehicle has been impounded.");
                     }
                 }
             }
