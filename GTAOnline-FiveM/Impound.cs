@@ -16,7 +16,6 @@ namespace GTAOnline_FiveM
         public Impound()
         {
             EventHandlers.Add("GTAO:clientSyncImpoundSpaces", new Action<List<dynamic>>(ReceiveImpoundListData));
-            //ImpoundSpaces.Add(new ImpoundSpace(new Vector3(420.79f, -1638.99f, 28.79f), 88.19f, false, -1, -1));
             ImpoundSpaces = (dynamic)ParseImpoundSpaces();
             Tick += OnTick;
         }
