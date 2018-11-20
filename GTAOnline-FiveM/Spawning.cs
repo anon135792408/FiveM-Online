@@ -105,7 +105,6 @@ namespace GTAOnline_FiveM
             SetEntityCoordsNoOffset(ped, x, y, z, false, false, false);
             NetworkResurrectLocalPlayer(x, y, z, heading, true, true);
             NewLoadSceneStart(x, y, z, 0.0f, 0.0f, 0.0f, 20.0f, 0);
-            RequestCollisionAtCoord(x, y, z);
             NetworkUpdateLoadScene();
             ClearPedTasksImmediately(ped);
             RemoveAllPedWeapons(ped, false);
