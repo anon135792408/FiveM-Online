@@ -35,13 +35,14 @@ namespace GTAOnline_FiveM
             await Delay(0);
             if (IsPedFatallyInjured(PlayerPedId()) && Game.Player.WantedLevel > 0 && Game.PlayerPed.LastVehicle != null)
             {
+                int playerVeh = GetPlayersLastVehicle();
+
                 while (IsPedFatallyInjured(PlayerPedId()))
                 {
                     await Delay(500);
                     Debug.WriteLine("Awaiting player resurrection");
                 }
 
-                int playerVeh = GetPlayersLastVehicle();
                 if (IsVehicleImpoundable(playerVeh))
                 {
                     if (SetEntityCoordsToFirstFreeImpoundSpace(playerVeh))
