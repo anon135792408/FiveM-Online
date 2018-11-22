@@ -11,10 +11,10 @@ namespace GTAOnline_Fivem_Server
     {
         public Impound()
         {
-            EventHandlers.Add("GTAO:serverSyncImpoundSpaces", new Action<List<dynamic>>(ServerSendImpoundSpaces));
+            EventHandlers.Add("GTAO:serverSyncImpoundSpaces", new Action<IList<object>>(ServerSendImpoundSpaces));
         }
 
-        private void ServerSendImpoundSpaces(List<dynamic> impList)
+        private void ServerSendImpoundSpaces(IList<object> impList)
         {
             TriggerClientEvent("GTAO:clientSyncImpoundSpaces", impList);
         }

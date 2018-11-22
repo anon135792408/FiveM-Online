@@ -11,18 +11,20 @@ namespace GTAOnline_FiveM
 {
     class Impound : BaseScript
     {
-        List<dynamic> ImpoundSpaces = new List<dynamic>();
-        
+        IList<ImpoundSpace> ImpoundSpaces = new List<ImpoundSpace>();
+
+        bool tickInit = false;
+
         public Impound()
         {
-            EventHandlers.Add("GTAO:clientSyncImpoundSpaces", new Action<List<dynamic>>(ReceiveImpoundListData));
+            EventHandlers.Add("GTAO:clientSyncImpoundSpaces", new Action<IList<ImpoundSpace>>(ReceiveImpoundListData));
             ImpoundSpaces = ParseImpoundSpaces();
             Tick += OnTick;
         }
 
-        private List<dynamic> ParseImpoundSpaces()
+        private IList<ImpoundSpace> ParseImpoundSpaces()
         {
-            List<dynamic> result = new List<dynamic>();
+            IList<ImpoundSpace> result = new List<ImpoundSpace>();
             foreach (KeyValuePair<Vector3, float> entry in ImpSpaces.ValidImpounds)
             {
                 result.Add(new ImpoundSpace(entry.Key, entry.Value, false, -1, -1));
@@ -32,7 +34,6 @@ namespace GTAOnline_FiveM
 
         private async Task OnTick()
         {
-            await Delay(0);
             if (IsPedFatallyInjured(PlayerPedId()) && Game.Player.WantedLevel > 0 && Game.PlayerPed.LastVehicle != null)
             {
                 int playerVeh = GetPlayersLastVehicle();
@@ -58,13 +59,15 @@ namespace GTAOnline_FiveM
 
             if (NetworkIsHost())
             {
-                if (ImpoundSpaces.Count() > 0)
+                if (ImpoundSpaces.Count() > 0 && !tickInit)
                 {
                     Tick += MonitorImpound;
+                    tickInit = true;
                 }
                 else
                 {
                     Tick -= MonitorImpound;
+                    tickInit = false;
                 }
             }
         }
@@ -88,10 +91,10 @@ namespace GTAOnline_FiveM
             }
         }
 
-        private void ReceiveImpoundListData(List<dynamic> impList)
+        private void ReceiveImpoundListData(IList<ImpoundSpace> impList)
         {
-            this.ImpoundSpaces = null;
-            this.ImpoundSpaces = new List<dynamic>(impList);
+            this.ImpoundSpaces.Clear();
+            this.ImpoundSpaces = new List<ImpoundSpace>(impList);
         }
 
         private bool SetEntityCoordsToFirstFreeImpoundSpace(int entity)

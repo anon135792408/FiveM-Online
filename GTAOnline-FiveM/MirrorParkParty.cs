@@ -20,13 +20,14 @@ namespace GTAOnline_FiveM
 
         private async Task OnTick()
         {
+            await Delay(0);
             if (NetworkIsHost())
             {
                 if (HasForceCleanupOccurred(18))
                 {
                     RemoveIpl();
                 }
-                await Delay(0);
+                
                 if (!IsWorldPointWithinBrainActivationRange())
                 {
                     iLocal_0 = 3;
