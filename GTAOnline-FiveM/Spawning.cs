@@ -26,7 +26,7 @@ namespace GTAOnline_FiveM
             {
                 await Delay(0);
             }
-            await SpawnPlayer("MP_M_FREEMODE_01", 0.916756f, 528.485f, 174.628f, 0f);
+            await SpawnPlayer("MP_M_FREEMODE_01", 30.18f, -723.04f, 44.19f, 248.17f);
         }
 
         private static bool _spawnLock = false;
