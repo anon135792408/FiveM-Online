@@ -16,7 +16,7 @@ namespace GTAOnline_Fivem_Server
             API.RegisterCommand("engine", new Action<int, List<object>, string>((source, arguments, raw) =>
             {
                 Player p = pl[source];
-                TriggerClientEvent(p, "GTAO:clientToggleVehicleEngine");
+                TriggerClientEvent(p, "GTAO:clientToggleLocalPlayerVehicleEngine");
             }), false);
         }
     }

@@ -18,7 +18,11 @@ namespace GTAOnline_FiveM
 
         private void ToggleLocalPlayerVehicleEngine()
         {
-
+            if (Game.PlayerPed.CurrentVehicle != null && Game.PlayerPed.CurrentVehicle.Driver == Game.PlayerPed)
+            {
+                Vehicle v = Game.PlayerPed.CurrentVehicle;
+                v.IsEngineRunning = !v.IsEngineRunning;
+            }
         }
     }
 }
