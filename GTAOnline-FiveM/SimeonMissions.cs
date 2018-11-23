@@ -139,10 +139,7 @@ namespace GTAOnline_FiveM
             simBlip.Color = BlipColor.Yellow;
         }
 
-        private void ClearSimeonMarker()
-        {
-            simBlip.Delete();
-        }
+        private void ClearSimeonMarker() => simBlip.Delete();
 
         private void DisplaySimeonMissionMessage(string msg)
         {
