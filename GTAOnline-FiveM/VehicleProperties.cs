@@ -11,6 +11,14 @@ namespace GTAOnline_FiveM
 {
     class VehicleProperties : BaseScript
     {
+        public VehicleProperties()
+        {
+            EventHandlers.Add("GTAO:clientToggleLocalPlayerVehicleEngine", new Action(ToggleLocalPlayerVehicleEngine));
+        }
 
+        private void ToggleLocalPlayerVehicleEngine()
+        {
+
+        }
     }
 }
