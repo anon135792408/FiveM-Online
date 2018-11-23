@@ -38,19 +38,23 @@ namespace GTAOnline_FiveM
             Tick += OnTick;
         }
 
-        private void SyncSimeonMissionForPlayer(dynamic player) => TriggerServerEvent("GTAO:serverSendMissionData", player, isMissionActive, missionVehicle.Handle);
+        private void SyncSimeonMissionForPlayer(dynamic player) => TriggerServerEvent("GTAO:serverSendMissionData", player, isMissionActive, NetworkGetNetworkIdFromEntity(missionVehicle.Handle));
 
-        private void SyncSimeonMissionForAll() => TriggerServerEvent("GTAO:serverSendMissionData", -1, isMissionActive, missionVehicle.Handle);
+        private void SyncSimeonMissionForAll() => TriggerServerEvent("GTAO:serverSendMissionData", -1, isMissionActive, NetworkGetNetworkIdFromEntity(missionVehicle.Handle));
 
-        private void ReceiveMissionData(dynamic isMissionActive, dynamic vHandle)
+        private void ReceiveMissionData(dynamic isMissionActive, dynamic vNetHandle)
         {
-            missionVehicle = new Vehicle(vHandle);
+            missionVehicle = new Vehicle(NetworkGetEntityFromNetworkId(vNetHandle));
             missionVehicle.IsPersistent = true;
 
             Blip vehBlip = missionVehicle.AttachBlip();
             vehBlip.Sprite = BlipSprite.PersonalVehicleCar;
             vehBlip.Color = BlipColor.Yellow;
             DisplaySimeonMarker();
+
+            this.isMissionActive = isMissionActive;
+
+            Tick += MissionTick;
         }
 
         private async Task MissionTick()
