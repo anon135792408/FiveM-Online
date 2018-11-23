@@ -108,7 +108,9 @@ namespace GTAOnline_FiveM
                 int index = rnd.Next(SimeonMissionData.vehicleLocations.Count());
 
                 missionVehicle = await World.CreateVehicle(SimeonMissionData.wantedVehicles[rnd.Next(SimeonMissionData.wantedVehicles.Count())], SimeonMissionData.vehicleLocations.ElementAt(index).Key, SimeonMissionData.vehicleLocations.ElementAt(index).Value);
-                VehToNet(missionVehicle.Handle);
+                NetworkRegisterEntityAsNetworked(missionVehicle.Handle);
+                var veh_net = VehToNet(missionVehicle.Handle);
+                SetNetworkIdExistsOnAllMachines(veh_net, true);
                 missionVehicle.IsPersistent = true;
 
                 bool isFirstCharVowel = "aeiouAEIOU".IndexOf(missionVehicle.LocalizedName.ToCharArray()[0]) >= 0;
