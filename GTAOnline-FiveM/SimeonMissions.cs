@@ -111,6 +111,7 @@ namespace GTAOnline_FiveM
                 NetworkRegisterEntityAsNetworked(missionVehicle.Handle);
                 var veh_net = VehToNet(missionVehicle.Handle);
                 SetNetworkIdExistsOnAllMachines(veh_net, true);
+                NetworkSetNetworkIdDynamic(veh_net, false);
                 missionVehicle.IsPersistent = true;
 
                 bool isFirstCharVowel = "aeiouAEIOU".IndexOf(missionVehicle.LocalizedName.ToCharArray()[0]) >= 0;
