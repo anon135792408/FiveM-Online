@@ -48,6 +48,7 @@
     <Compile Include="Impound.cs" />
     <Compile Include="ImpoundSpace.cs" />
     <Compile Include="ImpSpaces.cs" />
+    <Compile Include="DynamicRoadWorks.cs" />
     <Compile Include="MirrorParkParty.cs" />
     <Compile Include="PlayerProperties.cs" />
     <Compile Include="SimeonMissionData.cs" />
