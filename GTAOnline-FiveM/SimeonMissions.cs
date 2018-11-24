@@ -73,6 +73,11 @@ namespace GTAOnline_FiveM
                     {
                         await Delay(0);
                     }
+                    TaskEveryoneLeaveVehicle(missionVehicle.Handle);
+                    while (missionVehicle.PassengerCount > 0)
+                    {
+                        await Delay(0);
+                    }
 
                     TriggerServerEvent("GTAO:serverClearSimeonMarker");
                     string simMessage = "The vehicle has been delivered to my associates. Thank you.";
