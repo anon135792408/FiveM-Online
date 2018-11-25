@@ -7,42 +7,31 @@ using CitizenFX.Core;
 using static CitizenFX.Core.Native.API;
 using CitizenFX.Core.UI;
 
-namespace GTAOnline_FiveM
-{
-    class DynamicRoadWorks : BaseScript
-    {
+namespace GTAOnline_FiveM {
+    class DynamicRoadWorks : BaseScript {
         Ped worker1;
         Ped worker2;
 
         bool pedsAdded = false;
 
-        public DynamicRoadWorks()
-        {
+        public DynamicRoadWorks() {
             Tick += OnTick;
         }
 
-        private async Task OnTick()
-        {
+        private async Task OnTick() {
             await Delay(0);
-            if (NetworkIsHost())
-            {
-                if (HasForceCleanupOccurred(18))
-                {
+            if (NetworkIsHost()) {
+                if (HasForceCleanupOccurred(18)) {
                     RemovePeds();
                 }
 
-                if (GetClockHours() >= 8 || GetClockHours() <= 18)
-                {
-                    if (!pedsAdded)
-                    {
+                if (GetClockHours() >= 8 || GetClockHours() <= 18) {
+                    if (!pedsAdded) {
                         AddPeds();
                         pedsAdded = true;
                     }
-                }
-                else
-                {
-                    if (pedsAdded)
-                    {
+                } else {
+                    if (pedsAdded) {
                         RemovePeds();
                         pedsAdded = false;
                     }
@@ -50,14 +39,12 @@ namespace GTAOnline_FiveM
             }
         }
 
-        private void RemovePeds()
-        {
+        private void RemovePeds() {
             worker1.Delete();
             worker2.Delete();
         }
 
-        private async void AddPeds()
-        {
+        private async void AddPeds() {
             worker1 = await World.CreatePed(PedHash.Construct01SMY, new Vector3(765.43f, -1731.76f, 29.26f), 281.75f);
             worker2 = await World.CreatePed(PedHash.Construct02SMY, new Vector3(761.93f, -1732.79f, 29.41f), 309.14f);
 

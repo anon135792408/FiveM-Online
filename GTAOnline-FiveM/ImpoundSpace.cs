@@ -7,12 +7,9 @@ using CitizenFX.Core;
 using static CitizenFX.Core.Native.API;
 using CitizenFX.Core.UI;
 
-namespace GTAOnline_FiveM
-{
-    class ImpoundSpace
-    {
-        public ImpoundSpace(Vector3 coords, float heading, bool isTaken, int playerHandle, int vehicleHandle)
-        {
+namespace GTAOnline_FiveM {
+    class ImpoundSpace {
+        public ImpoundSpace(Vector3 coords, float heading, bool isTaken, int playerHandle, int vehicleHandle) {
             Coords = coords;
             Heading = heading;
             IsTaken = isTaken;

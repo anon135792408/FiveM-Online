@@ -7,23 +7,18 @@ using CitizenFX.Core;
 using static CitizenFX.Core.Native.API;
 using CitizenFX.Core.UI;
 
-namespace GTAOnline_FiveM
-{
+namespace GTAOnline_FiveM {
     /*
      * Credit where due: https://github.com/AppiChudilko/SpawnManager-FIveM/blob/master/Spawn.cs
      */
-    public class Spawning : BaseScript
-    {
-        public Spawning()
-        {
+    public class Spawning : BaseScript {
+        public Spawning() {
             doPlayerSpawn();
             Tick += OnTick;
         }
 
-        private async void doPlayerSpawn()
-        {
-            if (!NetworkIsPlayerActive(PlayerId()))
-            {
+        private async void doPlayerSpawn() {
+            if (!NetworkIsPlayerActive(PlayerId())) {
                 await Delay(0);
             }
             await SpawnPlayer("MP_M_FREEMODE_01", 30.18f, -723.04f, 44.19f, 248.17f);
@@ -31,14 +26,12 @@ namespace GTAOnline_FiveM
 
         private static bool _spawnLock = false;
 
-        public static void FreezePlayer(int playerId, bool freeze)
-        {
+        public static void FreezePlayer(int playerId, bool freeze) {
             var ped = GetPlayerPed(playerId);
 
             SetPlayerControl(playerId, !freeze, 0);
 
-            if (!freeze)
-            {
+            if (!freeze) {
                 if (!IsEntityVisible(ped))
                     SetEntityVisible(ped, true, false);
 
@@ -48,9 +41,7 @@ namespace GTAOnline_FiveM
                 FreezeEntityPosition(ped, false);
                 //SetCharNeverTargetted(ped, false)
                 SetPlayerInvincible(playerId, false);
-            }
-            else
-            {
+            } else {
                 if (IsEntityVisible(ped))
                     SetEntityVisible(ped, false, false);
 
@@ -64,19 +55,15 @@ namespace GTAOnline_FiveM
             }
         }
 
-        private async Task OnTick()
-        {
-            if (IsPedFatallyInjured(PlayerPedId()))
-            {
-                if (IsControlJustPressed(0, 51))
-                {
+        private async Task OnTick() {
+            if (IsPedFatallyInjured(PlayerPedId())) {
+                if (IsControlJustPressed(0, 51)) {
                     await SpawnPlayer("MP_M_FREEMODE_01", 0.916756f, 528.485f, 174.628f, 0f);
                 }
             }
         }
 
-        public static async Task SpawnPlayer(string skin, float x, float y, float z, float heading)
-        {
+        public static async Task SpawnPlayer(string skin, float x, float y, float z, float heading) {
             if (_spawnLock)
                 return;
 
@@ -85,13 +72,11 @@ namespace GTAOnline_FiveM
             Screen.Fading.FadeOut(500);
 
             Debug.WriteLine("Before While fading out");
-            while (Screen.Fading.IsFadingOut)
-            {
+            while (Screen.Fading.IsFadingOut) {
                 await Delay(1);
             }
 
-            if (!IsPlayerSwitchInProgress())
-            {
+            if (!IsPlayerSwitchInProgress()) {
                 SwitchOutPlayer(PlayerPedId(), 0, 1);
             }
 
@@ -110,13 +95,11 @@ namespace GTAOnline_FiveM
             RemoveAllPedWeapons(ped, false);
             ClearPlayerWantedLevel(PlayerId());
 
-            while (!HasCollisionLoadedAroundEntity(ped))
-            {
+            while (!HasCollisionLoadedAroundEntity(ped)) {
                 await Delay(1);
             }
 
-            if (GetPlayerSwitchState() != 8)
-            {
+            if (GetPlayerSwitchState() != 8) {
                 await Delay(0);
             }
 
@@ -125,13 +108,11 @@ namespace GTAOnline_FiveM
             ShutdownLoadingScreen();
             Screen.Fading.FadeIn(500);
 
-            while (Screen.Fading.IsFadingIn)
-            {
+            while (Screen.Fading.IsFadingIn) {
                 await Delay(1);
             }
 
-            while (IsPlayerSwitchInProgress())
-            {
+            while (IsPlayerSwitchInProgress()) {
                 await Delay(0);
             }
 

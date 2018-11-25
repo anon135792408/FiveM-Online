@@ -7,12 +7,9 @@ using CitizenFX.Core;
 using static CitizenFX.Core.Native.API;
 using CitizenFX.Core.UI;
 
-namespace GTAOnline_FiveM
-{
-    public class SimeonMissionData
-    {
-        public static List<VehicleHash> wantedVehicles = new List<VehicleHash>
-        {
+namespace GTAOnline_FiveM {
+    public class SimeonMissionData {
+        public static List<VehicleHash> wantedVehicles = new List<VehicleHash> {
             VehicleHash.Blista,
             VehicleHash.Asterope,
             VehicleHash.Asea,
@@ -33,8 +30,7 @@ namespace GTAOnline_FiveM
             VehicleHash.Dubsta
         };
 
-        public static Dictionary<Vector3, float> vehicleLocations = new Dictionary<Vector3, float>
-        {
+        public static Dictionary<Vector3, float> vehicleLocations = new Dictionary<Vector3, float> {
             { new Vector3(-65.79f, -1315.56f, 28.99f), 89.56f },
             { new Vector3(-941.50f, -2166.14f, 29.88f), 174.88f },
             { new Vector3(399.58f, -2005.71f, 22.53f), 157.67f },
