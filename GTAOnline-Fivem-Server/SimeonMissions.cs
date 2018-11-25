@@ -37,7 +37,7 @@ namespace GTAOnline_Fivem_Server {
         }
 
         private void ClearSimeonMarker() {
-            TriggerClientEvent("GTAO:clientClearSimeonMissionMessage");
+            TriggerClientEvent("GTAO:clientClearSimeonMarker");
         }
     }
 }
