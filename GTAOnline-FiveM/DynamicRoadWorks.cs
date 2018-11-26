@@ -48,7 +48,7 @@ namespace GTAOnline_FiveM {
             worker1 = await World.CreatePed(PedHash.Construct01SMY, new Vector3(765.43f, -1731.76f, 29.26f), 281.75f);
             worker2 = await World.CreatePed(PedHash.Construct02SMY, new Vector3(761.93f, -1732.79f, 29.41f), 309.14f);
 
-            worker1.Task.PlayAnimation("amb@world_human_const_drill@male@drill@base", "base");
+            worker1.Task.PlayAnimation("amb@world_human_const_drill@male@drill@base", "base"); // This is unfinished and definitely not correct.
             worker2.Task.PlayAnimation("amb@world_human_clipboard@male@idle_a", "idle_a");
         }
     }
