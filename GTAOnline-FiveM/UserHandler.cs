@@ -16,7 +16,8 @@ namespace GTAOnline_FiveM {
         }
 
         public void OnPlayerSpawned() {
-
+            localPlayer = new Player();
+            localPlayer.Name = GetPlayerName(PlayerId());
         }
     }
 }
