@@ -144,7 +144,7 @@ namespace GTAOnline_FiveM {
         private void DisplaySimeonMissionMessage(string msg) {
             SetNotificationTextEntry("STRING");
             AddTextComponentString(msg);
-            SetNotificationMessageClanTag_2("CHAR_SIMEON", "CHAR_SIMEON", true, 7, "Simeon", "~c~Vehicle Asset", 15, "", 8, 0);
+            SetNotificationMessageClanTag_2("CHAR_SIMEON", "CHAR_SIMEON", true, 7, "Simeon", "~c~Vehicle Asset", 1.0f, "", 8, 0);
             DrawNotification(true, false);
         }
     }
