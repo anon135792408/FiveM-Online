@@ -44,8 +44,9 @@ namespace GTAOnline_FiveM {
         private void SyncSimeonMissionForAll() => TriggerServerEvent("GTAO:serverSendMissionData", -1, isMissionActive, NetworkGetNetworkIdFromEntity(missionVehicle.Handle));
 
         private void ReceiveMissionData(dynamic isMissionActive, dynamic vNetHandle) {
-            missionVehicle = new Vehicle(NetworkGetEntityFromNetworkId(vNetHandle));
-            missionVehicle.IsPersistent = true;
+            missionVehicle = new Vehicle(NetworkGetEntityFromNetworkId(vNetHandle)) {
+                IsPersistent = true
+            };
 
             Blip vehBlip = missionVehicle.AttachBlip();
             vehBlip.Sprite = BlipSprite.PersonalVehicleCar;
