@@ -61,6 +61,10 @@ namespace GTAOnline_FiveM {
                     await SpawnPlayer("MP_M_FREEMODE_01", 30.18f, -723.04f, 44.19f, 248.17f);
                 }
             }
+
+            if (IsPlayerSwitchInProgress()) {
+                HideHudAndRadarThisFrame();
+            }
         }
 
         public static async Task SpawnPlayer(string skin, float x, float y, float z, float heading) {
@@ -117,7 +121,7 @@ namespace GTAOnline_FiveM {
             }
 
             FreezePlayer(PlayerId(), false);
-
+            
             TriggerEvent("playerSpawned", PlayerId());
             SetEntityCoordsNoOffset(ped, x, y, z, false, false, false);
             _spawnLock = false;
