@@ -31,6 +31,12 @@ namespace GTAOnline_FiveM {
                 await Delay(0);
             }
             Tick += OnTick;
+
+            simBlip = World.CreateBlip(SIMEON_MARKER_LOC);
+            simBlip.IsShortRange = false;
+            simBlip.Sprite = (BlipSprite)293;
+            simBlip.Name = "Simeon";
+            simBlip.Color = BlipColor.Yellow;
         }
 
         private void SyncSimeonMissionForPlayer(dynamic player) => TriggerServerEvent("GTAO:serverSendMissionData", player, isMissionActive, NetworkGetNetworkIdFromEntity(missionVehicle.Handle));
@@ -73,6 +79,7 @@ namespace GTAOnline_FiveM {
 
                     Tick -= MissionTick;
                     missionVehicle.Delete();
+                    missionVehicle = null;
                     isMissionActive = false;
                     Screen.Fading.FadeIn(500);
                     return;
@@ -125,14 +132,14 @@ namespace GTAOnline_FiveM {
         }
 
         private void DisplaySimeonMarker() {
-            simBlip = World.CreateBlip(SIMEON_MARKER_LOC);
-            simBlip.IsShortRange = false;
-            simBlip.Sprite = BlipSprite.Solomon;
-            simBlip.Name = "Simeon";
+            simBlip.Sprite = (BlipSprite)293;
+            simBlip.Alpha = 255;
             simBlip.Color = BlipColor.Yellow;
         }
 
-        private void ClearSimeonMarker() => simBlip.Delete();
+        private void ClearSimeonMarker() {
+            simBlip.Alpha = 0;
+        }
 
         private void DisplaySimeonMissionMessage(string msg) {
             SetNotificationTextEntry("STRING");

@@ -48,7 +48,6 @@
     <Compile Include="Impound.cs" />
     <Compile Include="ImpoundSpace.cs" />
     <Compile Include="ImpSpaces.cs" />
-    <Compile Include="DynamicRoadWorks.cs" />
     <Compile Include="MirrorParkParty.cs" />
     <Compile Include="PersonalVehicle.cs" />
     <Compile Include="Player.cs" />
