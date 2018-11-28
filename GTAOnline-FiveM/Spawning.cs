@@ -13,11 +13,11 @@ namespace GTAOnline_FiveM {
      */
     public class Spawning : BaseScript {
         public Spawning() {
-            doPlayerSpawn();
+            DoPlayerSpawn();
             Tick += OnTick;
         }
 
-        private async void doPlayerSpawn() {
+        private async void DoPlayerSpawn() {
             if (!NetworkIsPlayerActive(PlayerId())) {
                 await Delay(0);
             }
