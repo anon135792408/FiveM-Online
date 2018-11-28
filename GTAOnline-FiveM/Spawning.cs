@@ -58,7 +58,7 @@ namespace GTAOnline_FiveM {
         private async Task OnTick() {
             if (IsPedFatallyInjured(PlayerPedId())) {
                 if (IsControlJustPressed(0, 51)) {
-                    await SpawnPlayer("MP_M_FREEMODE_01", 0.916756f, 528.485f, 174.628f, 0f);
+                    await SpawnPlayer("MP_M_FREEMODE_01", 30.18f, -723.04f, 44.19f, 248.17f)
                 }
             }
         }
