@@ -8,7 +8,7 @@ using static CitizenFX.Core.Native.API;
 using CitizenFX.Core.UI;
 
 namespace GTAOnline_FiveM {
-    class PersonalVehicle {
+    public class PersonalVehicle {
         private Vehicle veh;
         private Vector3 lastPos;
         private float heading;

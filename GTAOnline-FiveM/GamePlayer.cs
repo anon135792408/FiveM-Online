@@ -8,7 +8,7 @@ using static CitizenFX.Core.Native.API;
 using CitizenFX.Core.UI;
 
 namespace GTAOnline_FiveM {
-    class Player {
+    public class GamePlayer {
         private Vector3 lastPos;
         private float heading;
 
@@ -16,7 +16,7 @@ namespace GTAOnline_FiveM {
         private List<PersonalVehicle> personalVehicles;
         private long xp;
 
-        public Player() {
+        public GamePlayer() {
             lastPos = new Vector3(30.18f, -723.04f, 44.19f);
             heading = 248.17f;
             money = 5000;
