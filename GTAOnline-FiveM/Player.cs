@@ -56,5 +56,9 @@ namespace GTAOnline_FiveM {
         public void DeletePersonalVehicle(PersonalVehicle pv) {
             personalVehicles.Remove(pv);
         }
+
+        public void SavePlayerData() {
+            //Code here
+        }
     }
 }
