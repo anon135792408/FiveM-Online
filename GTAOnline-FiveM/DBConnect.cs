@@ -52,7 +52,7 @@ namespace GTAOnline_FiveM {
             dbConn.Close();
         }
 
-        public GamePlayer GetPlayerByName(string u) {
+        public static GamePlayer GetPlayerByName(string u) {
             GamePlayer result = new GamePlayer();
 
             String query = "SELECT * FROM users WHERE Name = '" + u + "'";
