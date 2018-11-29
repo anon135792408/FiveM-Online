@@ -7,7 +7,7 @@ using static CitizenFX.Core.Native.API;
 using CitizenFX.Core.UI;
 using GTAOnline_FiveM;
 
-namespace MySqlTut {
+namespace GTAOnline_FiveM {
     public class DBConnect : BaseScript {
 
 
