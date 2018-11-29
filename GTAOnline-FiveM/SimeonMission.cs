@@ -21,20 +21,23 @@ namespace GTAOnline_FiveM {
             await Delay(100);
             if (!missionActive && NetworkIsHost()) {
                 TriggerMission();
+                Tick += MissionTick;
             }
         }
 
         private async Task MissionTick() {
             await Delay(100);
-            if (!missionActive && NetworkIsHost()) {
-                TriggerMission();
-            }
+            if (missionActive) {
+                if (missionVehicle.IsDead) {
+                    missionActive = false;
+                }
+            } 
         }
 
         private async void TriggerMission() {
             Tuple<Vector3, float> randPos = GetRandomPosition();
             missionVehicle = await World.CreateVehicle(GetRandomVehHash(), randPos.Item1, randPos.Item2);
-
+            
 
         }
 

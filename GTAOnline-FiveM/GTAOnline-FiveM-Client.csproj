@@ -47,6 +47,7 @@
     <Compile Include="Christmas.cs" />
     <Compile Include="PersonalVehicle.cs" />
     <Compile Include="GamePlayer.cs" />
+    <Compile Include="SimeonMission.cs" />
     <Compile Include="SimeonMissionData.cs" />
     <Compile Include="Spawning.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
