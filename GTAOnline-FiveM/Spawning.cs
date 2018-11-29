@@ -21,9 +21,8 @@ namespace GTAOnline_FiveM {
             if (!NetworkIsPlayerActive(PlayerId())) {
                 await Delay(0);
             }
-            GamePlayer p = DBConnect.GetPlayerByName(Game.Player.Name);
 
-            await SpawnPlayer("MP_M_FREEMODE_01", p.LastPosition.X, p.LastPosition.Y, p.LastPosition.Z, p.Heading);
+            await SpawnPlayer("MP_M_FREEMODE_01", 30.18f, -723.04f, 44.19f, 248.17f);
         }
 
         private static bool _spawnLock = false;
