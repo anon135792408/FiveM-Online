@@ -52,10 +52,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Commands.cs" />
-    <Compile Include="Impound.cs" />
-    <Compile Include="PlayerProperties.cs" />
-    <Compile Include="SimeonMissions.cs" />
     <Compile Include="Spawning.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

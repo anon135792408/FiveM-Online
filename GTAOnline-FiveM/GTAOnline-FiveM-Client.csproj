@@ -45,16 +45,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Christmas.cs" />
-    <Compile Include="Impound.cs" />
-    <Compile Include="ImpoundSpace.cs" />
-    <Compile Include="ImpSpaces.cs" />
-    <Compile Include="MirrorParkParty.cs" />
-    <Compile Include="PlayerProperties.cs" />
     <Compile Include="SimeonMissionData.cs" />
-    <Compile Include="SimeonMissions.cs" />
     <Compile Include="Spawning.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="VehicleProperties.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
