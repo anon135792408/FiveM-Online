@@ -55,7 +55,7 @@ namespace GTAOnline_FiveM {
         public GamePlayer GetPlayerByName(string u) {
             GamePlayer result = new GamePlayer();
 
-            String query = "SELECT * FROM users WHERE Name = " + u;
+            String query = "SELECT * FROM users WHERE Name = '" + u + "'";
             MySqlCommand cmd = new MySqlCommand(query, dbConn);
             dbConn.Open();
             MySqlDataReader reader = (MySqlDataReader)cmd.ExecuteReader();
