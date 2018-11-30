@@ -47,7 +47,7 @@ namespace GTAOnline_FiveM {
                 if (Game.PlayerPed.IsInRangeOf(SIMEON_DROPOFF, 7.0f) && missionVehicle.Driver == Game.PlayerPed) {
 
                     for (int i = 0; i < missionVehicle.Passengers.Length; i++) { // Seriously, am I missing something?
-                        int pHandle = NetworkGetPlayerIndexFromPed(missionVehicle.Passengers[i].Handle);
+                        int pHandle = GetPlayerServerId(NetworkGetPlayerIndexFromPed(missionVehicle.Passengers[i].Handle));
                         Debug.WriteLine(Players[pHandle].Name);
                         TriggerServerEvent("GTAO:SimeonMissionFadeOutIn", pHandle);
                     }
