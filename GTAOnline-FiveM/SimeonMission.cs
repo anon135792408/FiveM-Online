@@ -28,7 +28,9 @@ namespace GTAOnline_FiveM {
             await Delay(100);
             if (!missionActive && NetworkIsHost()) {
                 Tuple<Vector3, float> randPos = GetRandomPosition();
+                RequestCollisionAtCoord(randPos.Item1.X, randPos.Item1.Y, randPos.Item1.Z);
                 missionVehicle = await World.CreateVehicle(GetRandomVehHash(), randPos.Item1, randPos.Item2);
+                missionVehicle.PlaceOnGround();
 
                 TriggerServerEvent("GTAO:DisplaySimeonMarkerForAll");
                 TriggerServerEvent("GTAO:StartMissionForAll", NetworkGetNetworkIdFromEntity(missionVehicle.Handle));
