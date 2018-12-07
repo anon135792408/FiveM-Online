@@ -98,6 +98,15 @@ namespace GTAOnline_FiveM {
             missionActive = true;
             Tick += MissionTick;
             AttachBlipToMissionEntity();
+
+            string locName = missionVehicle.LocalizedName;
+            if ("aeiouAEIOU".Contains(locName[0]))
+            {
+                DrawNotification("An " + locName + " has been spotted in " + World.GetStreetName(missionVehicle.Position) + ", go and pick it up for me.");
+            } else
+            {
+                DrawNotification("A " + locName + " has been spotted in " + World.GetStreetName(missionVehicle.Position) + ", go and pick it up for me.");
+            }
         }
 
         private void AttachBlipToMissionEntity() {
