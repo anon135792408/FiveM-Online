@@ -129,5 +129,11 @@ namespace GTAOnline_FiveM {
         private Tuple<Vector3, float> GetRandomPosition() {
             return Tuple.Create(SimeonMissionData.vehicleLocations.ElementAt(rnd.Next(SimeonMissionData.vehicleLocations.Count)).Key, SimeonMissionData.vehicleLocations.ElementAt(rnd.Next(SimeonMissionData.vehicleLocations.Count)).Value);
         }
+
+        private void DrawNotification(String message)
+        {
+            SetNotificationMessage_2("CHAR_SIMEON", 1, true, 1, true, "Simeon", "Vehicle Asset"); //Potentially buggy, don't have the required integers for picName2 and iconType
+            DrawNotification_2(false, true);
+        }
     }
 }
