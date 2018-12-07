@@ -68,6 +68,7 @@ namespace GTAOnline_FiveM {
 
                     missionActive = false;
                     missionVehicle.Delete();
+                    PlayMissionCompleteAudio("FRANKLIN_BIG_01");
                 }
             } else {
                 TriggerServerEvent("GTAO:EndMissionForAll");
