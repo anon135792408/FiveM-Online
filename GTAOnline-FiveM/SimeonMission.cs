@@ -103,12 +103,13 @@ namespace GTAOnline_FiveM {
             AttachBlipToMissionEntity();
 
             string locName = missionVehicle.LocalizedName;
+            Debug.WriteLine(locName);
             if ("aeiouAEIOU".Contains(locName[0]))
             {
-                DrawNotification("An " + locName + " has been spotted in " + World.GetStreetName(missionVehicle.Position) + ", go and pick it up for me.");
+                DrawSimeonNotification("An " + locName + " has been spotted in " + World.GetStreetName(missionVehicle.Position) + ", go and pick it up for me.");
             } else
             {
-                DrawNotification("A " + locName + " has been spotted in " + World.GetStreetName(missionVehicle.Position) + ", go and pick it up for me.");
+                DrawSimeonNotification("A " + locName + " has been spotted in " + World.GetStreetName(missionVehicle.Position) + ", go and pick it up for me.");
             }
         }
 
@@ -142,10 +143,16 @@ namespace GTAOnline_FiveM {
             return Tuple.Create(SimeonMissionData.vehicleLocations.ElementAt(rnd.Next(SimeonMissionData.vehicleLocations.Count)).Key, SimeonMissionData.vehicleLocations.ElementAt(rnd.Next(SimeonMissionData.vehicleLocations.Count)).Value);
         }
 
-        private void DrawNotification(String message)
+        private async void DrawSimeonNotification(string message)
         {
-            SetNotificationMessage_2("CHAR_SIMEON", 1, true, 1, true, "Simeon", "Vehicle Asset"); //Potentially buggy, don't have the required integers for picName2 and iconType
-            DrawNotification_2(false, true);
+            while (!NetworkIsPlayerActive(PlayerId()) || IsPlayerSwitchInProgress()) {
+                await Delay(0);
+            }
+            Debug.WriteLine("Passing message: " + message);
+            SetNotificationTextEntry("STRING");
+            AddTextComponentString(message);
+            SetNotificationMessage("CHAR_SIMEON", "CHAR_SIMEON", true, 1, "Simeon", "Vehicle Asset"); //Potentially buggy, don't have the required integers for picName2 and iconType
+            DrawNotification(false, true);
         }
     }
 }
