@@ -56,18 +56,18 @@ namespace GTAOnline_FiveM {
 
                 if (Game.PlayerPed.IsInRangeOf(SIMEON_DROPOFF, 7.0f) && missionVehicle.Driver == Game.PlayerPed) {
 
-                    for (int i = 0; i < missionVehicle.Passengers.Length; i++) { // Seriously, am I missing something?
-                        int pHandle = GetPlayerServerId(NetworkGetPlayerIndexFromPed(missionVehicle.Passengers[i].Handle));
-                        Debug.WriteLine(Players[pHandle].Name);
-                        TriggerServerEvent("GTAO:SimeonMissionFadeOutIn", pHandle);
+                    for (int i = 0; i < 3; i++){
+                        Player player = Players[NetworkGetPlayerIndexFromPed(missionVehicle.GetPedOnSeat((VehicleSeat)i).Handle)];
+                        Debug.WriteLine(player.Name);
+                        TriggerServerEvent("GTAO:SimeonMissionFadeOutIn", player.Handle);
                     }
 
                     while (missionVehicle.Passengers.Count() > 0) {
                         await Delay(0);
                     }
 
-                    missionActive = false;
                     missionVehicle.Delete();
+                    missionActive = false;
                     PlayMissionCompleteAudio("FRANKLIN_BIG_01");
                 }
             } else {
@@ -151,7 +151,7 @@ namespace GTAOnline_FiveM {
             Debug.WriteLine("Passing message: " + message);
             SetNotificationTextEntry("STRING");
             AddTextComponentString(message);
-            SetNotificationMessage("CHAR_SIMEON", "CHAR_SIMEON", true, 1, "Simeon", "Vehicle Asset"); //Potentially buggy, don't have the required integers for picName2 and iconType
+            SetNotificationMessage("CHAR_SIMEON", "CHAR_SIMEON", true, 1, "Simeon", "Vehicle Asset");
             DrawNotification(false, true);
         }
     }
