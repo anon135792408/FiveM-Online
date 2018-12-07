@@ -90,6 +90,7 @@ namespace GTAOnline_FiveM {
             TriggerServerEvent("GTAO:ClearSimeonMarkerForAll");
             missionActive = false;
             missionVehicle = null;
+            SetAggressiveHorns(false);
             Tick -= MissionTick;
         }
 
@@ -97,6 +98,7 @@ namespace GTAOnline_FiveM {
             missionVehicle = new Vehicle(NetworkGetEntityFromNetworkId(netid));
             SetEntityAsMissionEntity(missionVehicle.Handle, true, true);
             missionActive = true;
+            SetAggressiveHorns(true);
             Tick += MissionTick;
             AttachBlipToMissionEntity();
 
