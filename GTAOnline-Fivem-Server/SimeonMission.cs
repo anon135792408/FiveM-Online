@@ -7,7 +7,7 @@ using CitizenFX.Core;
 using static CitizenFX.Core.Native.API;
 
 namespace GTAOnline_Fivem_Server {
-    class SimeonMission : BaseScript{
+    class SimeonMission : BaseScript {
         public SimeonMission() {
             EventHandlers.Add("GTAO:DisplaySimeonMarkerForAll", new Action(DisplaySimeonMarkerForAll));
             EventHandlers.Add("GTAO:ClearSimeonMarkerForAll", new Action(ClearSimeonMarkerForAll));
@@ -37,8 +37,10 @@ namespace GTAOnline_Fivem_Server {
         }
 
         public void SimeonMissionFadeOutIn(int netid) {
-            Debug.WriteLine("Invoking SimeonMissionFadeOutIn on Clientside ID " + netid.ToString() + "...");
-            TriggerClientEvent(Players[netid], "GTAO:SimeonMissionFadeOutIn");
+            PlayerList pl = new PlayerList();
+            Player p = pl[netid];
+            Debug.WriteLine("Invoking SimeonMissionFadeOutIn on Clientside for " + p.Name + "...");
+            TriggerClientEvent(p, "GTAO:SimeonMissionFadeOutIn");
         }
     }
 }
