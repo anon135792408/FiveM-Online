@@ -52,14 +52,16 @@ namespace GTAOnline_FiveM {
                 }
 
                 if (Game.PlayerPed.IsInRangeOf(SIMEON_DROPOFF, 7.0f) && missionVehicle.Driver == Game.PlayerPed) {
-                    for (int i = 0; i < missionVehicle.PassengerCapacity; i++) {
-                        if (i == 0) {
-                            TriggerServerEvent("GTAO:SimeonMissionFadeOutIn", Game.Player.ServerId);
-                        } else if (missionVehicle.Passengers[i] != null) {
-                            //missionVehicle.Passengers[i];
-                            int pHandle = GetPlayerServerId(NetworkGetPlayerIndexFromPed(missionVehicle.Passengers[i].Handle));
-                            TriggerServerEvent("GTAO:SimeonMissionFadeOutIn", pHandle);
-                        }        
+                    TriggerServerEvent("GTAO:SimeonMissionFadeOutIn", Game.Player.ServerId);
+
+                    for (int i = 0; i < missionVehicle.Passengers.Count(); i++) {
+                        int pHandle = GetPlayerServerId(NetworkGetPlayerIndexFromPed(missionVehicle.Passengers[i].Handle));
+                        TriggerServerEvent("GTAO:SimeonMissionFadeOutIn", pHandle);
+                    }
+
+                    missionVehicle.MaxSpeed = 0;
+                    while (!missionVehicle.IsStopped) {
+                        await Delay(0);
                     }
 
                     while (missionVehicle.Passengers.Count() > 0) {
@@ -79,12 +81,17 @@ namespace GTAOnline_FiveM {
                 await Delay(0);
             }
             Game.PlayerPed.Task.LeaveVehicle();
+            while (Game.PlayerPed.IsSittingInVehicle()) {
+                await Delay(0);
+            }
+            Game.PlayerPed.PositionNoOffset = World.GetNextPositionOnSidewalk(new Vector2(1199.64f, -3065.44f));
             await Delay(1750);
 
             Screen.Fading.FadeIn(500);
         }
 
         private void EndMission() {
+            NetworkFadeOutEntity(missionVehicle.Handle, true, false);
             missionActive = false;
             missionVehicle.AttachedBlip.Delete();
             missionVehicle.MarkAsNoLongerNeeded();
