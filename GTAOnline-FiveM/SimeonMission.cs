@@ -46,7 +46,7 @@ namespace GTAOnline_FiveM {
         private async Task MissionTick() {
             await Delay(100);
             if (missionActive) {
-                if (missionVehicle.IsDead) {
+                if (missionVehicle.IsDead && NetworkIsHost()) {
                     TriggerServerEvent("GTAO:EndMissionForAll");
                     TriggerServerEvent("GTAO:ClearSimeonMarkerForAll");
                 }
@@ -64,7 +64,7 @@ namespace GTAOnline_FiveM {
                     }
 
                     TriggerServerEvent("GTAO:EndMissionForAll");
-                    missionVehicle.Delete();
+                    TriggerServerEvent("GTAO:ClearSimeonMarkerForAll");
                     PlayMissionCompleteAudio("FRANKLIN_BIG_01");
                 }
             }
@@ -84,7 +84,8 @@ namespace GTAOnline_FiveM {
         private void EndMission() {
             missionActive = false;
             missionVehicle.AttachedBlip.Delete();
-            missionVehicle = null;
+            missionVehicle.MarkAsNoLongerNeeded();
+            missionVehicle.IsPersistent = false;
             SetAggressiveHorns(false);
             Tick -= MissionTick;
         }
@@ -129,9 +130,7 @@ namespace GTAOnline_FiveM {
         }
 
         private void ClearSimeonMarker() {
-            simBlip.Alpha = 0;
-            simBlip.Color = BlipColor.Yellow;
-            simBlip.IsShortRange = false;
+            simBlip.Delete();
         }
 
         private Tuple<Vector3, float> GetRandomPosition() {
