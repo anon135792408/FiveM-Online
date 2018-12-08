@@ -36,12 +36,6 @@ namespace GTAOnline_FiveM {
 
                 TriggerServerEvent("GTAO:DisplaySimeonMarkerForAll");
                 TriggerServerEvent("GTAO:StartMissionForAll", NetworkGetNetworkIdFromEntity(missionVehicle.Handle));
-
-                float x = 0.0f;
-                float y = 0.0f;
-                bool onScreen = GetScreenCoordFromWorldCoord(randPos.Item1.X, randPos.Item1.Y, randPos.Item1.Z, ref y, ref x);
-                
-                Debug.WriteLine(x + " " + y);
             }
 
             await Delay(15000);
