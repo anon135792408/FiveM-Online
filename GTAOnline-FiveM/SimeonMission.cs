@@ -54,13 +54,15 @@ namespace GTAOnline_FiveM {
                     TriggerServerEvent("GTAO:EndMissionForAll");
                 }
 
-                if (Game.PlayerPed.IsInRangeOf(SIMEON_DROPOFF, 7.0f) && missionVehicle.Driver == Game.PlayerPed) {
+                Debug.WriteLine(missionVehicle.Passengers.Count().ToString());
 
-                    for (int i = 0; i < 3; i++){
-                        Player player = Players[NetworkGetPlayerIndexFromPed(missionVehicle.GetPedOnSeat((VehicleSeat)i).Handle)];
-                        Debug.WriteLine(player.Name);
-                        TriggerServerEvent("GTAO:SimeonMissionFadeOutIn", player.Handle);
-                    }
+                if (Game.PlayerPed.IsInRangeOf(SIMEON_DROPOFF, 7.0f) && missionVehicle.Driver == Game.PlayerPed) {
+                    /*foreach () {
+                        
+                        Debug.WriteLine(NetworkGetNetworkIdFromEntity(p.Handle).ToString());
+                        
+                        //TriggerServerEvent("GTAO:SimeonMissionFadeOutIn", player.Handle);
+                    }*/
 
                     while (missionVehicle.Passengers.Count() > 0) {
                         await Delay(0);
@@ -140,7 +142,8 @@ namespace GTAOnline_FiveM {
         }
 
         private Tuple<Vector3, float> GetRandomPosition() {
-            return Tuple.Create(SimeonMissionData.vehicleLocations.ElementAt(rnd.Next(SimeonMissionData.vehicleLocations.Count)).Key, SimeonMissionData.vehicleLocations.ElementAt(rnd.Next(SimeonMissionData.vehicleLocations.Count)).Value);
+            int index = rnd.Next(SimeonMissionData.vehicleLocations.Count);
+            return Tuple.Create(SimeonMissionData.vehicleLocations.ElementAt(index).Key, SimeonMissionData.vehicleLocations.ElementAt(index).Value);
         }
 
         private async void DrawSimeonNotification(string message)
