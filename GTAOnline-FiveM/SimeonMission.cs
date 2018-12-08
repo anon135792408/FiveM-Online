@@ -30,6 +30,7 @@ namespace GTAOnline_FiveM {
                 Tuple<Vector3, float> randPos = GetRandomPosition();
                 RequestCollisionAtCoord(randPos.Item1.X, randPos.Item1.Y, randPos.Item1.Z);
                 missionVehicle = await World.CreateVehicle(GetRandomVehHash(), randPos.Item1, randPos.Item2);
+                VehToNet(missionVehicle.Handle);
                 missionVehicle.PlaceOnGround();
                 missionVehicle.LockStatus = VehicleLockStatus.CanBeBrokenIntoPersist;
                 missionVehicle.IsAlarmSet = true;
@@ -46,11 +47,9 @@ namespace GTAOnline_FiveM {
             await Delay(100);
             if (missionActive) {
                 if (missionVehicle.IsDead) {
-                    missionActive = false;
                     TriggerServerEvent("GTAO:EndMissionForAll");
+                    TriggerServerEvent("GTAO:ClearSimeonMarkerForAll");
                 }
-
-                Debug.WriteLine(missionVehicle.Passengers.Count().ToString());
 
                 if (Game.PlayerPed.IsInRangeOf(SIMEON_DROPOFF, 7.0f) && missionVehicle.Driver == Game.PlayerPed) {
                     /*foreach () {
@@ -64,12 +63,10 @@ namespace GTAOnline_FiveM {
                         await Delay(0);
                     }
 
+                    TriggerServerEvent("GTAO:EndMissionForAll");
                     missionVehicle.Delete();
-                    missionActive = false;
                     PlayMissionCompleteAudio("FRANKLIN_BIG_01");
                 }
-            } else {
-                TriggerServerEvent("GTAO:EndMissionForAll");
             }
         }
 
@@ -85,8 +82,8 @@ namespace GTAOnline_FiveM {
         }
 
         private void EndMission() {
-            TriggerServerEvent("GTAO:ClearSimeonMarkerForAll");
             missionActive = false;
+            missionVehicle.AttachedBlip.Delete();
             missionVehicle = null;
             SetAggressiveHorns(false);
             Tick -= MissionTick;
