@@ -31,6 +31,8 @@ namespace GTAOnline_FiveM {
                 RequestCollisionAtCoord(randPos.Item1.X, randPos.Item1.Y, randPos.Item1.Z);
                 missionVehicle = await World.CreateVehicle(GetRandomVehHash(), randPos.Item1, randPos.Item2);
                 missionVehicle.PlaceOnGround();
+                missionVehicle.LockStatus = VehicleLockStatus.CanBeBrokenIntoPersist;
+                missionVehicle.IsAlarmSet = true;
 
                 TriggerServerEvent("GTAO:DisplaySimeonMarkerForAll");
                 TriggerServerEvent("GTAO:StartMissionForAll", NetworkGetNetworkIdFromEntity(missionVehicle.Handle));
