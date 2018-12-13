@@ -45,7 +45,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Christmas.cs" />
-    <Compile Include="PhoneCamera.cs" />
     <Compile Include="PersonalVehicle.cs" />
     <Compile Include="GamePlayer.cs" />
     <Compile Include="SimeonMission.cs" />
