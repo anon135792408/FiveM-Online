@@ -25,8 +25,9 @@ namespace GTAOnline_FiveM {
                 MouseControlsEnabled = false,
                 MouseEdgeEnabled = false,
                 ControlDisablingEnabled = false
+                
             };
-
+            
             interactionMenu.AddItem(new UIMenuListItem("Services", new List<dynamic> { "Call Mugger", "Taxi", "Suicide"}, 0));
             interactionMenu.RefreshIndex();
 

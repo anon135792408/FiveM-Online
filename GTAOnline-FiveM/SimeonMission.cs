@@ -31,13 +31,19 @@ namespace GTAOnline_FiveM {
                 Tuple<Vector3, float> randPos = GetRandomPosition();
                 RequestCollisionAtCoord(randPos.Item1.X, randPos.Item1.Y, randPos.Item1.Z);
                 missionVehicle = await World.CreateVehicle(GetRandomVehHash(), randPos.Item1, randPos.Item2);
-                VehToNet(missionVehicle.Handle);
                 missionVehicle.PlaceOnGround();
                 missionVehicle.LockStatus = VehicleLockStatus.CanBeBrokenIntoPersist;
                 missionVehicle.IsAlarmSet = true;
-
+                
                 TriggerServerEvent("GTAO:DisplaySimeonMarkerForAll");
-                TriggerServerEvent("GTAO:StartMissionForAll", NetworkGetNetworkIdFromEntity(missionVehicle.Handle));
+
+                VehToNet(missionVehicle.Handle);
+                NetworkRegisterEntityAsNetworked(missionVehicle.Handle);
+                var veh_net = VehToNet(missionVehicle.Handle);
+                SetNetworkIdExistsOnAllMachines(veh_net, true);
+                missionVehicle.IsPersistent = true;
+
+                TriggerServerEvent("GTAO:StartMissionForAll", missionVehicle.Handle);
             }
 
             await Delay(15000);
@@ -102,8 +108,8 @@ namespace GTAOnline_FiveM {
             Tick -= MissionTick;
         }
 
-        private void StartMission(int netid) {
-            missionVehicle = new Vehicle(NetworkGetEntityFromNetworkId(netid));
+        private void StartMission(int vHandle) {
+            missionVehicle = new Vehicle(vHandle);
             SetEntityAsMissionEntity(missionVehicle.Handle, true, true);
             missionActive = true;
             SetAggressiveHorns(true);
