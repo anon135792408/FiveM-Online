@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using CitizenFX.Core;
 using static CitizenFX.Core.Native.API;
 using CitizenFX.Core.UI;
+using NativeUI;
 
 namespace GTAOnline_FiveM {
     class SimeonMission : BaseScript{
@@ -76,6 +77,7 @@ namespace GTAOnline_FiveM {
         }
 
         private async void SimeonMissionFadeOutIn() {
+            BigMessageThread.MessageInstance.ShowMissionPassedMessage("Mission Passed", 5000);
             Screen.Fading.FadeOut(500);
             while (Screen.Fading.IsFadingOut) {
                 await Delay(0);

@@ -33,7 +33,7 @@ namespace GTAOnline_FiveM {
 
             if (!freeze) {
                 if (!IsEntityVisible(ped))
-                    SetEntityVisible(ped, true, false);
+                    SetEntityVisible(ped, true, true);
 
                 if (!IsPedInAnyVehicle(ped, true))
                     SetEntityCollision(ped, true, true);
