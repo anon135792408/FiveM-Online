@@ -20,7 +20,6 @@ namespace GTAOnline_FiveM {
                 if (player.Character.AttachedBlip == null && player.Handle != Game.Player.Handle) {
                     Blip b = player.Character.AttachBlip();
                     b.IsShortRange = false;
-                    b.Sprite = BlipSprite.Player;
                     b.Color = BlipColor.White;
                     b.Name = player.Name;
                 }
