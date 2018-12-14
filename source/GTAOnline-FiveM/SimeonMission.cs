@@ -27,6 +27,11 @@ namespace GTAOnline_FiveM {
 
         private async Task OnTick() {
             await Delay(100);
+
+            if (Game.PlayerPed.IsInVehicle()) {
+                await Delay(1000);
+                Debug.WriteLine(NetworkGetNetworkIdFromEntity(Game.PlayerPed.CurrentVehicle.Handle).ToString());
+            }
             if (!missionActive && NetworkIsHost()) {
                 Tuple<Vector3, float> randPos = GetRandomPosition();
                 RequestCollisionAtCoord(randPos.Item1.X, randPos.Item1.Y, randPos.Item1.Z);
@@ -45,6 +50,7 @@ namespace GTAOnline_FiveM {
                 SetNetworkIdCanMigrate(net_id, true);
                 SetNetworkIdExistsOnAllMachines(net_id, true);
 
+                await Delay(3000);
                 TriggerServerEvent("GTAO:StartMissionForAll", net_id);
                 missionActive = true;
             }

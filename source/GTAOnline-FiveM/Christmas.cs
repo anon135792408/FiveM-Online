@@ -22,7 +22,7 @@ namespace GTAOnline_FiveM {
         private async Task OnTick() {
             DateTime dt = DateTime.Now;
 
-            if (dt.Day >= 16 && dt.Day <= 26 && dt.Month == 12) {
+            if (dt.Day >= 14 && dt.Day <= 26 && dt.Month == 12) {
                 SetWeatherTypeNowPersist("XMAS");
                 await Delay(0);
                 if (IsNextWeatherType("XMAS")) {
