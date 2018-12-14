@@ -38,7 +38,6 @@ namespace GTAOnline_FiveM {
                         b.Alpha = 255;
                     }
                 }
-                    }
             }
         }
 
