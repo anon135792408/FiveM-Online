@@ -18,24 +18,27 @@ namespace GTAOnline_FiveM {
 
         private async Task OnTick() {
             await Delay(500);
-            if (!Game.IsPaused) {
                 foreach (Player player in Players) {
-                    if (player.Character.AttachedBlip != null && player.Handle != Game.Player.Handle) {
-                        Vector3 localPos = Game.PlayerPed.Position;
-                        Vector3 playerPos = player.Character.Position;
+                if (player.Character.AttachedBlip != null && player.Handle != Game.Player.Handle) {
+                    Vector3 localPos = Game.PlayerPed.Position;
+                    Vector3 playerPos = player.Character.Position;
 
-                        float magnitude;
-                        Vector3.Distance(ref localPos, ref playerPos, out magnitude);
+                    float magnitude;
+                    Vector3.Distance(ref localPos, ref playerPos, out magnitude);
 
-                        Blip b = player.Character.AttachedBlip;
+                    Blip b = player.Character.AttachedBlip;
 
+                    if (!Game.IsPaused) {
                         if (magnitude <= 255) {
                             b.Alpha = 255 - (int)magnitude;
                         } else {
                             b.Alpha = 0;
                         }
+                    } else {
+                        b.Alpha = 255;
                     }
                 }
+                    }
             }
         }
 

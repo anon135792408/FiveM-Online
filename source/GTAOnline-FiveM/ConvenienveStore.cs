@@ -41,6 +41,7 @@ namespace GTAOnline_FiveM {
                 Blip b = World.CreateBlip(coordinate);
                 b.Sprite = BlipSprite.Store;
                 b.Name = "Store";
+                b.IsShortRange = true;
             }
         }
 
