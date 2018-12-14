@@ -11,6 +11,7 @@ using NativeUI;
 namespace GTAOnline_FiveM {
     class SimeonMission : BaseScript{
         private Vector3 SIMEON_DROPOFF = new Vector3(1204.43f, -3116.04f, 5.54f);
+        bool hasConnectedAlready = false;
         private bool missionActive = false;
         static Random rnd = new Random();
         Vehicle missionVehicle;
@@ -18,7 +19,10 @@ namespace GTAOnline_FiveM {
 
         public SimeonMission() {
             EventHandlers.Add("GTAO:DisplaySimeonMarkerForAll", new Action(DisplaySimeonMarker));
+            EventHandlers.Add("playerSpawned", new Action(RetrieveMissionData));
             EventHandlers.Add("GTAO:ClearSimeonMarkerForAll", new Action(ClearSimeonMarker));
+            EventHandlers.Add("GTAO:RetrieveSimeonMissionData", new Action<int>(SendSimeonMissionDataToPlayer));
+            EventHandlers.Add("GTAO:SyncMissionData", new Action<int>(SyncMissionData));
             EventHandlers.Add("GTAO:EndMissionForAll", new Action(EndMission));
             EventHandlers.Add("GTAO:StartMissionForAll", new Action<int>(StartMission));
             EventHandlers.Add("GTAO:SimeonMissionFadeOutIn", new Action(SimeonMissionFadeOutIn));
@@ -28,10 +32,6 @@ namespace GTAOnline_FiveM {
         private async Task OnTick() {
             await Delay(100);
 
-            if (Game.PlayerPed.IsInVehicle()) {
-                await Delay(1000);
-                Debug.WriteLine(NetworkGetNetworkIdFromEntity(Game.PlayerPed.CurrentVehicle.Handle).ToString());
-            }
             if (!missionActive && NetworkIsHost()) {
                 Tuple<Vector3, float> randPos = GetRandomPosition();
                 RequestCollisionAtCoord(randPos.Item1.X, randPos.Item1.Y, randPos.Item1.Z);
@@ -43,21 +43,46 @@ namespace GTAOnline_FiveM {
                 missionVehicle.LockStatus = VehicleLockStatus.CanBeBrokenInto;
                 missionVehicle.IsAlarmSet = true;
                 
-                TriggerServerEvent("GTAO:DisplaySimeonMarkerForAll");
 
                 SetVehicleHasBeenOwnedByPlayer(missionVehicle.Handle, true);
                 var net_id = NetworkGetNetworkIdFromEntity(missionVehicle.Handle);
                 SetNetworkIdCanMigrate(net_id, true);
                 SetNetworkIdExistsOnAllMachines(net_id, true);
 
-                await Delay(3000);
+                await Delay(5000);
                 TriggerServerEvent("GTAO:StartMissionForAll", net_id);
+                TriggerServerEvent("GTAO:DisplaySimeonMarkerForAll");
                 missionActive = true;
             }
 
             await Delay(15000);
         }
 
+        private void RetrieveMissionData() => TriggerServerEvent("GTAO:RetrieveSimeonMissionData", Game.Player.Handle);
+        
+        private async void SendSimeonMissionDataToPlayer(int playerId) {
+            if (missionActive && NetworkIsHost() == true) {
+                SetVehicleHasBeenOwnedByPlayer(missionVehicle.Handle, true);
+                var net_id = NetworkGetNetworkIdFromEntity(missionVehicle.Handle);
+                SetNetworkIdCanMigrate(net_id, true);
+                SetNetworkIdExistsOnAllMachines(net_id, true);
+
+                await Delay(5000);
+                TriggerServerEvent("GTAO:SendSimeonMissionDataToPlayer", net_id, playerId);
+            }
+        }
+
+        private void SyncMissionData(int net_id) {
+            if (!hasConnectedAlready) {
+
+                missionVehicle = new Vehicle(NetworkGetEntityFromNetworkId(net_id));
+                AttachBlipToMissionEntity();
+                missionActive = true;
+
+                Tick += MissionTick;
+                hasConnectedAlready = true;
+            }
+        }
 
         private async Task MissionTick() {
             await Delay(100);
@@ -118,6 +143,7 @@ namespace GTAOnline_FiveM {
         }
 
         private void StartMission(int net_id) {
+            hasConnectedAlready = true;
             Debug.WriteLine("A " + net_id.ToString());
             NetworkRequestControlOfNetworkId(net_id);
             missionVehicle = new Vehicle(NetworkGetEntityFromNetworkId(net_id));

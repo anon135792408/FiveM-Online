@@ -10,6 +10,8 @@ namespace GTAOnline_Fivem_Server {
     class SimeonMission : BaseScript {
         public SimeonMission() {
             EventHandlers.Add("GTAO:DisplaySimeonMarkerForAll", new Action(DisplaySimeonMarkerForAll));
+            EventHandlers.Add("GTAO:RetrieveSimeonMissionData", new Action<int>(RetrieveSimeonMissionData));
+            EventHandlers.Add("GTAO:SendSimeonMissionDataToPlayer", new Action<int,int>(SendSimeonMissionDataToPlayer));
             EventHandlers.Add("GTAO:ClearSimeonMarkerForAll", new Action(ClearSimeonMarkerForAll));
             EventHandlers.Add("GTAO:EndMissionForAll", new Action(EndMissionForAll));
             EventHandlers.Add("GTAO:StartMissionForAll", new Action<int>(StartMissionForAll));
@@ -19,6 +21,16 @@ namespace GTAOnline_Fivem_Server {
         public void DisplaySimeonMarkerForAll() {
             Debug.WriteLine("Invoking DisplaySimeonMissionForAll on Clientside...");
             TriggerClientEvent("GTAO:DisplaySimeonMarkerForAll");
+        }
+
+        public void RetrieveSimeonMissionData(int ply) {
+            Debug.WriteLine("Invoking RetrieveSimeonMissionData on Clientside for ID");
+            TriggerClientEvent("GTAO:RetrieveSimeonMissionData");
+        }
+
+        public void SendSimeonMissionDataToPlayer(int ply, int net_id) {
+            Debug.WriteLine("Invoking SyncMissionData on Clientside for ID " + ply.ToString() + "...");
+            TriggerClientEvent("GTAO:SyncMissionData");
         }
 
         public void ClearSimeonMarkerForAll() {
