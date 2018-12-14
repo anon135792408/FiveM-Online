@@ -53,6 +53,7 @@
     <Compile Include="InteractionMenu.cs" />
     <Compile Include="PersonalVehicle.cs" />
     <Compile Include="GamePlayer.cs" />
+    <Compile Include="PlayerBlips.cs" />
     <Compile Include="SimeonMission.cs" />
     <Compile Include="SimeonMissionData.cs" />
     <Compile Include="Spawning.cs" />
