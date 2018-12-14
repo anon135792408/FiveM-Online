@@ -40,9 +40,8 @@ namespace GTAOnline_FiveM {
                 
                 TriggerServerEvent("GTAO:DisplaySimeonMarkerForAll");
 
+                SetVehicleHasBeenOwnedByPlayer(missionVehicle.Handle, true);
                 var net_id = NetworkGetNetworkIdFromEntity(missionVehicle.Handle);
-                NetworkRegisterEntityAsNetworked(missionVehicle.Handle);
-                SetEntityAsMissionEntity(missionVehicle.Handle, false, false);
                 SetNetworkIdCanMigrate(net_id, true);
                 SetNetworkIdExistsOnAllMachines(net_id, true);
 
@@ -113,7 +112,10 @@ namespace GTAOnline_FiveM {
         }
 
         private void StartMission(int net_id) {
+            Debug.WriteLine("A " + net_id.ToString());
+            NetworkRequestControlOfNetworkId(net_id);
             missionVehicle = new Vehicle(NetworkGetEntityFromNetworkId(net_id));
+            Debug.WriteLine("B");
             missionActive = true;
             SetAggressiveHorns(true);
             AttachBlipToMissionEntity();
