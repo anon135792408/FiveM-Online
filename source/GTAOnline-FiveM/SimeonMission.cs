@@ -133,7 +133,6 @@ namespace GTAOnline_FiveM {
         }
 
         private void EndMission() {
-            NetworkFadeOutEntity(missionVehicle.Handle, true, false);
             missionActive = false;
             missionVehicle.AttachedBlip.Delete();
             missionVehicle.MarkAsNoLongerNeeded();
