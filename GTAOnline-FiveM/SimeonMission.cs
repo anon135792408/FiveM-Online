@@ -32,18 +32,18 @@ namespace GTAOnline_FiveM {
                 RequestCollisionAtCoord(randPos.Item1.X, randPos.Item1.Y, randPos.Item1.Z);
                 missionVehicle = await World.CreateVehicle(GetRandomVehHash(), randPos.Item1, randPos.Item2);
                 missionVehicle.PlaceOnGround();
-                missionVehicle.LockStatus = VehicleLockStatus.CanBeBrokenIntoPersist;
+                missionVehicle.LockStatus = VehicleLockStatus.CanBeBrokenInto;
                 missionVehicle.IsAlarmSet = true;
                 
                 TriggerServerEvent("GTAO:DisplaySimeonMarkerForAll");
 
-                VehToNet(missionVehicle.Handle);
                 NetworkRegisterEntityAsNetworked(missionVehicle.Handle);
                 var veh_net = VehToNet(missionVehicle.Handle);
                 SetNetworkIdExistsOnAllMachines(veh_net, true);
                 missionVehicle.IsPersistent = true;
 
                 TriggerServerEvent("GTAO:StartMissionForAll", missionVehicle.Handle);
+                missionActive = true;
             }
 
             await Delay(15000);
@@ -109,12 +109,14 @@ namespace GTAOnline_FiveM {
         }
 
         private void StartMission(int vHandle) {
+            Debug.WriteLine("VEH ID: " + vHandle);
             missionVehicle = new Vehicle(vHandle);
-            SetEntityAsMissionEntity(missionVehicle.Handle, true, true);
+            missionVehicle.IsPersistent = true;
             missionActive = true;
             SetAggressiveHorns(true);
-            Tick += MissionTick;
             AttachBlipToMissionEntity();
+
+            Tick += MissionTick;
 
             string locName = missionVehicle.LocalizedName;
             Debug.WriteLine(locName);
@@ -128,7 +130,9 @@ namespace GTAOnline_FiveM {
         }
 
         private void AttachBlipToMissionEntity() {
+            Debug.WriteLine("Attaching Blip to Mission vehicle");
             Blip b = missionVehicle.AttachBlip();
+            b.IsShortRange = false;
             b.Sprite = BlipSprite.PersonalVehicleCar;
             b.Color = BlipColor.Yellow;
             b.Name = "Simeon's Wanted Asset";
