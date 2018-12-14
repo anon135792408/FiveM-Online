@@ -113,10 +113,8 @@ namespace GTAOnline_FiveM {
         }
 
         private void StartMission(int net_id) {
-            Debug.WriteLine("A " + net_id.ToString());
             NetworkRequestControlOfNetworkId(net_id);
             missionVehicle = new Vehicle(NetworkGetEntityFromNetworkId(net_id));
-            Debug.WriteLine("B");
             missionActive = true;
             SetAggressiveHorns(true);
             AttachBlipToMissionEntity();
