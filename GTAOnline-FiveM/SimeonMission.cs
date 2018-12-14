@@ -37,12 +37,13 @@ namespace GTAOnline_FiveM {
                 
                 TriggerServerEvent("GTAO:DisplaySimeonMarkerForAll");
 
+                var net_id = NetworkGetNetworkIdFromEntity(missionVehicle.Handle);
                 NetworkRegisterEntityAsNetworked(missionVehicle.Handle);
-                var veh_net = VehToNet(missionVehicle.Handle);
-                SetNetworkIdExistsOnAllMachines(veh_net, true);
-                missionVehicle.IsPersistent = true;
+                SetEntityAsMissionEntity(missionVehicle.Handle, false, false);
+                SetNetworkIdCanMigrate(net_id, true);
+                SetNetworkIdExistsOnAllMachines(net_id, true);
 
-                TriggerServerEvent("GTAO:StartMissionForAll", missionVehicle.Handle);
+                TriggerServerEvent("GTAO:StartMissionForAll", net_id);
                 missionActive = true;
             }
 
@@ -108,10 +109,8 @@ namespace GTAOnline_FiveM {
             Tick -= MissionTick;
         }
 
-        private void StartMission(int vHandle) {
-            Debug.WriteLine("VEH ID: " + vHandle);
-            missionVehicle = new Vehicle(vHandle);
-            missionVehicle.IsPersistent = true;
+        private void StartMission(int net_id) {
+            missionVehicle = new Vehicle(NetworkGetEntityFromNetworkId(net_id));
             missionActive = true;
             SetAggressiveHorns(true);
             AttachBlipToMissionEntity();
