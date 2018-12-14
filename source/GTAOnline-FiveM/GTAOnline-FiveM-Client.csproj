@@ -50,6 +50,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Christmas.cs" />
+    <Compile Include="ConvenienveStore.cs" />
     <Compile Include="InteractionMenu.cs" />
     <Compile Include="PersonalVehicle.cs" />
     <Compile Include="GamePlayer.cs" />

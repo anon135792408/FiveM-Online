@@ -18,7 +18,7 @@ namespace GTAOnline_FiveM {
 
         private async Task OnTick() {
             await Delay(500);
-            if (!IsPauseMenuActive()) {
+            if (!Game.IsPaused) {
                 foreach (Player player in Players) {
                     if (player.Character.AttachedBlip != null && player.Handle != Game.Player.Handle) {
                         Vector3 localPos = Game.PlayerPed.Position;
