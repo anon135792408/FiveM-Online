@@ -18,7 +18,7 @@ namespace GTAOnline_FiveM {
 
         void SetupBlipCoordinates() {
             blipCoordinates.Add(new Vector3(-50f, -1753f, 29f));
-            blipCoordinates.Add(new Vector3(-29f, -1345f, 29f));
+            blipCoordinates.Add(new Vector3(29f, -1345f, 29f));
             blipCoordinates.Add(new Vector3(1136f, -981f, 46f));
             blipCoordinates.Add(new Vector3(1158f, -322f, 69f));
             blipCoordinates.Add(new Vector3(2555f, 385f, 108f));
