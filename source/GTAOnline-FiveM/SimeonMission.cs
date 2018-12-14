@@ -26,7 +26,7 @@ namespace GTAOnline_FiveM {
         }
 
         private async Task OnTick() {
-            await Delay(100);
+            await Delay(500);
 
             if (!missionActive && NetworkIsHost()) {
                 Tuple<Vector3, float> randPos = GetRandomPosition();
@@ -56,7 +56,7 @@ namespace GTAOnline_FiveM {
         }
 
         private async Task MissionTick() {
-            await Delay(100);
+            await Delay(500);
             if (missionActive) {
                 if ((missionVehicle.IsDead || (missionVehicle.IsUpsideDown && missionVehicle.Driver == null)) && NetworkIsHost()) {
                     TriggerServerEvent("GTAO:EndMissionForAll");

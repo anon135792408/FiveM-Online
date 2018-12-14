@@ -13,6 +13,30 @@ namespace GTAOnline_FiveM {
 
         public PlayerBlips() {
             EventHandlers.Add("playerSpawned", new Action<int>(OnPlayerSpawned));
+            Tick += OnTick;
+        }
+
+        private async Task OnTick() {
+            await Delay(500);
+            if (!IsPauseMenuActive()) {
+                foreach (Player player in Players) {
+                    if (player.Character.AttachedBlip != null && player.Handle != Game.Player.Handle) {
+                        Vector3 localPos = Game.PlayerPed.Position;
+                        Vector3 playerPos = player.Character.Position;
+
+                        float magnitude;
+                        Vector3.Distance(ref localPos, ref playerPos, out magnitude);
+
+                        Blip b = player.Character.AttachedBlip;
+
+                        if (magnitude <= 255) {
+                            b.Alpha = 255 - (int)magnitude;
+                        } else {
+                            b.Alpha = 0;
+                        }
+                    }
+                }
+            }
         }
 
         public void OnPlayerSpawned(int playerid) {
