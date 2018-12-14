@@ -58,7 +58,7 @@ namespace GTAOnline_FiveM {
         private async Task MissionTick() {
             await Delay(100);
             if (missionActive) {
-                if (missionVehicle.IsDead && NetworkIsHost()) {
+                if ((missionVehicle.IsDead || IsVehicleStuckOnRoof(missionVehicle.Handle)) && NetworkIsHost()) {
                     TriggerServerEvent("GTAO:EndMissionForAll");
                     TriggerServerEvent("GTAO:ClearSimeonMarkerForAll");
                 }
