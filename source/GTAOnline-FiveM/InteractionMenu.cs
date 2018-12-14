@@ -25,7 +25,6 @@ namespace GTAOnline_FiveM {
                 MouseControlsEnabled = false,
                 MouseEdgeEnabled = false,
                 ControlDisablingEnabled = false
-                
             };
             
             interactionMenu.AddItem(new UIMenuListItem("Services", new List<dynamic> { "Call Mugger", "Taxi", "Suicide"}, 0));
@@ -61,7 +60,7 @@ namespace GTAOnline_FiveM {
             foreach (Player p in Players) {
                 if (p.Name.ToUpper().Equals(result.ToUpper())) {
                     Debug.WriteLine("Player Found!");
-                    mugger = await World.CreatePed(PedHash.FibMugger01, World.GetNextPositionOnSidewalk(Game.PlayerPed.Position + new Vector3(30f, 30f, 0f)), 0f);
+                    mugger = await World.CreatePed(PedHash.FibMugger01, World.GetNextPositionOnSidewalk(p.Character.Position + new Vector3(30f, 30f, 0f)), 0f);
                     mugger.Weapons.Give(WeaponHash.Knife, 1, true, true);
                     target = p.Character;
                     Tick += InitiateMugger;
