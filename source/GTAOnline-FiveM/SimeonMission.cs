@@ -26,15 +26,12 @@ namespace GTAOnline_FiveM {
         }
 
         private async Task OnTick() {
-            await Delay(500);
+            await Delay(15000);
 
             if (!missionActive && NetworkIsHost()) {
                 Tuple<Vector3, float> randPos = GetRandomPosition();
                 RequestCollisionAtCoord(randPos.Item1.X, randPos.Item1.Y, randPos.Item1.Z);
                 missionVehicle = await World.CreateVehicle(GetRandomVehHash(), randPos.Item1, randPos.Item2);
-                while (!DoesEntityExist(missionVehicle.Handle)) {
-                    await Delay(0);
-                }
                 missionVehicle.PlaceOnGround();
                 missionVehicle.LockStatus = VehicleLockStatus.CanBeBrokenInto;
                 missionVehicle.IsAlarmSet = true;
@@ -51,8 +48,6 @@ namespace GTAOnline_FiveM {
                 TriggerServerEvent("GTAO:DisplaySimeonMarkerForAll");
                 missionActive = true;
             }
-
-            await Delay(15000);
         }
 
         private async Task MissionTick() {
