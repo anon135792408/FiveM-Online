@@ -64,24 +64,32 @@ namespace GTAOnline_FiveM {
                     mugger.Weapons.Give(WeaponHash.Knife, 1, true, true);
                     target = p.Character;
                     Tick += InitiateMugger;
+                    mugger.Task.FightAgainst(target);
                     break;
                 }
             }
         }
-        
+
         private async Task InitiateMugger() {
-            mugger.Task.FightAgainst(target);
+            await Delay(0);
             if (mugger.IsDead) {
                 mugger.MarkAsNoLongerNeeded();
                 Player p = new Player(NetworkGetPlayerIndexFromPed(target.Handle));
                 Screen.ShowNotification("The mugger you called on " + p.Name + " has been killed.");
+
+                target = null;
+                mugger = null;
                 Tick -= InitiateMugger;
-            } else if (target.IsDead) {
+            } else if (target.IsDead && target.GetKiller() == mugger) {
                 mugger.Task.ClearAll();
                 mugger.Task.WanderAround();
                 mugger.MarkAsNoLongerNeeded();
                 Player p = new Player(NetworkGetPlayerIndexFromPed(target.Handle));
                 Screen.ShowNotification("The mugger you called on " + p.Name + " has successfully mugged the target.");
+
+                target = null;
+                mugger = null;
+                Tick -= InitiateMugger;
             }
         }
 
