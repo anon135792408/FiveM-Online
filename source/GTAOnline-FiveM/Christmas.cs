@@ -14,9 +14,11 @@ namespace GTAOnline_FiveM {
          * */
 
         bool loaded = false;
+        bool christmasEnabled = GetResourceMetadata(GetCurrentResourceName(), "christmas_enabled", 0) == "true" ? true : false;
 
         public Christmas() {
-            Tick += OnTick;
+            if (christmasEnabled)
+                Tick += OnTick;
         }
 
         private async Task OnTick() {
