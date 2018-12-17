@@ -113,9 +113,9 @@ namespace GTAOnline_FiveM {
             Screen.Fading.FadeIn(500);
         }
 
-        private async void EndMission() {
+        private void EndMission() {
             if (NetworkIsHost() && missionVehicle != null) {
-                await Delay(1250);
+                Delay(1250);
                 NetworkFadeOutEntity(missionVehicle.Handle, true, false);
             }
             missionActive = false;
