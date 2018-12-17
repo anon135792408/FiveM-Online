@@ -98,7 +98,6 @@ namespace GTAOnline_FiveM {
         }
 
         private async void SimeonMissionFadeOutIn() {
-            BigMessageThread.MessageInstance.ShowMissionPassedMessage("Mission Passed", 5000);
             Screen.Fading.FadeOut(500);
             while (Screen.Fading.IsFadingOut) {
                 await Delay(0);
@@ -107,14 +106,16 @@ namespace GTAOnline_FiveM {
             while (Game.PlayerPed.IsSittingInVehicle()) {
                 await Delay(0);
             }
+            BigMessageThread.MessageInstance.ShowMissionPassedMessage("Mission Passed", 5000);
             Game.PlayerPed.PositionNoOffset = World.GetNextPositionOnSidewalk(new Vector2(1199.64f, -3065.44f));
             await Delay(1750);
 
             Screen.Fading.FadeIn(500);
         }
 
-        private void EndMission() {
+        private async void EndMission() {
             if (NetworkIsHost() && missionVehicle != null) {
+                await Delay(1250);
                 NetworkFadeOutEntity(missionVehicle.Handle, true, false);
             }
             missionActive = false;
