@@ -34,6 +34,9 @@ namespace GTAOnline_FiveM {
                 RequestCollisionAtCoord(randPos.Item1.X, randPos.Item1.Y, randPos.Item1.Z);
                 Debug.WriteLine("B");
                 missionVehicle = await World.CreateVehicle(GetRandomVehHash(), randPos.Item1, randPos.Item2);
+                while (!missionVehicle.Exists()) {
+                    await Delay(0);
+                }
                 Debug.WriteLine("C");
                 missionVehicle.PlaceOnGround();
                 Debug.WriteLine("D");
