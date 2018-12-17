@@ -27,7 +27,11 @@ namespace GTAOnline_FiveM {
             VehicleHash.Buffalo2,
             VehicleHash.Cavalcade,
             VehicleHash.Cavalcade2,
-            VehicleHash.Dubsta
+            VehicleHash.Dubsta,
+            VehicleHash.Stratum,
+            VehicleHash.Sultan,
+            VehicleHash.Sentinel,
+            VehicleHash.Gauntlet
         };
 
         public static Dictionary<Vector3, float> vehicleLocations = new Dictionary<Vector3, float> {
