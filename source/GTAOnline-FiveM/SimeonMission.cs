@@ -15,6 +15,7 @@ namespace GTAOnline_FiveM {
         static Random rnd = new Random();
         Vehicle missionVehicle;
         Blip simBlip;
+        private bool isVehicleDead = false;
 
         public SimeonMission() {
             EventHandlers.Add("GTAO:DisplaySimeonMarkerForAll", new Action(DisplaySimeonMarker));
@@ -97,6 +98,11 @@ namespace GTAOnline_FiveM {
             }
         }
 
+        private async Task VehicleStatusCheck() {
+            isVehicleDead = missionVehicle.IsDead;
+            await Delay(500);
+        }
+
         private async void SimeonMissionFadeOutIn() {
             Screen.Fading.FadeOut(500);
             while (Screen.Fading.IsFadingOut) {
@@ -133,6 +139,7 @@ namespace GTAOnline_FiveM {
             SetAggressiveHorns(true);
             AttachBlipToMissionEntity();
 
+            Tick += VehicleStatusCheck;
             Tick += MissionTick;
 
             string locName = missionVehicle.LocalizedName;
