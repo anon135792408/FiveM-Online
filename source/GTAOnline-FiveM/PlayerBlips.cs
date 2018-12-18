@@ -17,8 +17,8 @@ namespace GTAOnline_FiveM {
         }
 
         private async Task OnTick() {
-            await Delay(500);
-                foreach (Player player in Players) {
+            foreach (Player player in Players) {
+                await Delay(200);
                 if (player.Character.AttachedBlip != null && player.Handle != Game.Player.Handle) {
                     Vector3 localPos = Game.PlayerPed.Position;
                     Vector3 playerPos = player.Character.Position;
@@ -27,7 +27,7 @@ namespace GTAOnline_FiveM {
                     Vector3.Distance(ref localPos, ref playerPos, out magnitude);
 
                     Blip b = player.Character.AttachedBlip;
-                    
+
                     if (!Game.IsPaused) {
                         if (magnitude <= 255) {
                             b.Alpha = 255 - (int)magnitude;
