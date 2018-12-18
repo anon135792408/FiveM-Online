@@ -53,7 +53,7 @@ namespace GTAOnline_FiveM {
             DisplayOnscreenKeyboard(0, "FMMC_KEY_TIP8", "", "", "", "", "", 64);
             while (UpdateOnscreenKeyboard() == 0) {
                 DisableAllControlActions(0);
-                await Delay(0);
+                await Delay(100);
             }
 
             string result = GetOnscreenKeyboardResult();
@@ -71,7 +71,7 @@ namespace GTAOnline_FiveM {
         }
 
         private async Task InitiateMugger() {
-            await Delay(0);
+            await Delay(100);
             if (mugger.IsDead) {
                 mugger.MarkAsNoLongerNeeded();
                 Player p = new Player(NetworkGetPlayerIndexFromPed(target.Handle));
@@ -97,7 +97,7 @@ namespace GTAOnline_FiveM {
             _MenuPool.ProcessMenus();
             while (UpdateOnscreenKeyboard() == 0) {
                 DisableAllControlActions(0);
-                await Delay(0);
+                await Delay(100);
             }
             if (Game.IsControlJustPressed(0, Control.MultiplayerInfo)) {
                 interactionMenu.Visible = !interactionMenu.Visible;

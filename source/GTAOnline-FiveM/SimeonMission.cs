@@ -35,7 +35,7 @@ namespace GTAOnline_FiveM {
                 Debug.WriteLine("B");
                 missionVehicle = await World.CreateVehicle(GetRandomVehHash(), randPos.Item1, randPos.Item2);
                 while (!missionVehicle.Exists()) {
-                    await Delay(0);
+                    await Delay(100);
                 }
                 Debug.WriteLine("C");
                 missionVehicle.PlaceOnGround();
@@ -83,11 +83,11 @@ namespace GTAOnline_FiveM {
 
                     missionVehicle.MaxSpeed = 0;
                     while (!missionVehicle.IsStopped) {
-                        await Delay(0);
+                        await Delay(100);
                     }
 
                     while (missionVehicle.Passengers.Count() > 0) {
-                        await Delay(0);
+                        await Delay(100);
                     }
 
                     TriggerServerEvent("GTAO:EndMissionForAll");
@@ -100,11 +100,11 @@ namespace GTAOnline_FiveM {
         private async void SimeonMissionFadeOutIn() {
             Screen.Fading.FadeOut(500);
             while (Screen.Fading.IsFadingOut) {
-                await Delay(0);
+                await Delay(100);
             }
             Game.PlayerPed.Task.LeaveVehicle();
             while (Game.PlayerPed.IsSittingInVehicle()) {
-                await Delay(0);
+                await Delay(100);
             }
             BigMessageThread.MessageInstance.ShowMissionPassedMessage("Mission Passed", 5000);
             Game.PlayerPed.PositionNoOffset = World.GetNextPositionOnSidewalk(new Vector2(1199.64f, -3065.44f));
@@ -180,7 +180,7 @@ namespace GTAOnline_FiveM {
         private async void DrawSimeonNotification(string message)
         {
             while (!NetworkIsPlayerActive(PlayerId()) || IsPlayerSwitchInProgress()) {
-                await Delay(0);
+                await Delay(100);
             }
             Debug.WriteLine("Passing message: " + message);
             SetNotificationTextEntry("STRING");

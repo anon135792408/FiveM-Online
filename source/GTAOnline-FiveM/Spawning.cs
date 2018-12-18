@@ -19,7 +19,7 @@ namespace GTAOnline_FiveM {
 
         private async void DoPlayerSpawn() {
             if (!NetworkIsPlayerActive(PlayerId())) {
-                await Delay(0);
+                await Delay(100);
             }
             await SpawnPlayer("MP_M_FREEMODE_01", 30.18f, -723.04f, 44.19f, 248.17f);
         }
@@ -103,7 +103,7 @@ namespace GTAOnline_FiveM {
             }
 
             if (GetPlayerSwitchState() != 8) {
-                await Delay(0);
+                await Delay(100);
             }
 
             SwitchInPlayer(PlayerPedId());
@@ -116,7 +116,7 @@ namespace GTAOnline_FiveM {
             }
 
             while (IsPlayerSwitchInProgress()) {
-                await Delay(0);
+                await Delay(100);
             }
 
             FreezePlayer(PlayerId(), false);
