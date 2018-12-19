@@ -18,6 +18,7 @@ namespace GTAOnline_FiveM {
 
         public InteractionMenu() {
             Tick += OnTick;
+            Taxi taxi = new Taxi();
 
             //Menu 
             interactionMenu = new UIMenu(Game.Player.Name, "~b~Interaction Menu", false) {
@@ -27,7 +28,7 @@ namespace GTAOnline_FiveM {
                 ControlDisablingEnabled = false
             };
             
-            interactionMenu.AddItem(new UIMenuListItem("Services", new List<dynamic> { "Call Mugger", "Taxi", "Suicide"}, 0));
+            interactionMenu.AddItem(new UIMenuListItem("Services", new List<dynamic> { "Call Mugger", "Call Taxi", "Suicide"}, 0));
             interactionMenu.RefreshIndex();
 
             _MenuPool.Add(interactionMenu);
@@ -40,6 +41,7 @@ namespace GTAOnline_FiveM {
                         break;
                     case 1:
                         interactionMenu.Visible = false;
+                        taxi.CallTaxi();
                         break;
                     case 2:
                         interactionMenu.Visible = false;
