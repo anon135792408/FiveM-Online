@@ -35,7 +35,8 @@ namespace GTAOnline_FiveM {
         };
 
         public static Dictionary<Vector3, float> vehicleLocations = new Dictionary<Vector3, float> {
-            { new Vector3(40.73f, -703.12f, 43.66f), 158.03f }
+            { new Vector3(40.73f, -703.12f, 43.66f), 158.03f },
+            { new Vector3(36.99f, -712.57f, 44.04f), 160.37f }
         };
     }
 }

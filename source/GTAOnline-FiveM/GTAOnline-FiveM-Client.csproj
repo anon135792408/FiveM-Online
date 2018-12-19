@@ -51,6 +51,7 @@
   <ItemGroup>
     <Compile Include="Christmas.cs" />
     <Compile Include="ConvenienveStore.cs" />
+    <Compile Include="HelmetVisor.cs" />
     <Compile Include="InteractionMenu.cs" />
     <Compile Include="PersonalVehicle.cs" />
     <Compile Include="GamePlayer.cs" />
