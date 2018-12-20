@@ -12,13 +12,17 @@ namespace GTAOnline_FiveM {
     class InteractionMenu : BaseScript {
         private MenuPool _MenuPool = new MenuPool();
         private UIMenu interactionMenu;
+        public UIMenu taxiMenu;
+
+        public Vehicle playerTaxi;
+        public Ped taxiDriver;
+        public Vector3 Destination;
 
         Ped mugger;
         Ped target;
 
         public InteractionMenu() {
             Tick += OnTick;
-            Taxi taxi = new Taxi();
 
             //Menu 
             interactionMenu = new UIMenu(Game.Player.Name, "~b~Interaction Menu", false) {
@@ -33,6 +37,19 @@ namespace GTAOnline_FiveM {
 
             _MenuPool.Add(interactionMenu);
 
+            taxiMenu = new UIMenu("Taxi", "~b~Destinations", false) {
+                ScaleWithSafezone = false,
+                MouseControlsEnabled = false,
+                MouseEdgeEnabled = false,
+                ControlDisablingEnabled = false
+            };
+
+            taxiMenu.Clear();
+            taxiMenu.AddItem(new UIMenuItem("Waypoint", "Waypoint"));
+            taxiMenu.RefreshIndex();
+
+            _MenuPool.Add(taxiMenu);
+
             interactionMenu.OnListSelect += (sender, item, index) => {
                 switch (index) {
                     case 0:
@@ -41,7 +58,7 @@ namespace GTAOnline_FiveM {
                         break;
                     case 1:
                         interactionMenu.Visible = false;
-                        taxi.CallTaxi();
+                        InitTaxi();
                         break;
                     case 2:
                         interactionMenu.Visible = false;
@@ -49,6 +66,38 @@ namespace GTAOnline_FiveM {
                         break;
                 }
             };
+
+            taxiMenu.OnListSelect += (sender, item, index) => {
+                switch (index) {
+                    case 0:
+                        taxiDriver.Task.ClearAllImmediately();
+                        Destination = World.GetNextPositionOnStreet(World.WaypointPosition);
+                        taxiDriver.Task.DriveTo(playerTaxi, Destination, 5.0f, 30f, (int)DrivingStyle.Normal);
+                        break;
+                }
+            };
+        }
+
+        private async Task OnTaxiTick() {
+            if (Game.PlayerPed.IsInRangeOf(playerTaxi.Position, 7.0f) && Game.IsControlJustPressed(0, Control.Enter)) {
+                Game.PlayerPed.Task.EnterVehicle(playerTaxi, VehicleSeat.LeftRear, -1);
+            }
+
+            if (Game.PlayerPed.CurrentVehicle == playerTaxi) {
+                if (Game.IsControlJustPressed(0, Control.Context)) {
+                    taxiMenu.Visible = !taxiMenu.Visible;
+                }
+            }
+        }
+
+        private Vector3 GetAroundVector3(Vector3 v, float distance) {
+            float variation = distance * 2;
+            Random rnd = new Random();
+
+            float bx = rnd.Next((int)distance, (int)variation) - distance;
+            float by = rnd.Next((int)distance, (int)variation) - distance;
+
+            return new Vector3(v.X + bx, v.Y + by, v.Z);
         }
 
         private async void CallMugger() {
@@ -103,6 +152,33 @@ namespace GTAOnline_FiveM {
             }
             if (Game.IsControlJustPressed(0, Control.MultiplayerInfo)) {
                 interactionMenu.Visible = !interactionMenu.Visible;
+            }
+        }
+
+        private async Task CheckTaxiStatus() {
+            if (playerTaxi.IsDead || taxiDriver.IsDead) {
+                playerTaxi.AttachedBlip.Delete();
+                Tick -= OnTick;
+                Tick -= CheckTaxiStatus;
+                playerTaxi = null;
+                taxiDriver = null;
+            }
+        }
+
+        private async void InitTaxi() {
+            if (playerTaxi == null) {
+                playerTaxi = await World.CreateVehicle(VehicleHash.Taxi, World.GetNextPositionOnStreet(GetAroundVector3(Game.PlayerPed.Position, 50f)));
+                taxiDriver = await World.CreatePed(PedHash.Indian01AMM, playerTaxi.Position);
+                playerTaxi.AttachBlip();
+
+                taxiDriver.SetIntoVehicle(playerTaxi, VehicleSeat.Driver);
+                taxiDriver.Task.DriveTo(playerTaxi, World.GetNextPositionOnStreet(Game.PlayerPed.Position), 5.0f, 30f, (int)DrivingStyle.Normal);
+
+                Tick += OnTaxiTick;
+                Tick += CheckTaxiStatus;
+
+            } else {
+                Screen.ShowNotification("You already have an active taxi.");
             }
         }
     }

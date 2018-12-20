@@ -60,7 +60,6 @@
     <Compile Include="SimeonMissionData.cs" />
     <Compile Include="Spawning.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Taxi.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
