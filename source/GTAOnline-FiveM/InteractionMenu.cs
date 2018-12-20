@@ -67,19 +67,23 @@ namespace GTAOnline_FiveM {
                 }
             };
 
-            taxiMenu.OnListSelect += (sender, item, index) => {
+            taxiMenu.OnItemSelect += (sender, item, index) => {
                 switch (index) {
                     case 0:
-                        taxiDriver.Task.ClearAllImmediately();
-                        Destination = World.GetNextPositionOnStreet(World.WaypointPosition);
-                        taxiDriver.Task.DriveTo(playerTaxi, Destination, 5.0f, 30f, (int)DrivingStyle.Normal);
+                        if (Game.IsWaypointActive) {
+                            //taxiDriver.Task.ClearAll();
+                            Destination = World.GetNextPositionOnStreet(World.WaypointPosition);
+                            taxiDriver.Task.DriveTo(playerTaxi, Destination, 5.0f, 30f, (int)DrivingStyle.Normal);
+                        } else {
+                            Screen.ShowNotification("You do not have a waypoint set.");
+                        }
                         break;
                 }
             };
         }
 
         private async Task OnTaxiTick() {
-            if (Game.PlayerPed.IsInRangeOf(playerTaxi.Position, 7.0f) && Game.IsControlJustPressed(0, Control.Enter)) {
+            if (Game.PlayerPed.IsInRangeOf(playerTaxi.Position, 7.0f) && Game.IsControlJustPressed(0, Control.Enter) && !Game.PlayerPed.IsInVehicle()) {
                 Game.PlayerPed.Task.EnterVehicle(playerTaxi, VehicleSeat.LeftRear, -1);
             }
 
@@ -87,6 +91,26 @@ namespace GTAOnline_FiveM {
                 if (Game.IsControlJustPressed(0, Control.Context)) {
                     taxiMenu.Visible = !taxiMenu.Visible;
                 }
+            }
+
+            if (playerTaxi.IsInRangeOf(Destination, 7.0f)) {
+                while (playerTaxi.WheelSpeed > 0f) {
+                    await Delay(250);
+                }
+
+                while(Game.PlayerPed.IsInVehicle()) {
+                    Game.PlayerPed.Task.LeaveVehicle();
+                    await Delay(250);
+                }
+
+                playerTaxi.AttachedBlip.Delete();
+                Tick -= OnTaxiTick;
+                Tick -= CheckTaxiStatus;
+                playerTaxi.MarkAsNoLongerNeeded();
+                taxiDriver.MarkAsNoLongerNeeded();
+                playerTaxi = null;
+                taxiDriver = null;
+                taxiMenu.Visible = false;
             }
         }
 
@@ -156,12 +180,13 @@ namespace GTAOnline_FiveM {
         }
 
         private async Task CheckTaxiStatus() {
-            if (playerTaxi.IsDead || taxiDriver.IsDead) {
+            if (playerTaxi.IsDead || taxiDriver.IsDead || taxiDriver.IsFleeing) {
                 playerTaxi.AttachedBlip.Delete();
-                Tick -= OnTick;
+                Tick -= OnTaxiTick;
                 Tick -= CheckTaxiStatus;
                 playerTaxi = null;
                 taxiDriver = null;
+                taxiMenu.Visible = false;
             }
         }
 
@@ -173,6 +198,8 @@ namespace GTAOnline_FiveM {
 
                 taxiDriver.SetIntoVehicle(playerTaxi, VehicleSeat.Driver);
                 taxiDriver.Task.DriveTo(playerTaxi, World.GetNextPositionOnStreet(Game.PlayerPed.Position), 5.0f, 30f, (int)DrivingStyle.Normal);
+
+                await Delay(1500);
 
                 Tick += OnTaxiTick;
                 Tick += CheckTaxiStatus;
