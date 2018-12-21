@@ -106,6 +106,7 @@ namespace GTAOnline_FiveM {
                 playerTaxi.AttachedBlip.Delete();
                 Tick -= OnTaxiTick;
                 Tick -= CheckTaxiStatus;
+                playerTaxi.IsTaxiLightOn = false;
                 playerTaxi.MarkAsNoLongerNeeded();
                 taxiDriver.MarkAsNoLongerNeeded();
                 playerTaxi = null;
@@ -182,6 +183,7 @@ namespace GTAOnline_FiveM {
         private async Task CheckTaxiStatus() {
             if (playerTaxi.IsDead || taxiDriver.IsDead || taxiDriver.IsFleeing) {
                 playerTaxi.AttachedBlip.Delete();
+                playerTaxi.IsTaxiLightOn = false;
                 Tick -= OnTaxiTick;
                 Tick -= CheckTaxiStatus;
                 playerTaxi = null;
@@ -195,6 +197,7 @@ namespace GTAOnline_FiveM {
                 playerTaxi = await World.CreateVehicle(VehicleHash.Taxi, World.GetNextPositionOnStreet(GetAroundVector3(Game.PlayerPed.Position, 50f)));
                 taxiDriver = await World.CreatePed(PedHash.Indian01AMM, playerTaxi.Position);
                 playerTaxi.AttachBlip();
+                playerTaxi.IsTaxiLightOn = true;
 
                 taxiDriver.SetIntoVehicle(playerTaxi, VehicleSeat.Driver);
                 taxiDriver.Task.DriveTo(playerTaxi, World.GetNextPositionOnStreet(Game.PlayerPed.Position), 5.0f, 30f, (int)DrivingStyle.Normal);
