@@ -124,6 +124,8 @@ namespace GTAOnline_FiveM {
             TriggerEvent("playerSpawned", PlayerId());
             SetEntityCoordsNoOffset(ped, x, y, z, false, false, false);
             _spawnLock = false;
+            
+            SetCanAttackFriendly(PlayerPedId(), true, false);
         }
     }
 }
