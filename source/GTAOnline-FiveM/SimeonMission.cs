@@ -75,16 +75,17 @@ namespace GTAOnline_FiveM {
                 }
 
                 if (Game.PlayerPed.IsInRangeOf(SIMEON_DROPOFF, 7.0f) && missionVehicle.Driver == Game.PlayerPed) {
+                    //missionVehicle.MaxSpeed = 0;
+                    SetVehicleHalt(missionVehicle.Handle, 3.0f, 1, false);
+                    while (!missionVehicle.IsStopped) {
+                        await Delay(100);
+                    }
+
                     TriggerServerEvent("GTAO:SimeonMissionFadeOutIn", Game.Player.ServerId);
 
                     for (int i = 0; i < missionVehicle.Passengers.Count(); i++) {
                         int pHandle = GetPlayerServerId(NetworkGetPlayerIndexFromPed(missionVehicle.Passengers[i].Handle));
                         TriggerServerEvent("GTAO:SimeonMissionFadeOutIn", pHandle);
-                    }
-
-                    missionVehicle.MaxSpeed = 0;
-                    while (!missionVehicle.IsStopped) {
-                        await Delay(100);
                     }
 
                     while (missionVehicle.Passengers.Count() > 0) {
