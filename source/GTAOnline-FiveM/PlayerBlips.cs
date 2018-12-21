@@ -48,6 +48,11 @@ namespace GTAOnline_FiveM {
                     b.IsShortRange = false;
                     b.Color = BlipColor.White;
                     b.Name = player.Name;
+                    int pHandle = player.Handle;
+
+                    if (NetworkIsFriend(ref pHandle)) {
+                        SetBlipFriend(b.Handle, true);
+                    }
                 }
             }
         }
