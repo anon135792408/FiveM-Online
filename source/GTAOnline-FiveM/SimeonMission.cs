@@ -96,28 +96,42 @@ namespace GTAOnline_FiveM
 
                     TriggerServerEvent("GTAO:EndMissionForAll");
                     TriggerServerEvent("GTAO:ClearSimeonMarkerForAll");
-                    PlayMissionCompleteAudio("FRANKLIN_BIG_01");
                 }
             }
         }
 
         private async void SimeonMissionFadeOutIn()
         {
+            GamePlayer.isCutsceneActive = true;
+
+            Camera cutsCam = World.CreateCamera(new Vector3(1204.28f, -3102.81f, 5.89f), Vector3.Zero, 60);
+            cutsCam.PointAt(missionVehicle.Position);
+            cutsCam.IsActive = true;
+            RenderScriptCams(true, false, 0, true, false);
+
+            Game.PlayerPed.Task.LeaveVehicle();
+            Game.PlayerPed.Task.FollowPointRoute(new Vector3(1204.4f, -3100.5f, 5.87f));
+
+            await Delay(7000);
+
             Screen.Fading.FadeOut(500);
             while (Screen.Fading.IsFadingOut)
             {
                 await Delay(100);
             }
-            Game.PlayerPed.Task.LeaveVehicle();
-            while (Game.PlayerPed.IsSittingInVehicle())
-            {
-                await Delay(100);
-            }
-            BigMessageThread.MessageInstance.ShowMissionPassedMessage("Mission Passed", 5000);
-            Game.PlayerPed.PositionNoOffset = World.GetNextPositionOnSidewalk(new Vector2(1199.64f, -3065.44f));
+
+            cutsCam.IsActive = false;
+            cutsCam.Delete();
+            RenderScriptCams(false, false, 0, true, false);
+
+            GamePlayer.isCutsceneActive = false;
+
             await Delay(1750);
 
             Screen.Fading.FadeIn(500);
+            PlayMissionCompleteAudio("FRANKLIN_BIG_01");
+            BigMessageThread.MessageInstance.ShowMissionPassedMessage("Mission Passed", 5000);
+            Game.PlayerPed.PositionNoOffset = World.GetNextPositionOnSidewalk(new Vector2(1199.64f, -3065.44f));
         }
 
         private void EndMission()
