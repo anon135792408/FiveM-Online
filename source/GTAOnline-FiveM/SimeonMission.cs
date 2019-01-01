@@ -31,32 +31,18 @@ namespace GTAOnline_FiveM {
 
             if (!missionActive && NetworkIsHost()) {
                 Tuple<Vector3, float> randPos = GetRandomPosition();
-                Debug.WriteLine("A");
                 RequestCollisionAtCoord(randPos.Item1.X, randPos.Item1.Y, randPos.Item1.Z);
-                Debug.WriteLine("B");
                 missionVehicle = await World.CreateVehicle(GetRandomVehHash(), randPos.Item1, randPos.Item2);
-                while (!missionVehicle.Exists()) {
-                    await Delay(100);
-                }
-                Debug.WriteLine("C");
+                await Delay(2000);
                 missionVehicle.PlaceOnGround();
-                Debug.WriteLine("D");
                 missionVehicle.LockStatus = VehicleLockStatus.CanBeBrokenInto;
-                Debug.WriteLine("E");
                 missionVehicle.IsAlarmSet = true;
-                Debug.WriteLine("F");
                 missionVehicle.IsPersistent = true;
-                Debug.WriteLine("G");
-
 
                 SetVehicleHasBeenOwnedByPlayer(missionVehicle.Handle, true);
-                Debug.WriteLine("H");
                 var net_id = NetworkGetNetworkIdFromEntity(missionVehicle.Handle);
-                Debug.WriteLine("I");
                 SetNetworkIdCanMigrate(net_id, true);
-                Debug.WriteLine("J");
                 SetNetworkIdExistsOnAllMachines(net_id, true);
-                Debug.WriteLine("K");
                 NetworkFadeOutEntity(missionVehicle.Handle, true, false);
                 await Delay(5000);
                 TriggerServerEvent("GTAO:StartMissionForAll", net_id);
