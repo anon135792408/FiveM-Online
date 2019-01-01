@@ -7,8 +7,8 @@
     <ProjectGuid>{847758B3-F07C-4610-A3C5-BF6DDEDA5841}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>GTAOnline_FiveM</RootNamespace>
-    <AssemblyName>GTAOnline-FiveM.net</AssemblyName>
+    <RootNamespace>FiveM_Online_Client</RootNamespace>
+    <AssemblyName>FiveM-Online-Client.net</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
@@ -63,6 +63,6 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>del "GTAOnline-Fivem.net.pdb"</PostBuildEvent>
+    <PostBuildEvent>del "FiveM-Online-Client.net.pdb"</PostBuildEvent>
   </PropertyGroup>
 </Project>
