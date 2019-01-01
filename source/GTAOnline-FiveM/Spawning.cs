@@ -7,18 +7,23 @@ using CitizenFX.Core;
 using static CitizenFX.Core.Native.API;
 using CitizenFX.Core.UI;
 
-namespace GTAOnline_FiveM {
+namespace GTAOnline_FiveM
+{
     /*
      * Credit where due: https://github.com/AppiChudilko/SpawnManager-FIveM/blob/master/Spawn.cs
      */
-    public class Spawning : BaseScript {
-        public Spawning() {
+    public class Spawning : BaseScript
+    {
+        public Spawning()
+        {
             DoPlayerSpawn();
             Tick += OnTick;
         }
 
-        private async void DoPlayerSpawn() {
-            if (!NetworkIsPlayerActive(PlayerId())) {
+        private async void DoPlayerSpawn()
+        {
+            if (!NetworkIsPlayerActive(PlayerId()))
+            {
                 await Delay(100);
             }
             await SpawnPlayer("MP_M_FREEMODE_01", 30.18f, -723.04f, 44.19f, 248.17f);
@@ -26,12 +31,14 @@ namespace GTAOnline_FiveM {
 
         private static bool _spawnLock = false;
 
-        public static void FreezePlayer(int playerId, bool freeze) {
+        public static void FreezePlayer(int playerId, bool freeze)
+        {
             var ped = GetPlayerPed(playerId);
 
             SetPlayerControl(playerId, !freeze, 0);
 
-            if (!freeze) {
+            if (!freeze)
+            {
                 if (!IsEntityVisible(ped))
                     SetEntityVisible(ped, true, true);
 
@@ -41,7 +48,9 @@ namespace GTAOnline_FiveM {
                 FreezeEntityPosition(ped, false);
                 //SetCharNeverTargetted(ped, false)
                 SetPlayerInvincible(playerId, false);
-            } else {
+            }
+            else
+            {
                 if (IsEntityVisible(ped))
                     SetEntityVisible(ped, false, false);
 
@@ -55,18 +64,22 @@ namespace GTAOnline_FiveM {
             }
         }
 
-        private async Task OnTick() {
-            if (IsPedFatallyInjured(PlayerPedId())) {
+        private async Task OnTick()
+        {
+            if (IsPedFatallyInjured(PlayerPedId()))
+            {
                 await Delay(3400);
                 await SpawnPlayer("MP_M_FREEMODE_01", 30.18f, -723.04f, 44.19f, 248.17f);
             }
 
-            if (IsPlayerSwitchInProgress()) {
+            if (IsPlayerSwitchInProgress())
+            {
                 HideHudAndRadarThisFrame();
             }
         }
 
-        public static async Task SpawnPlayer(string skin, float x, float y, float z, float heading) {
+        public static async Task SpawnPlayer(string skin, float x, float y, float z, float heading)
+        {
             if (_spawnLock)
                 return;
 
@@ -75,11 +88,13 @@ namespace GTAOnline_FiveM {
             Screen.Fading.FadeOut(500);
 
             Debug.WriteLine("Before While fading out");
-            while (Screen.Fading.IsFadingOut) {
+            while (Screen.Fading.IsFadingOut)
+            {
                 await Delay(1);
             }
 
-            if (!IsPlayerSwitchInProgress()) {
+            if (!IsPlayerSwitchInProgress())
+            {
                 SwitchOutPlayer(PlayerPedId(), 0, 1);
             }
 
@@ -98,11 +113,13 @@ namespace GTAOnline_FiveM {
             RemoveAllPedWeapons(ped, false);
             ClearPlayerWantedLevel(PlayerId());
 
-            while (!HasCollisionLoadedAroundEntity(ped)) {
+            while (!HasCollisionLoadedAroundEntity(ped))
+            {
                 await Delay(1);
             }
 
-            if (GetPlayerSwitchState() != 8) {
+            if (GetPlayerSwitchState() != 8)
+            {
                 await Delay(100);
             }
 
@@ -111,20 +128,22 @@ namespace GTAOnline_FiveM {
             ShutdownLoadingScreen();
             Screen.Fading.FadeIn(500);
 
-            while (Screen.Fading.IsFadingIn) {
+            while (Screen.Fading.IsFadingIn)
+            {
                 await Delay(1);
             }
 
-            while (IsPlayerSwitchInProgress()) {
+            while (IsPlayerSwitchInProgress())
+            {
                 await Delay(100);
             }
 
             FreezePlayer(PlayerId(), false);
-            
+
             TriggerEvent("playerSpawned", PlayerId());
             SetEntityCoordsNoOffset(ped, x, y, z, false, false, false);
             _spawnLock = false;
-            
+
             SetCanAttackFriendly(PlayerPedId(), true, false);
         }
     }

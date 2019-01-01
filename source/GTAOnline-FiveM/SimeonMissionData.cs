@@ -7,8 +7,10 @@ using CitizenFX.Core;
 using static CitizenFX.Core.Native.API;
 using CitizenFX.Core.UI;
 
-namespace GTAOnline_FiveM {
-    public class SimeonMissionData {
+namespace GTAOnline_FiveM
+{
+    public class SimeonMissionData
+    {
         public static List<VehicleHash> wantedVehicles = new List<VehicleHash> {
             VehicleHash.Blista,
             VehicleHash.Asterope,

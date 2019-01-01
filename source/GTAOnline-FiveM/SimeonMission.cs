@@ -8,8 +8,10 @@ using static CitizenFX.Core.Native.API;
 using CitizenFX.Core.UI;
 using NativeUI;
 
-namespace GTAOnline_FiveM {
-    class SimeonMission : BaseScript{
+namespace GTAOnline_FiveM
+{
+    class SimeonMission : BaseScript
+    {
         private Vector3 SIMEON_DROPOFF = new Vector3(1204.43f, -3116.04f, 5.54f);
         private bool missionActive = false;
         static Random rnd = new Random();
@@ -17,19 +19,22 @@ namespace GTAOnline_FiveM {
         Blip simBlip;
         private bool isVehicleDead = false;
 
-        public SimeonMission() {
+        public SimeonMission()
+        {
             EventHandlers.Add("GTAO:DisplaySimeonMarkerForAll", new Action(DisplaySimeonMarker));
             EventHandlers.Add("GTAO:ClearSimeonMarkerForAll", new Action(ClearSimeonMarker));
             EventHandlers.Add("GTAO:EndMissionForAll", new Action(EndMission));
             EventHandlers.Add("GTAO:StartMissionForAll", new Action<int>(StartMission));
             EventHandlers.Add("GTAO:SimeonMissionFadeOutIn", new Action(SimeonMissionFadeOutIn));
-            Tick += OnTick;    
+            Tick += OnTick;
         }
 
-        private async Task OnTick() {
+        private async Task OnTick()
+        {
             await Delay(15000);
 
-            if (!missionActive && NetworkIsHost()) {
+            if (!missionActive && NetworkIsHost())
+            {
                 Tuple<Vector3, float> randPos = GetRandomPosition();
                 RequestCollisionAtCoord(randPos.Item1.X, randPos.Item1.Y, randPos.Item1.Z);
                 missionVehicle = await World.CreateVehicle(GetRandomVehHash(), randPos.Item1, randPos.Item2);
@@ -52,18 +57,23 @@ namespace GTAOnline_FiveM {
             }
         }
 
-        private async Task MissionTick() {
+        private async Task MissionTick()
+        {
             await Delay(500);
-            if (missionActive) {
-                if ((missionVehicle.IsDead || (missionVehicle.IsUpsideDown && missionVehicle.Driver == null)) && NetworkIsHost()) {
+            if (missionActive)
+            {
+                if ((missionVehicle.IsDead || (missionVehicle.IsUpsideDown && missionVehicle.Driver == null)) && NetworkIsHost())
+                {
                     TriggerServerEvent("GTAO:EndMissionForAll");
                     TriggerServerEvent("GTAO:ClearSimeonMarkerForAll");
                 }
 
-                if (Game.PlayerPed.IsInRangeOf(SIMEON_DROPOFF, 7.0f) && missionVehicle.Driver == Game.PlayerPed) {
+                if (Game.PlayerPed.IsInRangeOf(SIMEON_DROPOFF, 7.0f) && missionVehicle.Driver == Game.PlayerPed)
+                {
                     //missionVehicle.MaxSpeed = 0;
                     SetVehicleHalt(missionVehicle.Handle, 3.0f, 1, false);
-                    while (!missionVehicle.IsStopped) {
+                    while (!missionVehicle.IsStopped)
+                    {
                         await Delay(100);
                     }
 
@@ -74,12 +84,14 @@ namespace GTAOnline_FiveM {
                         await Delay(100);
                     }
 
-                    for (int i = 0; i < missionVehicle.Passengers.Count(); i++) {
+                    for (int i = 0; i < missionVehicle.Passengers.Count(); i++)
+                    {
                         int pHandle = GetPlayerServerId(NetworkGetPlayerIndexFromPed(missionVehicle.Passengers[i].Handle));
                         TriggerServerEvent("GTAO:SimeonMissionFadeOutIn", pHandle);
                     }
 
-                    while (missionVehicle.Passengers.Count() > 0) {
+                    while (missionVehicle.Passengers.Count() > 0)
+                    {
                         await Delay(100);
                     }
 
@@ -90,18 +102,22 @@ namespace GTAOnline_FiveM {
             }
         }
 
-        private async Task VehicleStatusCheck() {
+        private async Task VehicleStatusCheck()
+        {
             isVehicleDead = missionVehicle.IsDead;
             await Delay(500);
         }
 
-        private async void SimeonMissionFadeOutIn() {
+        private async void SimeonMissionFadeOutIn()
+        {
             Screen.Fading.FadeOut(500);
-            while (Screen.Fading.IsFadingOut) {
+            while (Screen.Fading.IsFadingOut)
+            {
                 await Delay(100);
             }
             Game.PlayerPed.Task.LeaveVehicle();
-            while (Game.PlayerPed.IsSittingInVehicle()) {
+            while (Game.PlayerPed.IsSittingInVehicle())
+            {
                 await Delay(100);
             }
             BigMessageThread.MessageInstance.ShowMissionPassedMessage("Mission Passed", 5000);
@@ -111,8 +127,10 @@ namespace GTAOnline_FiveM {
             Screen.Fading.FadeIn(500);
         }
 
-        private void EndMission() {
-            if (NetworkIsHost() && missionVehicle != null) {
+        private void EndMission()
+        {
+            if (NetworkIsHost() && missionVehicle != null)
+            {
                 Delay(1250);
                 NetworkFadeOutEntity(missionVehicle.Handle, true, false);
             }
@@ -124,7 +142,8 @@ namespace GTAOnline_FiveM {
             Tick -= MissionTick;
         }
 
-        private void StartMission(int net_id) {
+        private void StartMission(int net_id)
+        {
             NetworkRequestControlOfNetworkId(net_id);
             missionVehicle = new Vehicle(NetworkGetEntityFromNetworkId(net_id));
             missionActive = true;
@@ -139,13 +158,15 @@ namespace GTAOnline_FiveM {
             if ("aeiouAEIOU".Contains(locName[0]))
             {
                 DrawSimeonNotification("An " + locName + " has been spotted in " + World.GetStreetName(missionVehicle.Position) + ", go and pick it up for me.");
-            } else
+            }
+            else
             {
                 DrawSimeonNotification("A " + locName + " has been spotted in " + World.GetStreetName(missionVehicle.Position) + ", go and pick it up for me.");
             }
         }
 
-        private void AttachBlipToMissionEntity() {
+        private void AttachBlipToMissionEntity()
+        {
             Debug.WriteLine("Attaching Blip to Mission vehicle");
             Blip b = missionVehicle.AttachBlip();
             b.IsShortRange = false;
@@ -154,11 +175,13 @@ namespace GTAOnline_FiveM {
             b.Name = "Simeon's Wanted Asset";
         }
 
-        private VehicleHash GetRandomVehHash() {
+        private VehicleHash GetRandomVehHash()
+        {
             return SimeonMissionData.wantedVehicles[rnd.Next(SimeonMissionData.wantedVehicles.Count)];
         }
 
-        private void DisplaySimeonMarker() {
+        private void DisplaySimeonMarker()
+        {
             simBlip = World.CreateBlip(SIMEON_DROPOFF);
             simBlip.Alpha = 255;
             simBlip.Sprite = BlipSprite.Solomon;
@@ -167,18 +190,21 @@ namespace GTAOnline_FiveM {
             simBlip.IsShortRange = false;
         }
 
-        private void ClearSimeonMarker() {
+        private void ClearSimeonMarker()
+        {
             simBlip.Delete();
         }
 
-        private Tuple<Vector3, float> GetRandomPosition() {
+        private Tuple<Vector3, float> GetRandomPosition()
+        {
             int index = rnd.Next(SimeonMissionData.vehicleLocations.Count);
             return Tuple.Create(SimeonMissionData.vehicleLocations.ElementAt(index).Key, SimeonMissionData.vehicleLocations.ElementAt(index).Value);
         }
 
         private async void DrawSimeonNotification(string message)
         {
-            while (!NetworkIsPlayerActive(PlayerId()) || IsPlayerSwitchInProgress()) {
+            while (!NetworkIsPlayerActive(PlayerId()) || IsPlayerSwitchInProgress())
+            {
                 await Delay(100);
             }
             Debug.WriteLine("Passing message: " + message);

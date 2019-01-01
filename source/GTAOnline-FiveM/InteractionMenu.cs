@@ -8,8 +8,10 @@ using static CitizenFX.Core.Native.API;
 using CitizenFX.Core.UI;
 using NativeUI;
 
-namespace GTAOnline_FiveM {
-    class InteractionMenu : BaseScript {
+namespace GTAOnline_FiveM
+{
+    class InteractionMenu : BaseScript
+    {
         private MenuPool _MenuPool = new MenuPool();
         private UIMenu interactionMenu;
         public UIMenu taxiMenu;
@@ -21,23 +23,26 @@ namespace GTAOnline_FiveM {
         Ped mugger;
         Ped target;
 
-        public InteractionMenu() {
+        public InteractionMenu()
+        {
             Tick += OnTick;
 
             //Menu 
-            interactionMenu = new UIMenu(Game.Player.Name, "~b~Interaction Menu", false) {
+            interactionMenu = new UIMenu(Game.Player.Name, "~b~Interaction Menu", false)
+            {
                 ScaleWithSafezone = false,
                 MouseControlsEnabled = false,
                 MouseEdgeEnabled = false,
                 ControlDisablingEnabled = false
             };
-            
-            interactionMenu.AddItem(new UIMenuListItem("Services", new List<dynamic> { "Call Mugger", "Call Taxi", "Suicide"}, 0));
+
+            interactionMenu.AddItem(new UIMenuListItem("Services", new List<dynamic> { "Call Mugger", "Call Taxi", "Suicide" }, 0));
             interactionMenu.RefreshIndex();
 
             _MenuPool.Add(interactionMenu);
 
-            taxiMenu = new UIMenu("Taxi", "~b~Destinations", false) {
+            taxiMenu = new UIMenu("Taxi", "~b~Destinations", false)
+            {
                 ScaleWithSafezone = false,
                 MouseControlsEnabled = false,
                 MouseEdgeEnabled = false,
@@ -50,8 +55,10 @@ namespace GTAOnline_FiveM {
 
             _MenuPool.Add(taxiMenu);
 
-            interactionMenu.OnListSelect += (sender, item, index) => {
-                switch (index) {
+            interactionMenu.OnListSelect += (sender, item, index) =>
+            {
+                switch (index)
+                {
                     case 0:
                         interactionMenu.Visible = false;
                         CallMugger();
@@ -67,14 +74,19 @@ namespace GTAOnline_FiveM {
                 }
             };
 
-            taxiMenu.OnItemSelect += (sender, item, index) => {
-                switch (index) {
+            taxiMenu.OnItemSelect += (sender, item, index) =>
+            {
+                switch (index)
+                {
                     case 0:
-                        if (Game.IsWaypointActive) {
+                        if (Game.IsWaypointActive)
+                        {
                             //taxiDriver.Task.ClearAll();
                             Destination = World.GetNextPositionOnStreet(World.WaypointPosition);
                             taxiDriver.Task.DriveTo(playerTaxi, Destination, 5.0f, 30f, (int)DrivingStyle.Normal);
-                        } else {
+                        }
+                        else
+                        {
                             Screen.ShowNotification("You do not have a waypoint set.");
                         }
                         break;
@@ -82,23 +94,30 @@ namespace GTAOnline_FiveM {
             };
         }
 
-        private async Task OnTaxiTick() {
-            if (Game.PlayerPed.IsInRangeOf(playerTaxi.Position, 7.0f) && Game.IsControlJustPressed(0, Control.Enter) && !Game.PlayerPed.IsInVehicle()) {
+        private async Task OnTaxiTick()
+        {
+            if (Game.PlayerPed.IsInRangeOf(playerTaxi.Position, 7.0f) && Game.IsControlJustPressed(0, Control.Enter) && !Game.PlayerPed.IsInVehicle())
+            {
                 Game.PlayerPed.Task.EnterVehicle(playerTaxi, VehicleSeat.LeftRear, -1);
             }
 
-            if (Game.PlayerPed.CurrentVehicle == playerTaxi) {
-                if (Game.IsControlJustPressed(0, Control.Context)) {
+            if (Game.PlayerPed.CurrentVehicle == playerTaxi)
+            {
+                if (Game.IsControlJustPressed(0, Control.Context))
+                {
                     taxiMenu.Visible = !taxiMenu.Visible;
                 }
             }
 
-            if (playerTaxi.IsInRangeOf(Destination, 7.0f)) {
-                while (playerTaxi.WheelSpeed > 0f) {
+            if (playerTaxi.IsInRangeOf(Destination, 7.0f))
+            {
+                while (playerTaxi.WheelSpeed > 0f)
+                {
                     await Delay(250);
                 }
 
-                while(Game.PlayerPed.IsInVehicle()) {
+                while (Game.PlayerPed.IsInVehicle())
+                {
                     Game.PlayerPed.Task.LeaveVehicle();
                     await Delay(250);
                 }
@@ -115,7 +134,8 @@ namespace GTAOnline_FiveM {
             }
         }
 
-        private Vector3 GetAroundVector3(Vector3 v, float distance) {
+        private Vector3 GetAroundVector3(Vector3 v, float distance)
+        {
             float variation = distance * 2;
             Random rnd = new Random();
 
@@ -125,16 +145,20 @@ namespace GTAOnline_FiveM {
             return new Vector3(v.X + bx, v.Y + by, v.Z);
         }
 
-        private async void CallMugger() {
+        private async void CallMugger()
+        {
             DisplayOnscreenKeyboard(0, "FMMC_KEY_TIP8", "", "", "", "", "", 64);
-            while (UpdateOnscreenKeyboard() == 0) {
+            while (UpdateOnscreenKeyboard() == 0)
+            {
                 DisableAllControlActions(0);
                 await Delay(100);
             }
 
             string result = GetOnscreenKeyboardResult();
-            foreach (Player p in Players) {
-                if (p.Name.ToUpper().Equals(result.ToUpper())) {
+            foreach (Player p in Players)
+            {
+                if (p.Name.ToUpper().Equals(result.ToUpper()))
+                {
                     Debug.WriteLine("Player Found!");
                     mugger = await World.CreatePed(PedHash.FibMugger01, World.GetNextPositionOnSidewalk(p.Character.Position + new Vector3(30f, 30f, 0f)), 0f);
                     mugger.Weapons.Give(WeaponHash.Knife, 1, true, true);
@@ -146,9 +170,11 @@ namespace GTAOnline_FiveM {
             }
         }
 
-        private async Task InitiateMugger() {
+        private async Task InitiateMugger()
+        {
             await Delay(100);
-            if (mugger.IsDead) {
+            if (mugger.IsDead)
+            {
                 mugger.MarkAsNoLongerNeeded();
                 Player p = new Player(NetworkGetPlayerIndexFromPed(target.Handle));
                 Screen.ShowNotification("The mugger you called on " + p.Name + " has been killed.");
@@ -156,7 +182,9 @@ namespace GTAOnline_FiveM {
                 target = null;
                 mugger = null;
                 Tick -= InitiateMugger;
-            } else if (target.IsDead && target.GetKiller() == mugger) {
+            }
+            else if (target.IsDead && target.GetKiller() == mugger)
+            {
                 mugger.Task.ClearAll();
                 mugger.Task.WanderAround();
                 mugger.MarkAsNoLongerNeeded();
@@ -169,19 +197,24 @@ namespace GTAOnline_FiveM {
             }
         }
 
-        private async Task OnTick() {
+        private async Task OnTick()
+        {
             _MenuPool.ProcessMenus();
-            while (UpdateOnscreenKeyboard() == 0) {
+            while (UpdateOnscreenKeyboard() == 0)
+            {
                 DisableAllControlActions(0);
                 await Delay(100);
             }
-            if (Game.IsControlJustPressed(0, Control.MultiplayerInfo)) {
+            if (Game.IsControlJustPressed(0, Control.MultiplayerInfo))
+            {
                 interactionMenu.Visible = !interactionMenu.Visible;
             }
         }
 
-        private async Task CheckTaxiStatus() {
-            if (playerTaxi.IsDead || taxiDriver.IsDead || taxiDriver.IsFleeing) {
+        private async Task CheckTaxiStatus()
+        {
+            if (playerTaxi.IsDead || taxiDriver.IsDead || taxiDriver.IsFleeing)
+            {
                 playerTaxi.AttachedBlip.Delete();
                 playerTaxi.IsTaxiLightOn = false;
                 Tick -= OnTaxiTick;
@@ -192,8 +225,10 @@ namespace GTAOnline_FiveM {
             }
         }
 
-        private async void InitTaxi() {
-            if (playerTaxi == null) {
+        private async void InitTaxi()
+        {
+            if (playerTaxi == null)
+            {
                 playerTaxi = await World.CreateVehicle(VehicleHash.Taxi, World.GetNextPositionOnStreet(GetAroundVector3(Game.PlayerPed.Position, 50f)));
                 taxiDriver = await World.CreatePed(PedHash.Indian01AMM, playerTaxi.Position);
                 playerTaxi.AttachBlip();
@@ -207,7 +242,9 @@ namespace GTAOnline_FiveM {
                 Tick += OnTaxiTick;
                 Tick += CheckTaxiStatus;
 
-            } else {
+            }
+            else
+            {
                 Screen.ShowNotification("You already have an active taxi.");
             }
         }

@@ -8,15 +8,19 @@ using static CitizenFX.Core.Native.API;
 using CitizenFX.Core.UI;
 using NativeUI;
 
-namespace GTAOnline_FiveM {
-    class ConvenienceStore : BaseScript {
+namespace GTAOnline_FiveM
+{
+    class ConvenienceStore : BaseScript
+    {
         List<Vector3> blipCoordinates = new List<Vector3>();
 
-        public ConvenienceStore() {
+        public ConvenienceStore()
+        {
             SetupBlipCoordinates();
         }
 
-        void SetupBlipCoordinates() {
+        void SetupBlipCoordinates()
+        {
             blipCoordinates.Add(new Vector3(-50f, -1753f, 29f));
             blipCoordinates.Add(new Vector3(29f, -1345f, 29f));
             blipCoordinates.Add(new Vector3(1136f, -981f, 46f));
@@ -37,7 +41,8 @@ namespace GTAOnline_FiveM {
             blipCoordinates.Add(new Vector3(1702f, 4927f, 42f));
             blipCoordinates.Add(new Vector3(1733f, 6415f, 35f));
 
-            foreach (Vector3 coordinate in blipCoordinates) {
+            foreach (Vector3 coordinate in blipCoordinates)
+            {
                 Blip b = World.CreateBlip(coordinate);
                 b.Sprite = BlipSprite.Store;
                 b.Name = "Store";
