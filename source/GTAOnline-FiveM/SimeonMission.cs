@@ -69,6 +69,11 @@ namespace GTAOnline_FiveM {
 
                     TriggerServerEvent("GTAO:SimeonMissionFadeOutIn", Game.Player.ServerId);
 
+                    while (Screen.Fading.IsFadingOut)
+                    {
+                        await Delay(100);
+                    }
+
                     for (int i = 0; i < missionVehicle.Passengers.Count(); i++) {
                         int pHandle = GetPlayerServerId(NetworkGetPlayerIndexFromPed(missionVehicle.Passengers[i].Handle));
                         TriggerServerEvent("GTAO:SimeonMissionFadeOutIn", pHandle);
