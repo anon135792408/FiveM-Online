@@ -12,13 +12,35 @@ namespace GTAOnline_FiveM
     public class GamePlayer : BaseScript
     {
         public static bool isCutsceneActive = false;
+        public static bool isInAnyVehicle = false;
+        public static bool isPlayerDead = false;
 
         public GamePlayer()
         {
-            Tick += OnTick;
+            Tick += CutsceneCheck;
+            Tick += StatusCheck;
         }
 
-        private async Task OnTick()
+        private async Task StatusCheck()
+        {
+            if (IsPedDeadOrDying(PlayerPedId(), true))
+            {
+                isPlayerDead = true;
+            }
+            else
+                isPlayerDead = false;
+
+            if (IsPedInAnyVehicle(PlayerPedId(), true))
+            {
+                isInAnyVehicle = true;
+            }
+            else
+                isInAnyVehicle = false;
+
+            await Delay(500);
+        }
+
+        private async Task CutsceneCheck()
         {
             if(isCutsceneActive)
             {

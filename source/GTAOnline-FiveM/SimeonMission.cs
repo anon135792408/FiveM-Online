@@ -67,35 +67,38 @@ namespace GTAOnline_FiveM
                     TriggerServerEvent("GTAO:ClearSimeonMarkerForAll");
                 }
 
-                if (Game.PlayerPed.IsInRangeOf(SIMEON_DROPOFF, 7.0f) && missionVehicle.Driver == Game.PlayerPed)
+                if (GamePlayer.isInAnyVehicle)
                 {
-                    //missionVehicle.MaxSpeed = 0;
-                    SetVehicleHalt(missionVehicle.Handle, 3.0f, 1, false);
-                    while (!missionVehicle.IsStopped)
+                    if (Game.PlayerPed.IsInRangeOf(SIMEON_DROPOFF, 7.0f) && missionVehicle.Driver == Game.PlayerPed)
                     {
-                        await Delay(100);
+                        //missionVehicle.MaxSpeed = 0;
+                        SetVehicleHalt(missionVehicle.Handle, 3.0f, 1, false);
+                        while (!missionVehicle.IsStopped)
+                        {
+                            await Delay(100);
+                        }
+
+                        TriggerServerEvent("GTAO:SimeonMissionFadeOutIn", Game.Player.ServerId);
+
+                        while (Screen.Fading.IsFadingOut)
+                        {
+                            await Delay(100);
+                        }
+
+                        for (int i = 0; i < missionVehicle.Passengers.Count(); i++)
+                        {
+                            int pHandle = GetPlayerServerId(NetworkGetPlayerIndexFromPed(missionVehicle.Passengers[i].Handle));
+                            TriggerServerEvent("GTAO:SimeonMissionFadeOutIn", pHandle);
+                        }
+
+                        while (missionVehicle.Passengers.Count() > 0)
+                        {
+                            await Delay(100);
+                        }
+
+                        TriggerServerEvent("GTAO:EndMissionForAll");
+                        TriggerServerEvent("GTAO:ClearSimeonMarkerForAll");
                     }
-
-                    TriggerServerEvent("GTAO:SimeonMissionFadeOutIn", Game.Player.ServerId);
-
-                    while (Screen.Fading.IsFadingOut)
-                    {
-                        await Delay(100);
-                    }
-
-                    for (int i = 0; i < missionVehicle.Passengers.Count(); i++)
-                    {
-                        int pHandle = GetPlayerServerId(NetworkGetPlayerIndexFromPed(missionVehicle.Passengers[i].Handle));
-                        TriggerServerEvent("GTAO:SimeonMissionFadeOutIn", pHandle);
-                    }
-
-                    while (missionVehicle.Passengers.Count() > 0)
-                    {
-                        await Delay(100);
-                    }
-
-                    TriggerServerEvent("GTAO:EndMissionForAll");
-                    TriggerServerEvent("GTAO:ClearSimeonMarkerForAll");
                 }
             }
         }
