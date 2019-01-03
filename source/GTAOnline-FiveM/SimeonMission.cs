@@ -13,6 +13,7 @@ namespace GTAOnline_FiveM
     class SimeonMission : BaseScript
     {
         private Vector3 SIMEON_DROPOFF = new Vector3(1204.43f, -3116.04f, 5.54f);
+        private bool isInMissionVehicle = false;
         private bool missionActive = false;
         static Random rnd = new Random();
         Vehicle missionVehicle;
@@ -69,6 +70,19 @@ namespace GTAOnline_FiveM
 
                 if (GamePlayer.isInAnyVehicle)
                 {
+                    if (Game.PlayerPed.CurrentVehicle == missionVehicle)
+                    {
+                        if (!isInMissionVehicle)
+                        {
+                            Screen.ShowSubtitle("Deliver the " + missionVehicle.LocalizedName + " to ~y~Simeon", 5000);
+                            isInMissionVehicle = true;
+                        }
+                    } 
+                    else
+                    {
+                        isInMissionVehicle = false;
+                    }
+
                     if (Game.PlayerPed.IsInRangeOf(SIMEON_DROPOFF, 7.0f) && missionVehicle.Driver == Game.PlayerPed)
                     {
                         //missionVehicle.MaxSpeed = 0;
