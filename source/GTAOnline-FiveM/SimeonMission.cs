@@ -129,6 +129,8 @@ namespace GTAOnline_FiveM
 
             GamePlayer.isCutsceneActive = false;
 
+            NetworkFadeOutEntity(missionVehicle.Handle, true, false);
+
             await Delay(1750);
 
             Screen.Fading.FadeIn(500);
@@ -139,17 +141,13 @@ namespace GTAOnline_FiveM
 
         private void EndMission()
         {
-            if (NetworkIsHost() && missionVehicle != null)
-            {
-                Delay(1250);
-                NetworkFadeOutEntity(missionVehicle.Handle, true, false);
-            }
-            missionActive = false;
             missionVehicle.AttachedBlip.Delete();
             missionVehicle.MarkAsNoLongerNeeded();
             missionVehicle.IsPersistent = false;
             SetAggressiveHorns(false);
             Tick -= MissionTick;
+            Delay(5000);
+            missionActive = false;
         }
 
         private void StartMission(int net_id)
