@@ -14,7 +14,11 @@ namespace FiveM_Online_Client
     {
         public PedPos[] CashieerPositions = new PedPos[]
         {
-            new PedPos(new Vector3(24.47f, -1347.39f, 29.5f), 264.72f)
+            new PedPos(new Vector3(24.47f, -1347.39f, 29.5f), 264.72f),
+            new PedPos(new Vector3(-46.88f, -1757.84f, 29.42f), 48.98f),
+            new PedPos(new Vector3(1134.21f, -982.44f, 46.42f), 280.57f),
+            new PedPos(new Vector3(-706.08f, -913.53f, 19.22f), 91.31f),
+            new PedPos(new Vector3(-1221.92f, -908.35f, 12.33f), 30.66f)
         };
 
         public List<Ped> CashieerList = new List<Ped>();
