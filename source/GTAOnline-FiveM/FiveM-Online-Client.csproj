@@ -49,10 +49,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Cashieers.cs" />
     <Compile Include="Christmas.cs" />
     <Compile Include="ConvenienveStore.cs" />
     <Compile Include="HelmetVisor.cs" />
     <Compile Include="InteractionMenu.cs" />
+    <Compile Include="PedPos.cs" />
     <Compile Include="PersonalVehicle.cs" />
     <Compile Include="GamePlayer.cs" />
     <Compile Include="PlayerBlips.cs" />
