@@ -37,6 +37,7 @@ namespace FiveM_Online_Client
             int closestPed = -1;
             foreach (PedPos pedPos in CashieerPositions)
             {
+                await Delay(500);
                 GetClosestPed(pedPos.Position.X, pedPos.Position.Y, pedPos.Position.Z, 1f, true, true, ref closestPed, true, true, -1);
 
                 if (DoesEntityExist(closestPed))
@@ -57,10 +58,12 @@ namespace FiveM_Online_Client
             {
                 foreach (Ped p in CashieerList)
                 {
+                    await Delay(500);
                     if (p.IsDead)
                     {
                         CashieerList.Remove(p);
                         SpawnCashieers();
+                        break;
                     }
                 }
             }
