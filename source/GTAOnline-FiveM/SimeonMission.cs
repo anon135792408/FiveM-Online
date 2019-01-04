@@ -38,18 +38,23 @@ namespace GTAOnline_FiveM
                 Tuple<Vector3, float> randPos = GetRandomPosition();
                 RequestCollisionAtCoord(randPos.Item1.X, randPos.Item1.Y, randPos.Item1.Z);
                 missionVehicle = await World.CreateVehicle(GetRandomVehHash(), randPos.Item1, randPos.Item2);
+
                 await Delay(2000);
+
                 missionVehicle.PlaceOnGround();
                 missionVehicle.LockStatus = VehicleLockStatus.CanBeBrokenInto;
                 missionVehicle.IsAlarmSet = true;
                 missionVehicle.IsPersistent = true;
 
                 SetVehicleHasBeenOwnedByPlayer(missionVehicle.Handle, true);
+
                 var net_id = NetworkGetNetworkIdFromEntity(missionVehicle.Handle);
                 SetNetworkIdCanMigrate(net_id, true);
                 SetNetworkIdExistsOnAllMachines(net_id, true);
                 NetworkFadeOutEntity(missionVehicle.Handle, true, false);
+
                 await Delay(5000);
+
                 TriggerServerEvent("GTAO:StartMissionForAll", net_id);
                 TriggerServerEvent("GTAO:DisplaySimeonMarkerForAll");
                 missionActive = true;
@@ -147,8 +152,8 @@ namespace GTAOnline_FiveM
 
             await Delay(1750);
 
-            Screen.Fading.FadeIn(500);
             PlayMissionCompleteAudio("FRANKLIN_BIG_01");
+            Screen.Fading.FadeIn(500);
             BigMessageThread.MessageInstance.ShowMissionPassedMessage("Mission Passed", 5000);
             Game.PlayerPed.PositionNoOffset = World.GetNextPositionOnSidewalk(new Vector2(1199.64f, -3065.44f));
         }
@@ -158,8 +163,11 @@ namespace GTAOnline_FiveM
             missionVehicle.AttachedBlip.Delete();
             missionVehicle.MarkAsNoLongerNeeded();
             missionVehicle.IsPersistent = false;
+
             SetAggressiveHorns(false);
+
             Tick -= MissionTick;
+
             Delay(5000);
             missionActive = false;
         }

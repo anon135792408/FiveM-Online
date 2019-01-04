@@ -123,11 +123,13 @@ namespace GTAOnline_FiveM
                 }
 
                 playerTaxi.AttachedBlip.Delete();
+
                 Tick -= OnTaxiTick;
                 Tick -= CheckTaxiStatus;
+
                 playerTaxi.IsTaxiLightOn = false;
                 playerTaxi.MarkAsNoLongerNeeded();
-                taxiDriver.MarkAsNoLongerNeeded();
+                taxiDriver.MarkAsNoLongerNeeded();    
                 playerTaxi = null;
                 taxiDriver = null;
                 taxiMenu.Visible = false;
@@ -188,6 +190,7 @@ namespace GTAOnline_FiveM
                 mugger.Task.ClearAll();
                 mugger.Task.WanderAround();
                 mugger.MarkAsNoLongerNeeded();
+
                 Player p = new Player(NetworkGetPlayerIndexFromPed(target.Handle));
                 Screen.ShowNotification("The mugger you called on " + p.Name + " has successfully mugged the target.");
 
