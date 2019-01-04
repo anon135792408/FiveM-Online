@@ -7,6 +7,7 @@ using CitizenFX.Core;
 using static CitizenFX.Core.Native.API;
 using CitizenFX.Core.UI;
 using NativeUI;
+using FiveM_Online_Client;
 
 namespace GTAOnline_FiveM
 {
@@ -136,17 +137,6 @@ namespace GTAOnline_FiveM
             }
         }
 
-        private Vector3 GetAroundVector3(Vector3 v, float distance)
-        {
-            float variation = distance * 2;
-            Random rnd = new Random();
-
-            float bx = rnd.Next((int)distance, (int)variation) - distance;
-            float by = rnd.Next((int)distance, (int)variation) - distance;
-
-            return new Vector3(v.X + bx, v.Y + by, v.Z);
-        }
-
         private async void CallMugger()
         {
             DisplayOnscreenKeyboard(0, "FMMC_KEY_TIP8", "", "", "", "", "", 64);
@@ -232,7 +222,7 @@ namespace GTAOnline_FiveM
         {
             if (playerTaxi == null)
             {
-                playerTaxi = await World.CreateVehicle(VehicleHash.Taxi, World.GetNextPositionOnStreet(GetAroundVector3(Game.PlayerPed.Position, 50f)));
+                playerTaxi = await World.CreateVehicle(VehicleHash.Taxi, World.GetNextPositionOnStreet(AdditionalMaths.GetAroundVector3(Game.PlayerPed.Position, 30, 50)));
                 taxiDriver = await World.CreatePed(PedHash.Indian01AMM, playerTaxi.Position);
                 playerTaxi.AttachBlip();
                 playerTaxi.IsTaxiLightOn = true;
