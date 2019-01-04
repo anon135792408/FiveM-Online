@@ -147,17 +147,20 @@ namespace GTAOnline_FiveM
             }
 
             string result = GetOnscreenKeyboardResult();
-            foreach (Player p in Players)
+            if (!result.Equals(""))
             {
-                if (p.Name.ToUpper().Equals(result.ToUpper()))
+                foreach (Player p in Players)
                 {
-                    Debug.WriteLine("Player Found!");
-                    mugger = await World.CreatePed(PedHash.FibMugger01, World.GetNextPositionOnSidewalk(p.Character.Position + new Vector3(30f, 30f, 0f)), 0f);
-                    mugger.Weapons.Give(WeaponHash.Knife, 1, true, true);
-                    target = p.Character;
-                    Tick += InitiateMugger;
-                    mugger.Task.FightAgainst(target);
-                    break;
+                    if (p.Name.ToUpper().Equals(result.ToUpper()))
+                    {
+                        Debug.WriteLine("Player Found!");
+                        mugger = await World.CreatePed(PedHash.FibMugger01, World.GetNextPositionOnSidewalk(p.Character.Position + new Vector3(30f, 30f, 0f)), 0f);
+                        mugger.Weapons.Give(WeaponHash.Knife, 1, true, true);
+                        target = p.Character;
+                        Tick += InitiateMugger;
+                        mugger.Task.FightAgainst(target);
+                        break;
+                    }
                 }
             }
         }
@@ -222,7 +225,7 @@ namespace GTAOnline_FiveM
         {
             if (playerTaxi == null)
             {
-                playerTaxi = await World.CreateVehicle(VehicleHash.Taxi, World.GetNextPositionOnStreet(AdditionalMaths.GetAroundVector3(Game.PlayerPed.Position, 30, 50)));
+                playerTaxi = await World.CreateVehicle(VehicleHash.Taxi, World.GetNextPositionOnStreet(AdditionalMaths.GetAroundVector3(Game.PlayerPed.Position, 10, 50)));
                 taxiDriver = await World.CreatePed(PedHash.Indian01AMM, playerTaxi.Position);
                 playerTaxi.AttachBlip();
                 playerTaxi.IsTaxiLightOn = true;

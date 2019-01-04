@@ -16,7 +16,7 @@ namespace FiveM_Online_Client
 
         public static int GetRandomOperand()// 0 for +ve, 1 for -ve
         {
-            return rnd.Next(0, 1);
+            return rnd.Next(0, 2);
         }
 
         public static Vector3 GetAroundVector3(Vector3 v, int minDistance, int maxDistance)
@@ -55,6 +55,8 @@ namespace FiveM_Online_Client
                     }
                     break;
             }
+
+            Debug.WriteLine(result.ToString() + " RAN1 = " + ranOperand.ToString() + " RAN2 = " + ranOperandLayer2.ToString());
 
             return result;
         }
