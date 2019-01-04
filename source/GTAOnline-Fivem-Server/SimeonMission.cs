@@ -16,7 +16,7 @@ namespace GTAOnline_Fivem_Server
             EventHandlers.Add("GTAO:ClearSimeonMarkerForAll", new Action(ClearSimeonMarkerForAll));
             EventHandlers.Add("GTAO:EndMissionForAll", new Action(EndMissionForAll));
             EventHandlers.Add("GTAO:StartMissionForAll", new Action<int>(StartMissionForAll));
-            EventHandlers.Add("GTAO:SimeonMissionFadeOutIn", new Action<int>(SimeonMissionFadeOutIn));
+            EventHandlers.Add("GTAO:ClientRunSimeonCutscene", new Action<int>(ClientRunSimeonCutscene));
         }
 
         public void DisplaySimeonMarkerForAll()
@@ -43,12 +43,12 @@ namespace GTAOnline_Fivem_Server
             TriggerClientEvent("GTAO:StartMissionForAll", netid);
         }
 
-        public void SimeonMissionFadeOutIn(int netid)
+        public void ClientRunSimeonCutscene(int netid)
         {
             PlayerList pl = new PlayerList();
             Player p = pl[netid];
-            Debug.WriteLine("Invoking SimeonMissionFadeOutIn on Clientside for " + p.Name + "...");
-            TriggerClientEvent(p, "GTAO:SimeonMissionFadeOutIn");
+            Debug.WriteLine("Invoking RunSimeonCutscene on Clientside for " + p.Name + "...");
+            TriggerClientEvent(p, "GTAO:ClientRunSimeonCutscene");
         }
     }
 }

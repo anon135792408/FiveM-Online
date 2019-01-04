@@ -25,7 +25,7 @@ namespace GTAOnline_FiveM
             EventHandlers.Add("GTAO:ClearSimeonMarkerForAll", new Action(ClearSimeonMarker));
             EventHandlers.Add("GTAO:EndMissionForAll", new Action(EndMission));
             EventHandlers.Add("GTAO:StartMissionForAll", new Action<int>(StartMission));
-            EventHandlers.Add("GTAO:SimeonMissionFadeOutIn", new Action(SimeonMissionFadeOutIn));
+            EventHandlers.Add("GTAO:ClientRunSimeonCutscene", new Action(RunSimeonCutscene));
             Tick += OnTick;
         }
 
@@ -92,7 +92,7 @@ namespace GTAOnline_FiveM
                             await Delay(100);
                         }
 
-                        TriggerServerEvent("GTAO:SimeonMissionFadeOutIn", Game.Player.ServerId);
+                        TriggerServerEvent("GTAO:ClientRunSimeonCutscene", Game.Player.ServerId);
 
                         while (Screen.Fading.IsFadingOut)
                         {
@@ -102,7 +102,7 @@ namespace GTAOnline_FiveM
                         for (int i = 0; i < missionVehicle.Passengers.Count(); i++)
                         {
                             int pHandle = GetPlayerServerId(NetworkGetPlayerIndexFromPed(missionVehicle.Passengers[i].Handle));
-                            TriggerServerEvent("GTAO:SimeonMissionFadeOutIn", pHandle);
+                            TriggerServerEvent("GTAO:ClientRunSimeonCutscene", pHandle);
                         }
 
                         while (missionVehicle.Passengers.Count() > 0)
@@ -117,7 +117,7 @@ namespace GTAOnline_FiveM
             }
         }
 
-        private async void SimeonMissionFadeOutIn()
+        private async void RunSimeonCutscene()
         {
             GamePlayer.isCutsceneActive = true;
 
