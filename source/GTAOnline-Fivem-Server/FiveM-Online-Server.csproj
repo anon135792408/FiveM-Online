@@ -53,6 +53,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="PlayerData.cs" />
     <Compile Include="SimeonMission.cs" />
     <Compile Include="Spawning.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

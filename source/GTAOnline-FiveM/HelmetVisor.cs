@@ -13,7 +13,7 @@ namespace GTAOnline_FiveM
     {
         public HelmetVisor()
         {
-            Tick += OnTick;
+            //Tick += OnTick;
         }
 
         private async Task OnTick()
