@@ -130,9 +130,7 @@ namespace GTAOnline_FiveM
 
                 playerTaxi.IsTaxiLightOn = false;
                 playerTaxi.MarkAsNoLongerNeeded();
-                taxiDriver.MarkAsNoLongerNeeded();    
-                playerTaxi = null;
-                taxiDriver = null;
+                taxiDriver.MarkAsNoLongerNeeded();   
                 taxiMenu.Visible = false;
             }
         }
@@ -174,8 +172,6 @@ namespace GTAOnline_FiveM
                 Player p = new Player(NetworkGetPlayerIndexFromPed(target.Handle));
                 Screen.ShowNotification("The mugger you called on " + p.Name + " has been killed.");
 
-                target = null;
-                mugger = null;
                 Tick -= InitiateMugger;
             }
             else if (target.IsDead && target.GetKiller() == mugger)
@@ -187,8 +183,6 @@ namespace GTAOnline_FiveM
                 Player p = new Player(NetworkGetPlayerIndexFromPed(target.Handle));
                 Screen.ShowNotification("The mugger you called on " + p.Name + " has successfully mugged the target.");
 
-                target = null;
-                mugger = null;
                 Tick -= InitiateMugger;
             }
         }
@@ -215,8 +209,6 @@ namespace GTAOnline_FiveM
                 playerTaxi.IsTaxiLightOn = false;
                 Tick -= OnTaxiTick;
                 Tick -= CheckTaxiStatus;
-                playerTaxi = null;
-                taxiDriver = null;
                 taxiMenu.Visible = false;
             }
         }
