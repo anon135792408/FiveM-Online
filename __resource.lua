@@ -4,11 +4,10 @@ christmas_enabled 'false'
 
 client_script {
 	"FiveM-Online-Client.net.dll",
-	"NativeUI.dll",
+	"NativeUI.dll"
 }
 
 server_script {
 	"FiveM-Online-Server.net.dll",
-	"Google.Protobuf.dll",
-	"MySql.Data.dll"
+	"GHMattiMySQL.net.dll"
 }
