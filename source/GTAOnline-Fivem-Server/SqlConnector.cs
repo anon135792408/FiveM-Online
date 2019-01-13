@@ -18,11 +18,13 @@ namespace FiveM_Online_Server
 
         public static void InitializeDB()
         {
-            MySqlConnectionStringBuilder builder = new MySqlConnectionStringBuilder();
-            builder.Server = SERVER;
-            builder.UserID = UID;
-            builder.Password = PASSWORD;
-            builder.Database = DATABASE;
+            MySqlConnectionStringBuilder builder = new MySqlConnectionStringBuilder
+            {
+                Server = SERVER,
+                UserID = UID,
+                Password = PASSWORD,
+                Database = DATABASE
+            };
 
             String connString = builder.ToString();
 
