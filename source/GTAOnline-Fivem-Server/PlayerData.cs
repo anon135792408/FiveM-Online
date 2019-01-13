@@ -4,7 +4,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using CitizenFX.Core;
-using FiveM_Online_Server;
 using static CitizenFX.Core.Native.API;
 
 namespace GTAOnline_Fivem_Server
@@ -18,7 +17,7 @@ namespace GTAOnline_Fivem_Server
 
         public void SavePlayerData(int id, string name)
         {
-            SqlConnector.SavePlayer(id, name);
+            
         }
     }
 }
