@@ -11,7 +11,7 @@ namespace GTAOnline_Fivem_Server
 {
     class PlayerData : BaseScript
     {
-        private readonly string _connStr = @"server=127.0.0.1;port=3306;database=fivemonline;uid=root;pwd=password;";
+        private readonly string _connStr = @"server=127.0.0.1;port=3306;database=fivemonline;uid=root;pwd=password;sslmode=none;";
 
         MySqlConnection _conn;
 
@@ -23,11 +23,13 @@ namespace GTAOnline_Fivem_Server
 
         public void SavePlayerData(int id, string name)
         {
+            _conn.Open();
             
             Debug.WriteLine(_connStr);
 
-            _conn.Open();
+            Debug.WriteLine(_conn.ServerVersion);
 
+            _conn.Close();
             /*string query = "INSERT INTO players(id, name) VALUES(" + id + ", '" + name + "')";
             MySqlCommand cmd = new MySqlCommand(query, _conn);
             _conn.Open();
