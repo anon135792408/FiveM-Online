@@ -28,7 +28,7 @@ namespace GTAOnline_FiveM
                 await Delay(100);
             }
             await SpawnPlayer("MP_M_FREEMODE_01", 30.18f, -723.04f, 44.19f, 248.17f);
-            //TriggerServerEvent("GTAO:SavePlayerData", PlayerId(), GetPlayerName(PlayerId()));
+            TriggerServerEvent("GTAO:SavePlayerData", PlayerId(), GetPlayerName(PlayerId()));
         }
 
         private static bool _spawnLock = false;

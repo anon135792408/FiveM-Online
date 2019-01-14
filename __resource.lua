@@ -9,5 +9,4 @@ client_script {
 
 server_script {
 	"FiveM-Online-Server.net.dll",
-	"GHMattiMySQL.net.dll"
 }
