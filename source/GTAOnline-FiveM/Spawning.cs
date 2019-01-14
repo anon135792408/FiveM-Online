@@ -15,10 +15,32 @@ namespace GTAOnline_FiveM
      */
     public class Spawning : BaseScript
     {
+        public List<string> uNames = new List<string>();
+        public string userIdentifier;
+        Vector3 lastPos;
+
         public Spawning()
         {
+            EventHandlers.Add("GTAO:SyncSQLPlayerList", new Action<List<string>>(SyncSQLPlayerList));
+            EventHandlers.Add("GTAO:SyncPlayerIdentifier", new Action<dynamic>(SyncPlayerIdentifier));
+            EventHandlers.Add("GTAO:SyncPlayerLastPos", new Action<dynamic>(SyncPlayerLastPos));
             DoPlayerSpawn();
             Tick += OnTick;
+        }
+
+        private void SyncSQLPlayerList(List<string> list)
+        {
+            uNames = new List<string>(list);
+        }
+
+        private void SyncPlayerIdentifier(dynamic identifier)
+        {
+            userIdentifier = identifier;
+        }
+
+        private void SyncPlayerLastPos(dynamic pos)
+        {
+            lastPos = pos;
         }
 
         private async void DoPlayerSpawn()
@@ -27,8 +49,40 @@ namespace GTAOnline_FiveM
             {
                 await Delay(100);
             }
-            await SpawnPlayer("MP_M_FREEMODE_01", 30.18f, -723.04f, 44.19f, 248.17f);
-            TriggerServerEvent("GTAO:SavePlayerData", PlayerId(), GetPlayerName(PlayerId()));
+
+            TriggerServerEvent("GTAO:RetrieveSQLPlayerList", Game.Player.Handle);
+
+            TriggerServerEvent("GTAO:RetrievePlayerIdentifier", Game.Player.Handle);
+
+            if (uNames.Count > 0)
+            {
+                Debug.WriteLine("Over Zero!");
+                foreach (string str in uNames)
+                {
+                    Debug.WriteLine(str);
+                    Debug.WriteLine(str);
+                    Debug.WriteLine(str);
+                    Debug.WriteLine(str);
+                    if (str.Equals(Game.Player.Name))
+                    {
+                        
+                        Debug.WriteLine("User exists! Retrieving Data...");
+                        TriggerServerEvent("GTAO:RetrievePlayerLastPos", PlayerId());
+                        await SpawnPlayer("MP_M_FREEMODE_01", lastPos.X, lastPos.Y, lastPos.Z, 0.0f);
+                    }
+                    else
+                    {
+                        await SpawnPlayer("MP_M_FREEMODE_01", 30.18f, -723.04f, 44.19f, 248.17f);
+                        TriggerServerEvent("GTAO:SavePlayerData", userIdentifier, GetPlayerName(PlayerId()));
+                    }
+                }
+            }
+            else
+            {
+                Debug.WriteLine("Below Zero!");
+                await SpawnPlayer("MP_M_FREEMODE_01", 30.18f, -723.04f, 44.19f, 248.17f);
+                TriggerServerEvent("GTAO:SavePlayerData", userIdentifier, GetPlayerName(PlayerId()));
+            }
         }
 
         private static bool _spawnLock = false;
