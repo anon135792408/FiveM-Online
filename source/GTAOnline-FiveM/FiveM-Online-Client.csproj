@@ -35,6 +35,9 @@
     <Reference Include="CitizenFX.Core">
       <HintPath>.\CitizenFX.Core.dll</HintPath>
     </Reference>
+    <Reference Include="CSGHMattiMySQL">
+      <HintPath>..\..\CSGHMattiMySQL\CSGHMattiMySQL.dll</HintPath>
+    </Reference>
     <Reference Include="NativeUI, Version=1.7.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\NativeUI.dll</HintPath>
