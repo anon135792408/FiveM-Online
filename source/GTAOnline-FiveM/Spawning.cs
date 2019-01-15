@@ -54,15 +54,15 @@ namespace GTAOnline_FiveM
 
             TriggerServerEvent("GTAO:RetrievePlayerIdentifier", Game.Player.Handle);
 
+            await Delay(2500);
+
             if (uNames.Count > 0)
             {
                 Debug.WriteLine("Over Zero!");
                 foreach (string str in uNames)
                 {
                     Debug.WriteLine(str);
-                    Debug.WriteLine(str);
-                    Debug.WriteLine(str);
-                    Debug.WriteLine(str);
+
                     if (str.Equals(Game.Player.Name))
                     {
                         
