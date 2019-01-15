@@ -30,6 +30,7 @@ namespace FiveM_Online_Client
                 SpawnCashieers();
             }
             Tick += StatusCheck;
+            Tick += AimCheck;
         }
 
         public async void SpawnCashieers()
@@ -48,6 +49,20 @@ namespace FiveM_Online_Client
                 else
                 {
                     CashieerList.Add(await World.CreatePed(PedHash.ShopKeep01, pedPos.Position, pedPos.Heading));
+                }
+            }
+        }
+
+        public async Task AimCheck()
+        {
+            foreach (Ped p in CashieerList)
+            {
+                if (Game.Player.IsAiming)
+                {
+                    if (Game.Player.IsTargetting(p))
+                    {
+                        //do more
+                    }
                 }
             }
         }
