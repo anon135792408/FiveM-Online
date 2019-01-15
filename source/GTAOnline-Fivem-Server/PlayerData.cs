@@ -17,34 +17,70 @@ namespace GTAOnline_Fivem_Server
 
         public PlayerData()
         {
-            EventHandlers.Add("GTAO:SavePlayerData", new Action<string, string>(SavePlayerData));
-            EventHandlers.Add("GTAO:RetrieveSQLPlayerList", new Action<int>(RetrieveSQLPlayerListForClient));
-            EventHandlers.Add("GTAO:RetrievePlayerIdentifier", new Action<int>(RetrievePlayerIdentifier));
-            EventHandlers.Add("GTAO:RetrievePlayerLastPos", new Action<int>(RetrievePlayerLastPos));
+            EventHandlers.Add("GTAO:SavePlayerData", new Action<Player>(SavePlayerData));
+            EventHandlers.Add("GTAO:CheckIfPlayerExistsInDatabase", new Action<Player>(CheckIfPlayerExistsInDatabase));
             _conn = new MySqlConnection(_connStr);
         }
 
-        public void RetrievePlayerLastPos(int id)
+        public void SavePlayerData([FromSource]Player player)
         {
-            Player p = new PlayerList()[id];
-            p.TriggerEvent("GTAO:SyncPlayerLastPos", GetUserLastPosition(p.Name));
-        }
+            string uName = player.Name;
+            string uId = (string)player.Identifiers["license"];
 
-        public void SavePlayerData(string id, string name)
-        {
-            Debug.WriteLine("===========================");
-            Debug.WriteLine(id + " " + name);
+            Debug.WriteLine("==========Saving===========");
+            Debug.WriteLine("Name: " + uName + "\nIdentifier: " + uId);
             Debug.WriteLine("===========================");
 
             //Player p = new PlayerList()[id];
             //string identifier = p.Identifiers["license"].ToString();
 
-            string query = "INSERT INTO players(name) VALUES('" + name + "')";
+            string query = String.Format("INSERT INTO users(id, username) VALUES('{0}', '{1}')", uId, uName);
             MySqlCommand cmd = new MySqlCommand(query, _conn);
-            _conn.Open();
 
+            _conn.Open();
             cmd.ExecuteNonQuery();
             _conn.Close();
+        }
+
+        public void CheckIfPlayerExistsInDatabase([FromSource]Player player)
+        {
+            bool result = DoesPlayerExistInDatabase(player);
+            Debug.WriteLine(result.ToString());
+            player.TriggerEvent("GTAO:SyncPlayerExistBool", result);
+        }
+
+        public bool DoesPlayerExistInDatabase([FromSource]Player player)
+        {
+            int rowCount = 0;
+
+            string uName = player.Name;
+
+            string query = "SELECT * FROM users WHERE username = '" + uName + "'";
+            MySqlCommand cmd = new MySqlCommand(query, _conn);
+
+            _conn.Open();
+
+            MySqlDataReader rdr = cmd.ExecuteReader();
+
+            while (rdr.Read())
+            {
+                string rdrName = (string)rdr["username"];
+                if (rdrName.Equals(uName))
+                {
+                    rowCount++;
+                }
+            }
+            rdr.Close();
+            _conn.Close();
+
+            if (rowCount > 0)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
 
         public void RetrieveSQLPlayerListForClient(int id)
@@ -65,9 +101,9 @@ namespace GTAOnline_Fivem_Server
             return p.Identifiers["license"];
         }
 
-        public List<string> GetAllUsers()
+        public IList<string> GetAllUsers()
         {
-            List<string> uNames = new List<string>();
+            IList<string> uNames = new List<string>();
 
             string query = "SELECT name FROM players";
             MySqlCommand cmd = new MySqlCommand(query, _conn);
