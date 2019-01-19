@@ -6,11 +6,15 @@ using System.Threading.Tasks;
 using CitizenFX.Core;
 using static CitizenFX.Core.Native.API;
 using CitizenFX.Core.UI;
+using FiveM_Online_Client;
 
 namespace GTAOnline_FiveM
 {
     public class GamePlayer : BaseScript
     {
+        public static List<Apartment> ownedApartments = new List<Apartment>();
+        public long playerCash = 1000000;
+
         public static bool isCutsceneActive = false;
         public static bool isInAnyVehicle = false;
         public static bool isPlayerDead = false;

@@ -53,9 +53,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AdditionalMaths.cs" />
+    <Compile Include="Apartment.cs" />
+    <Compile Include="Apartments.cs" />
     <Compile Include="Cashieers.cs" />
     <Compile Include="Christmas.cs" />
     <Compile Include="ConvenienveStore.cs" />
+    <Compile Include="FiveMOnline.cs" />
     <Compile Include="HelmetVisor.cs" />
     <Compile Include="InteractionMenu.cs" />
     <Compile Include="PedPos.cs" />
