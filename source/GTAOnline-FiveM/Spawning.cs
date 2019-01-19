@@ -35,6 +35,8 @@ namespace GTAOnline_FiveM
 
         private async void DoPlayerSpawn()
         {
+            EnableMpDlcMaps(true);
+            LoadMpDlcMaps();
 
             if (!NetworkIsPlayerActive(PlayerId()))
             {
