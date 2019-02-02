@@ -81,51 +81,48 @@ namespace GTAOnline_FiveM
                         TriggerServerEvent("GTAO:ClearSimeonMarkerForAll");
                     }
 
-                    if (FiveMOnline.onlinePlayer.isInAnyVehicle)
+                    if (Game.PlayerPed.CurrentVehicle == missionVehicle)
                     {
-                        if (Game.PlayerPed.CurrentVehicle == missionVehicle)
+                        if (!initialIsInVehicleCheck)
                         {
-                            if (!initialIsInVehicleCheck)
-                            {
-                                Screen.ShowSubtitle("Deliver the " + missionVehicle.LocalizedName + " to ~y~Simeon", 5000);
-                                initialIsInVehicleCheck = true;
-                            }
+                            Screen.ShowSubtitle("Deliver the " + missionVehicle.LocalizedName + " to ~y~Simeon", 5000);
+                            initialIsInVehicleCheck = true;
                         }
-                        else
+                    }
+                    else
+                    {
+                        initialIsInVehicleCheck = false;
+                    }
+
+                    if (Game.PlayerPed.IsInRangeOf(SIMEON_DROPOFF, 7.0f) && missionVehicle.Driver == Game.PlayerPed)
+                    {
+                        //missionVehicle.MaxSpeed = 0;
+                        SetVehicleHalt(missionVehicle.Handle, 3.0f, 1, false);
+                        while (!missionVehicle.IsStopped)
                         {
-                            initialIsInVehicleCheck = false;
+                            await Delay(100);
                         }
 
-                        if (Game.PlayerPed.IsInRangeOf(SIMEON_DROPOFF, 7.0f) && missionVehicle.Driver == Game.PlayerPed)
+                        TriggerServerEvent("GTAO:ClientRunSimeonCutscene", Game.Player.ServerId);
+
+                        while (Screen.Fading.IsFadingOut)
                         {
-                            //missionVehicle.MaxSpeed = 0;
-                            SetVehicleHalt(missionVehicle.Handle, 3.0f, 1, false);
-                            while (!missionVehicle.IsStopped)
-                            {
-                                await Delay(100);
-                            }
-
-                            TriggerServerEvent("GTAO:ClientRunSimeonCutscene", Game.Player.ServerId);
-
-                            while (Screen.Fading.IsFadingOut)
-                            {
-                                await Delay(100);
-                            }
-
-                            for (int i = 0; i < missionVehicle.Passengers.Count(); i++)
-                            {
-                                int pHandle = GetPlayerServerId(NetworkGetPlayerIndexFromPed(missionVehicle.Passengers[i].Handle));
-                                TriggerServerEvent("GTAO:ClientRunSimeonCutscene", pHandle);
-                            }
-
-                            while (missionVehicle.Passengers.Count() > 0)
-                            {
-                                await Delay(100);
-                            }
-
-                            TriggerServerEvent("GTAO:EndMissionForAll");
-                            TriggerServerEvent("GTAO:ClearSimeonMarkerForAll");
+                            await Delay(100);
                         }
+
+                        for (int i = 0; i < missionVehicle.Passengers.Count(); i++)
+                        {
+                            int pHandle = GetPlayerServerId(NetworkGetPlayerIndexFromPed(missionVehicle.Passengers[i].Handle));
+                            TriggerServerEvent("GTAO:ClientRunSimeonCutscene", pHandle);
+                        }
+
+                        while (missionVehicle.Passengers.Count() > 0)
+                        {
+                            await Delay(100);
+                        }
+
+                        TriggerServerEvent("GTAO:EndMissionForAll");
+                        TriggerServerEvent("GTAO:ClearSimeonMarkerForAll");
                     }
                 }
             }
