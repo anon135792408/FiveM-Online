@@ -10,13 +10,8 @@ using GTAOnline_FiveM;
 
 namespace FiveM_Online_Client
 {
-    class FiveMOnline
+    public static class FiveMOnline
     {
-        public static GamePlayer onlinePlayer;
-
-        public FiveMOnline()
-        {
-            onlinePlayer = new GamePlayer(10000, new List<Apartment>());
-        }
+        public static GamePlayer onlinePlayer = new GamePlayer(10000, new List<Apartment>());
     }
 }
