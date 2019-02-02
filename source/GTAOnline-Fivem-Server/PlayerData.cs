@@ -25,20 +25,29 @@ namespace GTAOnline_Fivem_Server
         public void SavePlayerData([FromSource]Player player)
         {
             string uName = player.Name;
-            string uId = (string)player.Identifiers["license"];
 
-            Debug.WriteLine("==========Saving===========");
-            Debug.WriteLine("Name: " + uName + "\nIdentifier: " + uId);
-            Debug.WriteLine("===========================");
+            try
+            {
+                string uId = (string)player.Identifiers["license"];
 
-            //Player p = new PlayerList()[id];
-            //string identifier = p.Identifiers["license"].ToString();
+                Debug.WriteLine("==========Saving===========");
+                Debug.WriteLine("Name: " + uName + "\nIdentifier: " + uId);
+                Debug.WriteLine("===========================");
 
-            string query = String.Format("INSERT INTO users(id, username) VALUES('{0}', '{1}')", uId, uName);
-            MySqlCommand cmd = new MySqlCommand(query, _conn);
+                //Player p = new PlayerList()[id];
+                //string identifier = p.Identifiers["license"].ToString();
 
-            _conn.Open();
-            cmd.ExecuteNonQuery();
+                string query = String.Format("INSERT INTO users(id, username) VALUES('{0}', '{1}')", uId, uName);
+                MySqlCommand cmd = new MySqlCommand(query, _conn);
+
+                _conn.Open();
+                cmd.ExecuteNonQuery();
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine("Failed to save player data for: " + uName + "\n Error: " + ex.Message);
+                _conn.Close();
+            }
             _conn.Close();
         }
 
@@ -52,26 +61,35 @@ namespace GTAOnline_Fivem_Server
         public bool DoesPlayerExistInDatabase([FromSource]Player player)
         {
             int rowCount = 0;
-
             string uName = player.Name;
 
-            string query = "SELECT * FROM users WHERE username = '" + uName + "'";
-            MySqlCommand cmd = new MySqlCommand(query, _conn);
-
-            _conn.Open();
-
-            MySqlDataReader rdr = cmd.ExecuteReader();
-
-            while (rdr.Read())
+            try
             {
-                string rdrName = (string)rdr["username"];
-                if (rdrName.Equals(uName))
+
+
+                string query = "SELECT * FROM users WHERE username = '" + uName + "'";
+                MySqlCommand cmd = new MySqlCommand(query, _conn);
+
+                _conn.Open();
+
+                MySqlDataReader rdr = cmd.ExecuteReader();
+
+                while (rdr.Read())
                 {
-                    rowCount++;
+                    string rdrName = (string)rdr["username"];
+                    if (rdrName.Equals(uName))
+                    {
+                        rowCount++;
+                    }
                 }
+                rdr.Close();
+                _conn.Close();
             }
-            rdr.Close();
-            _conn.Close();
+            catch (Exception ex)
+            {
+                Debug.WriteLine("Failed to find player data for: " + uName + "\n Error: " + ex.Message);
+                _conn.Close();
+            }
 
             if (rowCount > 0)
             {
@@ -105,41 +123,58 @@ namespace GTAOnline_Fivem_Server
         {
             IList<string> uNames = new List<string>();
 
-            string query = "SELECT name FROM players";
-            MySqlCommand cmd = new MySqlCommand(query, _conn);
-            _conn.Open();
-
-            MySqlDataReader rdr = cmd.ExecuteReader();
-
-            while (rdr.Read())
+            try
             {
-                string id = (string)rdr["name"];
-                uNames.Add(id);
-                Debug.WriteLine(id);
+                string query = "SELECT name FROM players";
+                MySqlCommand cmd = new MySqlCommand(query, _conn);
+                _conn.Open();
+
+                MySqlDataReader rdr = cmd.ExecuteReader();
+
+                while (rdr.Read())
+                {
+                    string id = (string)rdr["name"];
+                    uNames.Add(id);
+                    Debug.WriteLine(id);
+                }
+                rdr.Close();
+                _conn.Close();
             }
-            rdr.Close();
-            _conn.Close();
+            catch (Exception ex)
+            {
+                Debug.WriteLine("Failed to retrieve all database records \n Error: " + ex.Message);
+                _conn.Close();
+            }
 
             return uNames;
         }
 
         public Vector3 GetUserLastPosition(string userName)
         {
-            Vector3 returnedPosition = new Vector3(0f,0f,0f);
+            Vector3 returnedPosition = new Vector3(0f, 0f, 0f);
 
-            string query = "SELECT name, posX, posY, posZ FROM players WHERE name = '" + userName + "'";
-            MySqlCommand cmd = new MySqlCommand(query, _conn);
-
-            _conn.Open();
-
-            MySqlDataReader rdr = cmd.ExecuteReader();
-
-            while (rdr.Read())
+            try
             {
-                returnedPosition = new Vector3((float)rdr["posX"], (float)rdr["posY"], (float)rdr["posZ"]);
+
+                string query = "SELECT name, posX, posY, posZ FROM players WHERE name = '" + userName + "'";
+                MySqlCommand cmd = new MySqlCommand(query, _conn);
+
+                _conn.Open();
+
+                MySqlDataReader rdr = cmd.ExecuteReader();
+
+                while (rdr.Read())
+                {
+                    returnedPosition = new Vector3((float)rdr["posX"], (float)rdr["posY"], (float)rdr["posZ"]);
+                }
+                rdr.Close();
+                _conn.Close();
             }
-            rdr.Close();
-            _conn.Close();
+            catch (Exception ex)
+            {
+                Debug.WriteLine("Failed to retrievelast position for:" + userName + "\n Error: " + ex.Message);
+                _conn.Close();
+            }
 
             return returnedPosition;
         }

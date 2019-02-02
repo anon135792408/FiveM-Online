@@ -16,7 +16,7 @@ namespace FiveM_Online_Client
 
         public FiveMOnline()
         {
-            onlinePlayer = new GamePlayer();
+            onlinePlayer = new GamePlayer(10000, new List<Apartment>());
         }
     }
 }

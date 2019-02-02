@@ -12,14 +12,14 @@ namespace GTAOnline_FiveM
 {
     public class GamePlayer : BaseScript
     {
-        public static List<Apartment> ownedApartments = new List<Apartment>();
-        public long playerCash = 1000000;
+        public static List<Apartment> ownedApartments;
+        public long playerCash;
 
         public static bool isCutsceneActive = false;
         public static bool isInAnyVehicle = false;
         public static bool isPlayerDead = false;
 
-        public GamePlayer()
+        public GamePlayer(long cash, List<Apartment> ownedApartments)
         {
             Tick += CutsceneCheck;
             Tick += StatusCheck;

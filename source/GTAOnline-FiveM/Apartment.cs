@@ -14,7 +14,7 @@ namespace FiveM_Online_Client
         private Vector3 purchasePosition;
         private Vector3 entrancePosition;
         private Vector3 exitPosition;
-        private long apartmentPrice;
+        private readonly long apartmentPrice;
 
         public Apartment()
         {
