@@ -120,7 +120,8 @@ namespace GTAOnline_FiveM
                         {
                             await Delay(100);
                         }
-
+                        FiveMOnline.onlinePlayer.playerCash += 3000;
+                        TriggerServerEvent("GTAO:UpdatePlayerCash", FiveMOnline.onlinePlayer.playerCash);
                         TriggerServerEvent("GTAO:EndMissionForAll");
                         TriggerServerEvent("GTAO:ClearSimeonMarkerForAll");
                     }

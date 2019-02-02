@@ -18,6 +18,7 @@ namespace GTAOnline_Fivem_Server
         public PlayerData()
         {
             EventHandlers.Add("GTAO:SavePlayerData", new Action<Player>(SavePlayerData));
+            EventHandlers.Add("GTAO:UpdatePlayerCash", new Action<Player, long>(UpdatePlayerCash));
             EventHandlers.Add("GTAO:CheckIfPlayerExistsInDatabase", new Action<Player>(CheckIfPlayerExistsInDatabase));
             _conn = new MySqlConnection(_connStr);
         }
@@ -48,6 +49,35 @@ namespace GTAOnline_Fivem_Server
             catch (Exception ex)
             {
                 Debug.WriteLine("Failed to save player data for: " + uName + "\n Error: " + ex.Message);
+                _conn.Close();
+            }
+            _conn.Close();
+        }
+
+        public void UpdatePlayerCash([FromSource]Player player, long cash)
+        {
+            string uName = player.Name;
+            try
+            {
+                if (DoesPlayerExistInDatabase(player))
+                {
+                    string uId = (string)player.Identifiers["license"];
+
+                    Debug.WriteLine("=========Updating==========");
+                    Debug.WriteLine("Name: " + uName + "\nCash: " + cash.ToString());
+                    Debug.WriteLine("===========================");
+ 
+
+                    string query = String.Format("UPDATE users SET cash='{0}' WHERE id='{1}'", cash, uId);
+                    MySqlCommand cmd = new MySqlCommand(query, _conn);
+
+                    _conn.Open();
+                    cmd.ExecuteNonQuery();
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine("Failed to update player cash for: " + uName + "\n Error: " + ex.Message);
                 _conn.Close();
             }
             _conn.Close();
