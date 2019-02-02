@@ -7,6 +7,7 @@ using CitizenFX.Core;
 using static CitizenFX.Core.Native.API;
 using CitizenFX.Core.UI;
 using NativeUI;
+using FiveM_Online_Client;
 
 namespace GTAOnline_FiveM
 {
@@ -73,7 +74,7 @@ namespace GTAOnline_FiveM
                     TriggerServerEvent("GTAO:ClearSimeonMarkerForAll");
                 }
 
-                if (GamePlayer.isInAnyVehicle)
+                if (FiveMOnline.onlinePlayer.isInAnyVehicle)
                 {
                     if (Game.PlayerPed.CurrentVehicle == missionVehicle)
                     {
@@ -124,7 +125,7 @@ namespace GTAOnline_FiveM
 
         private async void RunSimeonCutscene()
         {
-            GamePlayer.isCutsceneActive = true;
+            FiveMOnline.onlinePlayer.isCutsceneActive = true;
 
             Camera cutsCam = World.CreateCamera(new Vector3(1204.28f, -3102.81f, 5.89f), Vector3.Zero, 60);
             cutsCam.PointAt(missionVehicle.Position);
@@ -146,7 +147,7 @@ namespace GTAOnline_FiveM
             cutsCam.Delete();
             RenderScriptCams(false, false, 0, true, false);
 
-            GamePlayer.isCutsceneActive = false;
+            FiveMOnline.onlinePlayer.isCutsceneActive = false;
 
             NetworkFadeOutEntity(missionVehicle.Handle, true, false);
 

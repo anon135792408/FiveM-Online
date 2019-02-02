@@ -30,9 +30,9 @@ namespace FiveM_Online_Client
         {
             foreach (Apartment apt in apartments)
             {
-                if (!apt.IsOwnedByPlayer(Game.Player))
+                if (apt.PurchasePosition.DistanceToSquared(Game.PlayerPed.Position) <= 200f)
                 {
-                    if (apt.PurchasePosition.DistanceToSquared(Game.PlayerPed.Position) <= 200f)
+                    if (!apt.IsOwnedByPlayer(Game.Player))
                     {
                         World.DrawMarker(MarkerType.VerticalCylinder, apt.PurchasePosition + new Vector3(0f, 0f, -1f), Vector3.Zero, Vector3.Zero, Vector3.One, System.Drawing.Color.FromArgb(180, 66, 134, 244));
 

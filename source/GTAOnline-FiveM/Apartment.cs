@@ -34,7 +34,7 @@ namespace FiveM_Online_Client
 
         public bool IsOwnedByPlayer(Player p)
         {
-            foreach (Apartment apt in GamePlayer.ownedApartments)
+            foreach (Apartment apt in FiveMOnline.onlinePlayer.ownedApartments)
             {
                 if (apt.Equals(this))
                 {
@@ -48,7 +48,7 @@ namespace FiveM_Online_Client
         {
             if (FiveMOnline.onlinePlayer.playerCash >= this.apartmentPrice)
             {
-                GamePlayer.ownedApartments.Add(this);
+                FiveMOnline.onlinePlayer.ownedApartments.Add(this);
                 return true;
             }
             return false;

@@ -11,7 +11,7 @@ namespace GTAOnline_Fivem_Server
 {
     class PlayerData : BaseScript
     {
-        private readonly string _connStr = @"server=127.0.0.1;port=3306;database=fivemonline;uid=root;pwd=password;sslmode=none;";
+        private readonly string _connStr = @"server=127.0.0.1;port=3306;database=fivemonline;uid=root;pwd=;sslmode=none;";
 
         MySqlConnection _conn;
 

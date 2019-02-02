@@ -12,17 +12,23 @@ namespace GTAOnline_FiveM
 {
     public class GamePlayer : BaseScript
     {
-        public static List<Apartment> ownedApartments;
+        public List<Apartment> ownedApartments;
         public long playerCash;
 
-        public static bool isCutsceneActive = false;
-        public static bool isInAnyVehicle = false;
-        public static bool isPlayerDead = false;
+        public bool isCutsceneActive = false;
+        public bool isInAnyVehicle = false;
+        public bool isPlayerDead = false;
 
-        public GamePlayer(long cash, List<Apartment> ownedApartments)
+        public GamePlayer()
         {
             Tick += CutsceneCheck;
             Tick += StatusCheck;
+        }
+
+        public GamePlayer(long cash, List<Apartment> apartments)
+        {
+            playerCash = cash;
+            ownedApartments = apartments;
         }
 
         private async Task StatusCheck()
