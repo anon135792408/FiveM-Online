@@ -32,94 +32,108 @@ namespace GTAOnline_FiveM
 
         private async Task OnTick()
         {
-            await Delay(15000);
-
-            if (!missionActive && NetworkIsHost())
+            try
             {
-                Tuple<Vector3, float> randPos = GetRandomPosition();
-                RequestCollisionAtCoord(randPos.Item1.X, randPos.Item1.Y, randPos.Item1.Z);
-                missionVehicle = await World.CreateVehicle(GetRandomVehHash(), randPos.Item1, randPos.Item2);
+                if (!missionActive && NetworkIsHost())
+                {
+                    Tuple<Vector3, float> randPos = GetRandomPosition();
+                    RequestCollisionAtCoord(randPos.Item1.X, randPos.Item1.Y, randPos.Item1.Z);
+                    missionVehicle = await World.CreateVehicle(GetRandomVehHash(), randPos.Item1, randPos.Item2);
 
-                await Delay(2000);
+                    await Delay(15000);
 
-                missionVehicle.PlaceOnGround();
-                missionVehicle.LockStatus = VehicleLockStatus.CanBeBrokenInto;
-                missionVehicle.IsAlarmSet = true;
-                missionVehicle.IsPersistent = true;
+                    missionVehicle.PlaceOnGround();
+                    missionVehicle.LockStatus = VehicleLockStatus.CanBeBrokenInto;
+                    missionVehicle.IsAlarmSet = true;
+                    missionVehicle.IsPersistent = true;
 
-                SetVehicleHasBeenOwnedByPlayer(missionVehicle.Handle, true);
+                    SetVehicleHasBeenOwnedByPlayer(missionVehicle.Handle, true);
 
-                var net_id = NetworkGetNetworkIdFromEntity(missionVehicle.Handle);
-                SetNetworkIdCanMigrate(net_id, true);
-                SetNetworkIdExistsOnAllMachines(net_id, true);
-                NetworkFadeOutEntity(missionVehicle.Handle, true, false);
+                    var net_id = NetworkGetNetworkIdFromEntity(missionVehicle.Handle);
+                    SetNetworkIdCanMigrate(net_id, true);
+                    SetNetworkIdExistsOnAllMachines(net_id, true);
+                    NetworkFadeOutEntity(missionVehicle.Handle, true, false);
 
-                await Delay(5000);
+                    //await Delay(15000);
 
-                TriggerServerEvent("GTAO:StartMissionForAll", net_id);
-                TriggerServerEvent("GTAO:DisplaySimeonMarkerForAll");
-                missionActive = true;
-                NetworkFadeInEntity(missionVehicle.Handle, true);
+                    TriggerServerEvent("GTAO:StartMissionForAll", net_id);
+                    TriggerServerEvent("GTAO:DisplaySimeonMarkerForAll");
+                    missionActive = true;
+                    NetworkFadeInEntity(missionVehicle.Handle, true);
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine("Failed to start Simeon Mission: " + ex.Message);
             }
         }
 
         private async Task MissionTick()
         {
-            await Delay(500);
-            if (missionActive)
+            try
             {
-                if ((missionVehicle.IsDead || (missionVehicle.IsUpsideDown && missionVehicle.Driver == null)) && NetworkIsHost())
+                await Delay(500);
+                if (missionActive)
                 {
-                    TriggerServerEvent("GTAO:EndMissionForAll");
-                    TriggerServerEvent("GTAO:ClearSimeonMarkerForAll");
-                }
-
-                if (FiveMOnline.onlinePlayer.isInAnyVehicle)
-                {
-                    if (Game.PlayerPed.CurrentVehicle == missionVehicle)
+                    if ((missionVehicle.IsDead || (missionVehicle.IsUpsideDown && missionVehicle.Driver == null)) && NetworkIsHost())
                     {
-                        if (!initialIsInVehicleCheck)
-                        {
-                            Screen.ShowSubtitle("Deliver the " + missionVehicle.LocalizedName + " to ~y~Simeon", 5000);
-                            initialIsInVehicleCheck = true;
-                        }
-                    } 
-                    else
-                    {
-                        initialIsInVehicleCheck = false;
-                    }
-
-                    if (Game.PlayerPed.IsInRangeOf(SIMEON_DROPOFF, 7.0f) && missionVehicle.Driver == Game.PlayerPed)
-                    {
-                        //missionVehicle.MaxSpeed = 0;
-                        SetVehicleHalt(missionVehicle.Handle, 3.0f, 1, false);
-                        while (!missionVehicle.IsStopped)
-                        {
-                            await Delay(100);
-                        }
-
-                        TriggerServerEvent("GTAO:ClientRunSimeonCutscene", Game.Player.ServerId);
-
-                        while (Screen.Fading.IsFadingOut)
-                        {
-                            await Delay(100);
-                        }
-
-                        for (int i = 0; i < missionVehicle.Passengers.Count(); i++)
-                        {
-                            int pHandle = GetPlayerServerId(NetworkGetPlayerIndexFromPed(missionVehicle.Passengers[i].Handle));
-                            TriggerServerEvent("GTAO:ClientRunSimeonCutscene", pHandle);
-                        }
-
-                        while (missionVehicle.Passengers.Count() > 0)
-                        {
-                            await Delay(100);
-                        }
-
                         TriggerServerEvent("GTAO:EndMissionForAll");
                         TriggerServerEvent("GTAO:ClearSimeonMarkerForAll");
                     }
+
+                    if (FiveMOnline.onlinePlayer.isInAnyVehicle)
+                    {
+                        if (Game.PlayerPed.CurrentVehicle == missionVehicle)
+                        {
+                            if (!initialIsInVehicleCheck)
+                            {
+                                Screen.ShowSubtitle("Deliver the " + missionVehicle.LocalizedName + " to ~y~Simeon", 5000);
+                                initialIsInVehicleCheck = true;
+                            }
+                        }
+                        else
+                        {
+                            initialIsInVehicleCheck = false;
+                        }
+
+                        if (Game.PlayerPed.IsInRangeOf(SIMEON_DROPOFF, 7.0f) && missionVehicle.Driver == Game.PlayerPed)
+                        {
+                            //missionVehicle.MaxSpeed = 0;
+                            SetVehicleHalt(missionVehicle.Handle, 3.0f, 1, false);
+                            while (!missionVehicle.IsStopped)
+                            {
+                                await Delay(100);
+                            }
+
+                            TriggerServerEvent("GTAO:ClientRunSimeonCutscene", Game.Player.ServerId);
+
+                            while (Screen.Fading.IsFadingOut)
+                            {
+                                await Delay(100);
+                            }
+
+                            for (int i = 0; i < missionVehicle.Passengers.Count(); i++)
+                            {
+                                int pHandle = GetPlayerServerId(NetworkGetPlayerIndexFromPed(missionVehicle.Passengers[i].Handle));
+                                TriggerServerEvent("GTAO:ClientRunSimeonCutscene", pHandle);
+                            }
+
+                            while (missionVehicle.Passengers.Count() > 0)
+                            {
+                                await Delay(100);
+                            }
+
+                            TriggerServerEvent("GTAO:EndMissionForAll");
+                            TriggerServerEvent("GTAO:ClearSimeonMarkerForAll");
+                        }
+                    }
                 }
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine("Failed to run tick for SimeonMission: " + ex.Message);
+                TriggerServerEvent("GTAO:EndMissionForAll");
+                TriggerServerEvent("GTAO:ClearSimeonMarkerForAll");
             }
         }
 

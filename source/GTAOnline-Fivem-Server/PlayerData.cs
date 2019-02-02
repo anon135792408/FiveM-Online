@@ -25,23 +25,25 @@ namespace GTAOnline_Fivem_Server
         public void SavePlayerData([FromSource]Player player)
         {
             string uName = player.Name;
-
             try
             {
-                string uId = (string)player.Identifiers["license"];
+                if (!DoesPlayerExistInDatabase(player))
+                {
+                    string uId = (string)player.Identifiers["license"];
 
-                Debug.WriteLine("==========Saving===========");
-                Debug.WriteLine("Name: " + uName + "\nIdentifier: " + uId);
-                Debug.WriteLine("===========================");
+                    Debug.WriteLine("==========Saving===========");
+                    Debug.WriteLine("Name: " + uName + "\nIdentifier: " + uId);
+                    Debug.WriteLine("===========================");
 
-                //Player p = new PlayerList()[id];
-                //string identifier = p.Identifiers["license"].ToString();
+                    //Player p = new PlayerList()[id];
+                    //string identifier = p.Identifiers["license"].ToString();
 
-                string query = String.Format("INSERT INTO users(id, username) VALUES('{0}', '{1}')", uId, uName);
-                MySqlCommand cmd = new MySqlCommand(query, _conn);
+                    string query = String.Format("INSERT INTO users(id, username) VALUES('{0}', '{1}')", uId, uName);
+                    MySqlCommand cmd = new MySqlCommand(query, _conn);
 
-                _conn.Open();
-                cmd.ExecuteNonQuery();
+                    _conn.Open();
+                    cmd.ExecuteNonQuery();
+                }
             }
             catch (Exception ex)
             {
