@@ -15,10 +15,18 @@ namespace FiveM_Online_Client
         {
             EventHandlers["playerSpawned"] += new Action(playerSpawned);
             EventHandlers["receiveData"] += new Action<float,float,float>(receiveData);
+            Tick += SyncInterval;
         }
 
-        public void playerSpawned()
+        public async Task SyncInterval()
         {
+            await Delay(15000);
+            TriggerServerEvent("savePlayer", Game.PlayerPed.Position.X, Game.PlayerPed.Position.Y, Game.PlayerPed.Position.Z);
+        }
+
+        public async void playerSpawned()
+        {
+            await Delay(1000);
             TriggerServerEvent("savePlayer", Game.PlayerPed.Position.X, Game.PlayerPed.Position.Y, Game.PlayerPed.Position.Z);
         }
 
