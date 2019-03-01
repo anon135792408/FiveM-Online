@@ -52,22 +52,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AdditionalMaths.cs" />
-    <Compile Include="Apartment.cs" />
-    <Compile Include="Apartments.cs" />
-    <Compile Include="Cashieers.cs" />
-    <Compile Include="Christmas.cs" />
-    <Compile Include="ConvenienveStore.cs" />
-    <Compile Include="FiveMOnline.cs" />
-    <Compile Include="HelmetVisor.cs" />
-    <Compile Include="InteractionMenu.cs" />
-    <Compile Include="PedPos.cs" />
-    <Compile Include="PersonalVehicle.cs" />
-    <Compile Include="GamePlayer.cs" />
     <Compile Include="PlayerBlips.cs" />
-    <Compile Include="SimeonMission.cs" />
-    <Compile Include="SimeonMissionData.cs" />
-    <Compile Include="Spawning.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
