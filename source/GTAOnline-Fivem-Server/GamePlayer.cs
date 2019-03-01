@@ -16,24 +16,48 @@ namespace FiveM_Online_Server
         public string UserName { get; set; }
         public string LastIp { get; set; }
 
+        public Vector3 LastPosition { get; set; }
+
         public GamePlayer()
         {
-            EventHandlers["savePlayer"] += new Action<Player>(savePlayer);
+            EventHandlers["savePlayer"] += new Action<Player, float, float, float>(savePlayer);
         }
 
-        public void savePlayer([FromSource]Player player)
+        public void savePlayer([FromSource]Player player, float posX, float posY, float posZ)
         {
-            License = player.Identifiers["license"];
-            UserName = player.Name;
-            LastIp = player.EndPoint;
-
             string dir = "D:\\Games\\FiveMServer\\server-data\\resources\\FiveM-Online\\playerData\\" + License + ".json"; //This will take some improving
-            File.WriteAllText(dir, JsonConvert.SerializeObject(this));
-
-            using (StreamWriter file = File.CreateText(dir))
+            
+            if (File.Exists(dir))
             {
-                JsonSerializer serializer = new JsonSerializer();
-                serializer.Serialize(file, this);
+                using (StreamReader file = new StreamReader(dir))
+                {
+                    string json = file.ReadToEnd();
+                    GamePlayer tempPlayer = JsonConvert.DeserializeObject<GamePlayer>(json);
+                    License = tempPlayer.License;
+                    UserName = tempPlayer.UserName;
+                    LastIp = tempPlayer.LastIp;
+                    LastPosition = tempPlayer.LastPosition;
+
+                    Debug.WriteLine(LastPosition.ToString());
+
+                    player.TriggerEvent("receiveData", LastPosition.X, LastPosition.Y, LastPosition.Z);
+                }
+            }
+            else
+            {
+                License = player.Identifiers["license"];
+                UserName = player.Name;
+                LastIp = player.EndPoint;
+
+                LastPosition = new Vector3(posX, posY, posZ);
+
+                File.WriteAllText(dir, JsonConvert.SerializeObject(this));
+
+                using (StreamWriter file = File.CreateText(dir))
+                {
+                    JsonSerializer serializer = new JsonSerializer();
+                    serializer.Serialize(file, this);
+                }
             }
         }
     }
