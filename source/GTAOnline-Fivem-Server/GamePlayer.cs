@@ -21,11 +21,39 @@ namespace FiveM_Online_Server
         public GamePlayer()
         {
             EventHandlers["savePlayer"] += new Action<Player, float, float, float>(savePlayer);
+            EventHandlers["getPlayerLastPosition"] += new Action<Player>(getPlayerLastPosition);
+        }
+
+        public void getPlayerLastPosition([FromSource]Player player)
+        {
+            string dir = "D:\\Games\\FiveMServer\\server-data\\resources\\FiveM-Online\\playerData\\" + player.Identifiers["license"] + ".json"; //This will take some improving
+
+            if (player.Identifiers["license"] != String.Empty)
+            {
+                try
+                {
+                    using (StreamReader file = new StreamReader(dir))
+                    {
+                        string json = file.ReadToEnd();
+                        GamePlayer tempPlayer = JsonConvert.DeserializeObject<GamePlayer>(json);
+                        License = player.Identifiers["license"];
+                        UserName = player.Name;
+                        LastIp = player.EndPoint;
+                        LastPosition = tempPlayer.LastPosition;
+
+                        player.TriggerEvent("receiveData", LastPosition.X, LastPosition.Y, LastPosition.Z);
+                    }
+                }
+                catch
+                {
+                    Debug.WriteLine("[getPlayerLastPosition] Unable to open player data file: " + dir + ", retrying soon...");
+                }
+            }
         }
 
         public void savePlayer([FromSource]Player player, float posX, float posY, float posZ)
         {
-            string dir = "D:\\Games\\FiveMServer\\server-data\\resources\\FiveM-Online\\playerData\\" + License + ".json"; //This will take some improving
+            string dir = "D:\\Games\\FiveMServer\\server-data\\resources\\FiveM-Online\\playerData\\" + player.Identifiers["license"] + ".json"; //This will take some improving
 
             if (player.Identifiers["license"] != String.Empty)
             {
@@ -39,10 +67,6 @@ namespace FiveM_Online_Server
                         UserName = player.Name;
                         LastIp = player.EndPoint;
                         LastPosition = new Vector3(posX, posY, posZ);
-
-                        Debug.WriteLine(LastPosition.ToString());
-
-                        //player.TriggerEvent("receiveData", LastPosition.X, LastPosition.Y, LastPosition.Z);
                     }
 
                     File.WriteAllText(dir, JsonConvert.SerializeObject(this));
@@ -55,7 +79,7 @@ namespace FiveM_Online_Server
                 }
                 catch
                 {
-                    Debug.WriteLine("Unable to open player data file: " + dir + ", retrying soon...");
+                    Debug.WriteLine("[savePlayer] Unable to open player data file: " + dir + ", retrying soon...");
                 }
             }
         }

@@ -11,6 +11,8 @@ namespace FiveM_Online_Client
 {
     class main : BaseScript
     {
+        bool firstConnect = true;
+
         public main()
         {
             EventHandlers["playerSpawned"] += new Action(playerSpawned);
@@ -27,12 +29,13 @@ namespace FiveM_Online_Client
         public async void playerSpawned()
         {
             await Delay(1000);
-            TriggerServerEvent("savePlayer", Game.PlayerPed.Position.X, Game.PlayerPed.Position.Y, Game.PlayerPed.Position.Z);
+            TriggerServerEvent("getPlayerLastPosition", Game.PlayerPed.Position.X, Game.PlayerPed.Position.Y, Game.PlayerPed.Position.Z);
         }
 
         public void receiveData(float x, float y, float z)
         {
-            Game.PlayerPed.Position = new Vector3(x, y, z);
+            Game.PlayerPed.Position = World.GetNextPositionOnSidewalk(new Vector3(x, y, z));
+            firstConnect = false;
         }
     }
 }
