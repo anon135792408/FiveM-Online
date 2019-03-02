@@ -27,25 +27,35 @@ namespace FiveM_Online_Server
         {
             string dir = "D:\\Games\\FiveMServer\\server-data\\resources\\FiveM-Online\\playerData\\" + License + ".json"; //This will take some improving
 
-            using (StreamReader file = new StreamReader(dir))
+            if (player.Identifiers["license"] != String.Empty)
             {
-                string json = file.ReadToEnd();
-                GamePlayer tempPlayer = JsonConvert.DeserializeObject<GamePlayer>(json);
-                License = tempPlayer.License;
-                UserName = tempPlayer.UserName;
-                LastIp = tempPlayer.LastIp;
-                LastPosition = tempPlayer.LastPosition;
-
-                Debug.WriteLine(LastPosition.ToString());
-
-                player.TriggerEvent("receiveData", LastPosition.X, LastPosition.Y, LastPosition.Z);
-
-                File.WriteAllText(dir, JsonConvert.SerializeObject(this));
-
-                using (StreamWriter fileWrite = File.CreateText(dir))
+                try
                 {
-                    JsonSerializer serializer = new JsonSerializer();
-                    serializer.Serialize(fileWrite, this);
+                    using (StreamReader file = new StreamReader(dir))
+                    {
+                        string json = file.ReadToEnd();
+                        GamePlayer tempPlayer = JsonConvert.DeserializeObject<GamePlayer>(json);
+                        License = player.Identifiers["license"];
+                        UserName = player.Name;
+                        LastIp = player.EndPoint;
+                        LastPosition = new Vector3(posX, posY, posZ);
+
+                        Debug.WriteLine(LastPosition.ToString());
+
+                        //player.TriggerEvent("receiveData", LastPosition.X, LastPosition.Y, LastPosition.Z);
+                    }
+
+                    File.WriteAllText(dir, JsonConvert.SerializeObject(this));
+
+                    using (StreamWriter fileWrite = File.CreateText(dir))
+                    {
+                        JsonSerializer serializer = new JsonSerializer();
+                        serializer.Serialize(fileWrite, this);
+                    }
+                }
+                catch
+                {
+                    Debug.WriteLine("Unable to open player data file: " + dir + ", retrying soon...");
                 }
             }
         }
