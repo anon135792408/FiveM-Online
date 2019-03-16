@@ -18,6 +18,7 @@ namespace FiveM_Online_Client
             EventHandlers["playerSpawned"] += new Action(playerSpawned);
             EventHandlers["receiveData"] += new Action<float,float,float>(receiveData);
             Tick += SyncInterval;
+            Tick += SpawnTransition;
         }
 
         public async Task SyncInterval()
@@ -26,16 +27,69 @@ namespace FiveM_Online_Client
             TriggerServerEvent("savePlayer", Game.PlayerPed.Position.X, Game.PlayerPed.Position.Y, Game.PlayerPed.Position.Z);
         }
 
+        public async Task SpawnTransition()
+        {
+            initTransition();
+
+            while (GetPlayerSwitchState() != 5)
+            {
+                await Delay(0);
+            }
+
+            ShutdownLoadingScreen();
+            DoScreenFadeOut(0);
+            ShutdownLoadingScreenNui();
+
+            DoScreenFadeIn(500);
+            while (!IsScreenFadedIn())
+            {
+                await Delay(0);
+            }
+
+            var timer = GetGameTimer();
+
+            while (true)
+            {
+                await Delay(0);
+                if (GetGameTimer() - timer > 5000)
+                {
+                    SwitchInPlayer(PlayerPedId());
+
+                    while (GetPlayerSwitchState() != 12)
+                    {
+                        await Delay(0);
+                    }
+
+                    break;
+                }
+            }
+
+            Tick -= SpawnTransition;
+        }
+
         public async void playerSpawned()
         {
             await Delay(1000);
             TriggerServerEvent("getPlayerLastPosition", Game.PlayerPed.Position.X, Game.PlayerPed.Position.Y, Game.PlayerPed.Position.Z);
         }
 
-        public void receiveData(float x, float y, float z)
+        public async void receiveData(float x, float y, float z)
         {
-            Game.PlayerPed.Position = World.GetNextPositionOnSidewalk(new Vector3(x, y, z));
-            firstConnect = false;
+            if (firstConnect)
+            {
+                Game.PlayerPed.Position = World.GetNextPositionOnSidewalk(new Vector3(x, y, z));
+                firstConnect = false;
+            }
+        }
+
+        public async void initTransition()
+        {
+            SetManualShutdownLoadingScreenNui(true);
+
+            if (!IsPlayerSwitchInProgress())
+            {
+                SwitchOutPlayer(PlayerPedId(), 0, 1);
+            }
         }
     }
 }
