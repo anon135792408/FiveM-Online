@@ -19,6 +19,21 @@ namespace FiveM_Online_Client
             EventHandlers["receiveData"] += new Action<float,float,float>(receiveData);
             Tick += SyncInterval;
             Tick += SpawnTransition;
+            Tick += DeathCheck;
+        }
+
+        public async Task DeathCheck()
+        {
+            if (IsPlayerDead(PlayerId()))
+            {
+                Debug.WriteLine("Player died!");
+
+                //Wasted screen
+
+                while (IsPlayerDead(PlayerId())) {
+                    await Delay(0);
+                }
+            }
         }
 
         public async Task SyncInterval()
@@ -29,6 +44,8 @@ namespace FiveM_Online_Client
 
         public async Task SpawnTransition()
         {
+            DoScreenFadeOut(500);
+
             initTransition();
 
             while (GetPlayerSwitchState() != 5)
@@ -62,6 +79,11 @@ namespace FiveM_Online_Client
 
                     break;
                 }
+            }
+
+            while (IsPlayerDead(PlayerId()))
+            {
+                await Delay(0);
             }
 
             Tick -= SpawnTransition;
